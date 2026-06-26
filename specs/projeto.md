@@ -34,22 +34,27 @@ Praticantes de calistenia precisam registrar seus treinos de forma rápida, gera
 
 ### Dentro do escopo
 
-- Interface de chat responsiva (mobile-first)
+- Interface de chat responsiva — web, mobile e desktop (375px a 1280px+)
+- Dark mode como tema padrão
 - Entrada por texto e por áudio (Web Speech API / SpeechRecognition)
-- Criação e visualização de plano de exercícios ativo
+- Interpretação de linguagem natural via LLM (Gemini ou OpenAI) para registro e criação de planos
+- Botões rápidos para consultar informações cadastradas (plano ativo, último treino)
+- Criação de plano de treino: bot sugere, usuário pode editar
 - Registro rápido de exercícios durante o treino (ex: "fiz 15 flexões" ou "3 séries de muscle up")
 - Histórico de treinos com data/hora e exercícios realizados
-- Banco de dados local (IndexedDB via Dexie.js ou localStorage)
-- Reconhecimento de exercícios de calistenia mais comuns (flexão, barra, muscle up, dip, agachamento, etc.)
-- Sugestão de plano de treino baseado em nível (iniciante, intermediário, avançado)
+- Banco de dados local (IndexedDB via Dexie.js) — sem backend, sem conta
+- Reconhecimento de exercícios de calistenia mais comuns
+- Gráficos de progresso (volume por semana, exercícios mais feitos) — Marco M8
 
 ### Fora do escopo
 
 - Sincronização com nuvem ou conta de usuário
+- Exportação de dados (JSON, PDF)
 - Integração com wearables (smartwatch, monitor cardíaco)
 - Cálculo de calorias ou métricas nutricionais
 - Social features (compartilhar treinos, ranking)
 - Backend / API própria
+- Versão nativa mobile (React Native) por enquanto
 
 ---
 
@@ -61,9 +66,11 @@ Praticantes de calistenia precisam registrar seus treinos de forma rápida, gera
 | Bundler | Vite 8 |
 | Banco local | IndexedDB via Dexie.js |
 | Entrada de voz | Web Speech API (SpeechRecognition) |
+| IA / LLM | Gemini API ou OpenAI API (a definir) |
 | Testes | Vitest + @testing-library/react |
 | Linter | Oxlint |
-| Estilização | CSS Vanilla (mobile-first) |
+| Estilização | CSS Vanilla — dark mode como padrão, mobile-first |
+| Gráficos (futuro) | Recharts |
 
 ---
 

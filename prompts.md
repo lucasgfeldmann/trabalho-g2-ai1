@@ -14,6 +14,8 @@
 - **2026-06-26T04:13:02-03:00**: specs
 - **2026-06-26T04:18:58-03:00**: vamos escrever e detalhar o projeto. o projeto é ser um chatbot que realiza o cadastro de realização de exercicios e tambem criador de plano de exercicio para pessoas que praticam calistenia. sera um app com um banco local onde ele sava informações como o plano de exercicios atual e o usuario consegue via audio ou texto escrever rapidamento o que ele esta executando e o de execicio salvando um historio de exercicios realizados
 - **2026-06-26T04:29:15-03:00**: adicione uma regra de documentar toda feature implementada dentro do diretorio docs. a documentação deve ser realizada automaticamente assim que terminar de realizar a feature
+- **2026-06-26T04:40:10-03:00**: crie um arquivo readme.md dentro de specs que tera especificações do que deve e não deve estar dentro dos arquivos desse diretorio, deve sempre ter definido as ferramentas que serão necessarias ou uteis detalhadas como por exemplo sempre questione o usuario sobre o como pode ser essa aplicação
+
 
 
 
