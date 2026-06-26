@@ -67,7 +67,7 @@ Praticantes de calistenia precisam registrar seus treinos de forma rápida, gera
 | Bundler | Vite 8 |
 | Banco local | IndexedDB via Dexie.js |
 | Entrada de voz | Web Speech API (SpeechRecognition) — clique único para gravar/parar, permitindo edição no input de chat antes de enviar |
-| IA / LLM | Gemini API (Google) — Chave e modelo (Flash/Pro/Customizado) inseridos pelo usuário em painel local |
+| IA / LLM | Google Gen AI SDK (`@google/genai`) — Conexão com Gemini API (chave e modelo inseridos pelo usuário no painel local) |
 | Testes | Vitest + @testing-library/react |
 | Linter | Oxlint |
 | Estilização | CSS Vanilla — Tema Neon Calisthenics, mobile-first |

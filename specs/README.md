@@ -81,10 +81,8 @@ Esta seção documenta as ferramentas escolhidas, sua finalidade e configuraçã
 
 | Ferramenta | Versão | Finalidade | Docs |
 |---|---|---|---|
-| Gemini API (Google) | v1 | LLM para interpretar comandos em linguagem natural e gerar planos de treino | [ai.google.dev](https://ai.google.dev) |
-| **Alternativa** OpenAI API | v4 | GPT-4o para interpretação e geração de planos | [platform.openai.com](https://platform.openai.com) |
+| Google Gen AI SDK (`@google/genai`) | mais recente | SDK oficial para conexão com a Gemini API para interpretar comandos de treino e sugerir planos | [npmjs.com/package/@google/genai](https://www.npmjs.com/package/@google/genai) |
 
-> **Decisão pendente:** Definir qual LLM será usado (Gemini ou OpenAI). A escolha impacta custos, latência e disponibilidade da API key. Consultar o usuário antes de implementar feat-008.
 
 ### Entrada por Voz
 

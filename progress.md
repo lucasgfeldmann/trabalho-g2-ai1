@@ -15,6 +15,7 @@
 - [x] **feat-004 - Documentation Update**: README.md completo com stack, estrutura, comandos e harness.
 - [x] **feat-005 - Cleanup and Handoff**: session-handoff.md preenchido, commit final realizado.
 - [x] **specs - Especificações e Requisitos**: Esclarecimento das perguntas de design/IA/voz e atualização de `projeto.md`, `requisitos.md` e `criterios-aceite.md` (incluindo escolha de modelo de IA no painel de configurações e definição do `gemini-3-flash-preview` como padrão).
+- [x] **infra - Instalação do SDK**: Instalada a biblioteca `@google/genai` no projeto para integração futura com a API do Gemini.
 
 
 ### What's In Progress

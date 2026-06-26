@@ -19,8 +19,8 @@
 - **2026-06-26T04:55:24-03:00**: seria interessante o usuario adicionar o modelo que ele quer utilizar junto a api?
 - **2026-06-26T04:56:24-03:00**: sim atualize
 - **2026-06-26T04:58:44-03:00**: quero utilizar o modelo gemini-3-flash-preview
-
-
+- **2026-06-26T05:00:18-03:00**: me diga sempre são criado testes antes de se desenvolver?
+- **2026-06-26T05:02:38-03:00**: utilize a biblioteca     @google/genai para a conexão com a llm se voce precisar de uma key para testar a llm me avise
 
 
 
