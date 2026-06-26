@@ -552,4 +552,47 @@ describe('CalisBot App & Components', () => {
       expect(screen.getByText(/\(Paralelas\)/i)).toBeInTheDocument()
     })
   })
+
+  it('displays retry button on Gemini failure, and successfully retries when clicked', async () => {
+    localStorage.setItem('gemini_api_key', 'valid-key')
+
+    // First call fails with an API error
+    generateContentMock.mockRejectedValueOnce(new Error('API key not valid'))
+
+    render(<App />)
+
+    const input = screen.getByPlaceholderText(/Envie uma mensagem ou diga o que treinou.../i)
+    fireEvent.change(input, { target: { value: 'fiz 3x10 flexões' } })
+    fireEvent.click(screen.getByLabelText('Enviar mensagem'))
+
+    // Wait for the failure message bubble and verify retry button is present
+    let retryBtn: HTMLElement | null = null
+    await waitFor(() => {
+      expect(screen.getByText(/Erro ao se comunicar com a API do Gemini/i)).toBeInTheDocument()
+      retryBtn = screen.getByRole('button', { name: /Tentar Novamente/i })
+      expect(retryBtn).toBeInTheDocument()
+    })
+
+    // Mock next call as successful
+    generateContentMock.mockResolvedValueOnce({
+      text: JSON.stringify({
+        isWorkout: true,
+        isCalisthenics: true,
+        exercicios: [
+          { nome: 'Flexão', series: 3, repeticoes: 10, observacao: '' }
+        ]
+      })
+    })
+
+    // Click retry
+    fireEvent.click(retryBtn!)
+
+    // Verify it succeeded on retry and shows confirmation options
+    await waitFor(() => {
+      expect(screen.getByText(/Entendi o seguinte treino:/i)).toBeInTheDocument()
+      expect(screen.getByText(/- Flexão: 3 série\(s\) de 10 repetição\(ões\)/i)).toBeInTheDocument()
+      // Old error message should be removed
+      expect(screen.queryByText(/Erro ao se comunicar com a API do Gemini/i)).not.toBeInTheDocument()
+    })
+  })
 })

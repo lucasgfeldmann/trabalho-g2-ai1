@@ -26,6 +26,7 @@ function App() {
   // Confirmation Flow states
   const [pendingWorkout, setPendingWorkout] = useState<ParsedWorkout[] | null>(null);
   const [planFlow, setPlanFlow] = useState<PlanFlow>({ step: 'none' });
+  const [lastUserMessage, setLastUserMessage] = useState('');
 
   const checkPlanAndInit = async (keyToUse = apiKey) => {
     if (!keyToUse) return;
@@ -312,7 +313,8 @@ function App() {
           isError: true,
         },
       ]);
-      setPlanFlow({ step: 'none' });
+      // Em vez de resetar o plano para 'none', mantemos o passo como 'goal' para permitir retry!
+      setPlanFlow((prev) => ({ ...prev, step: 'goal' }));
     }
   };
 
@@ -338,6 +340,34 @@ function App() {
     return [];
   };
 
+  const handleRetry = async () => {
+    if (planFlow.step === 'goal' && planFlow.nivel && planFlow.diasPorSemana && planFlow.objetivo) {
+      setMessages((prev) => {
+        const lastErrIndex = [...prev].reverse().findIndex(m => m.isError);
+        if (lastErrIndex !== -1) {
+          const actualIndex = prev.length - 1 - lastErrIndex;
+          return prev.filter((_, idx) => idx !== actualIndex);
+        }
+        return prev;
+      });
+      await handleGeneratePlan(planFlow.nivel, planFlow.diasPorSemana, planFlow.objetivo);
+      return;
+    }
+
+    if (!lastUserMessage) return;
+
+    setMessages((prev) => {
+      const lastErrIndex = [...prev].reverse().findIndex(m => m.isError);
+      if (lastErrIndex !== -1) {
+        const actualIndex = prev.length - 1 - lastErrIndex;
+        return prev.filter((_, idx) => idx !== actualIndex);
+      }
+      return prev;
+    });
+
+    await handleProcessMessage(lastUserMessage, true);
+  };
+
   const handleSendMessage = async (text: string) => {
     const userMsg: Message = {
       id: `user-${Date.now()}`,
@@ -346,7 +376,10 @@ function App() {
       timestamp: new Date(),
     };
     setMessages((prev) => [...prev, userMsg]);
+    await handleProcessMessage(text, false);
+  };
 
+  const handleProcessMessage = async (text: string, isRetry = false) => {
     if (pendingWorkout) {
       const isYes = /^(sim|s|yes|y|confirmar|confirma|confirmado|confirmar treino)$/i.test(text.trim());
       const isNo = /^(n[aã]o|nao|n|no|cancelar|cancelado)$/i.test(text.trim());
@@ -572,7 +605,7 @@ function App() {
     }
 
     const normalizedInput = text.trim().toLowerCase();
-    
+
     const isShowPlanCommand = /^(ver meu plano|ver plano|plano|mostrar plano|mostrar meu plano)$/i.test(normalizedInput);
     if (isShowPlanCommand) {
       await handleShowPlan();
@@ -600,9 +633,12 @@ function App() {
       return;
     }
 
+    if (!isRetry) {
+      setLastUserMessage(text);
+    }
+
     const activeModel = model === 'custom' ? customModel : model;
 
-    // Check internet connection
     if (!navigator.onLine) {
       setMessages((prev) => [
         ...prev,
@@ -617,7 +653,6 @@ function App() {
       return;
     }
 
-    // Add thinking placeholder
     const thinkingId = `thinking-${Date.now()}`;
     setMessages((prev) => [
       ...prev,
@@ -632,11 +667,9 @@ function App() {
     try {
       const result = await parseUserMessage(apiKey, activeModel, text);
 
-      // Remove thinking placeholder
       setMessages((prev) => prev.filter((m) => m.id !== thinkingId));
 
       if (!result.isCalisthenics) {
-        // Guardrail triggered
         setMessages((prev) => [
           ...prev,
           {
@@ -665,7 +698,6 @@ function App() {
           },
         ]);
       } else {
-        // Normal conversational reply
         setMessages((prev) => [
           ...prev,
           {
@@ -677,11 +709,9 @@ function App() {
         ]);
       }
     } catch (err: any) {
-      // Remove thinking placeholder
       setMessages((prev) => prev.filter((m) => m.id !== thinkingId));
       console.error(err);
 
-      // Identify API key/auth errors vs connection/rate limits
       const isAuthError = err.message?.includes('API key') || err.message?.includes('API_KEY_INVALID') || err.status === 400 || err.status === 403;
 
       setMessages((prev) => [
@@ -706,6 +736,7 @@ function App() {
         onSend={handleSendMessage}
         onOpenSettings={() => setIsSettingsOpen(true)}
         onOpenHistory={() => setIsHistoryOpen(true)}
+        onRetry={handleRetry}
         hasApiKey={!!apiKey}
         quickOptions={getQuickOptions()}
       />

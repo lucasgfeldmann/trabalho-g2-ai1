@@ -98,7 +98,7 @@
 
 ### RNF-003 — Tolerância a Falhas e Conectividade
 
-- **Descrição:** A interface do PWA, o banco de dados local (IndexedDB) e a exibição de históricos/planos devem funcionar sem conexão de rede. Caso o usuário tente registrar um treino ou criar um plano via chat e ocorra falha de rede ou com a API do Gemini, o sistema deve exibir uma notificação visual clara detalhando o erro (ex: 'Sem conexão com a internet' ou 'Erro ao se comunicar com a API do Gemini').
+- **Descrição:** A interface do PWA, o banco de dados local (IndexedDB) e a exibição de históricos/planos devem funcionar sem conexão de rede. Caso o usuário tente registrar um treino ou criar um plano via chat e ocorra falha de rede ou com a API do Gemini, o sistema deve exibir uma notificação visual clara detalhando o erro (ex: 'Sem conexão com a internet' ou 'Erro ao se comunicar com a API do Gemini') e fornecer um botão de "Tentar Novamente" para re-processar a última entrada sem necessidade de redigitação.
 - **Prioridade:** Alta
 
 ### RNF-004 — Usabilidade com as Mãos Livres

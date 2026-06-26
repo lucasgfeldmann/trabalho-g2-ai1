@@ -13,6 +13,7 @@ interface ChatWindowProps {
   onSend: (text: string) => void;
   onOpenSettings: () => void;
   onOpenHistory?: () => void;
+  onRetry?: () => void;
   hasApiKey: boolean;
   quickOptions?: string[];
 }
@@ -22,6 +23,7 @@ export const ChatWindow: React.FC<ChatWindowProps> = ({
   onSend,
   onOpenSettings,
   onOpenHistory,
+  onRetry,
   hasApiKey,
   quickOptions = [],
 }) => {
@@ -205,6 +207,15 @@ export const ChatWindow: React.FC<ChatWindowProps> = ({
                   } ${msg.isError ? 'error-bubble' : ''}`}
                 >
                   <p>{msg.text}</p>
+                  {msg.isError && onRetry && (
+                    <button
+                      type="button"
+                      className="retry-btn"
+                      onClick={onRetry}
+                    >
+                      🔄 Tentar Novamente
+                    </button>
+                  )}
                   <span className="message-time">
                     {msg.timestamp.toLocaleTimeString([], {
                       hour: '2-digit',

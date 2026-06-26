@@ -44,12 +44,12 @@
 
 ## Files Modified This Session
 
-- `feature_list.json`, `progress.md`, `docs/feat-009.md`, `docs/feat-010.md`
+- `feature_list.json`, `progress.md`, `docs/feat-009.md`, `docs/feat-010.md`, `specs/requisitos.md`, `specs/criterios-aceite.md`
 - `src/components/HistoryPanel.tsx`, `src/components/ChatWindow.tsx`, `src/index.css`, `src/App.tsx`, `src/test/App.test.tsx`
 
 ## Evidence of Completion
 
-- [x] `./init.sh` limpo com todos os 16 testes passando:
+- [x] `./init.sh` limpo com todos os 17 testes passando:
 ```
 === npm run lint ===
 Found 0 warnings and 0 errors.
@@ -58,12 +58,12 @@ Found 0 warnings and 0 errors.
 (sem erros)
 
 === npm test ===
-✓ src/test/App.test.tsx (16 tests) 611ms
-   ✓ CalisBot App & Components (16)
-Test Files  1 passed (1) | Tests  16 passed (16)
+✓ src/test/App.test.tsx (17 tests) 638ms
+   ✓ CalisBot App & Components (17)
+Test Files  1 passed (1) | Tests  17 passed (17)
 === Verification Complete ===
 ```
 
 ## Notes for Next Session
 
-Todas as 10 features do roadmap inicial (incluindo o fluxo de áudio, integração com Gemini,IndexedDB com Dexie.js, planos de exercícios e histórico de treinos) foram concluídas, testadas e documentadas com sucesso. O repositório está limpo e totalmente funcional.
+Todas as 10 features do roadmap inicial e a funcionalidade de re-tentativa em erros de IA foram concluídas, testadas e documentadas com sucesso. O repositório está limpo e totalmente funcional.

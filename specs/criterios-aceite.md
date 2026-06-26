@@ -79,6 +79,7 @@
 - [ ] Caso a API Key do Gemini não esteja configurada, o bot instrui o usuário a configurá-la no painel e impede o envio
 - [ ] Em caso de falha de conexão/rede, o bot exibe mensagem explicando que o usuário está offline
 - [ ] Em caso de erro na chamada do Gemini (ex: chave inválida), exibe erro avisando problema com a chave ou cota
+- [ ] Mensagens de erro de conexão, offline ou chave inválida exibem um botão "Tentar Novamente" que re-processa o comando anterior ao ser clicado
 - [ ] Mensagem `"fiz 3x10 flexões"` é interpretada como: exercício=Flexão, séries=3, repetições=10
 - [ ] Mensagem `"15 barras"` é interpretada como: exercício=Barra, séries=1, repetições=15
 - [ ] Mensagem `"3 séries de 8 muscle up"` é interpretada corretamente
