@@ -595,4 +595,126 @@ describe('CalisBot App & Components', () => {
       expect(screen.queryByText(/Erro ao se comunicar com a API do Gemini/i)).not.toBeInTheDocument()
     })
   })
+
+  it('prompts user to save when Gemini returns create_plan action, and saves to IndexedDB upon confirmation', async () => {
+    localStorage.setItem('gemini_api_key', 'valid-key')
+
+    const mockPlan = {
+      nome: 'Plano IA Força',
+      nivel: 'iniciante',
+      dias: [
+        {
+          dia_semana: 'Segunda',
+          exercicios: [{ nome: 'Flexão', series: 3, repeticoes: 10 }]
+        }
+      ]
+    }
+
+    generateContentMock.mockResolvedValueOnce({
+      text: JSON.stringify({
+        isWorkout: false,
+        isCalisthenics: true,
+        respostaConversacional: 'Aqui está sua nova rotina.',
+        action: 'create_plan',
+        planoGeral: mockPlan
+      })
+    })
+
+    render(<App />)
+
+    // Send command to create plan
+    const input = screen.getByPlaceholderText(/Envie uma mensagem ou diga o que treinou.../i)
+    fireEvent.change(input, { target: { value: 'crie um plano de força' } })
+    fireEvent.click(screen.getByLabelText('Enviar mensagem'))
+
+    // Verify confirmation message and details
+    await waitFor(() => {
+      expect(screen.getByText(/Aqui está sua nova rotina/i)).toBeInTheDocument()
+      expect(screen.getByText(/Plano Sugerido: Plano IA Força/i)).toBeInTheDocument()
+      expect(screen.getByText(/Deseja salvar este novo plano como seu plano ativo\?/i)).toBeInTheDocument()
+    })
+
+    // Click quick option 'Confirmar Plano'
+    const confirmBtn = screen.getByRole('button', { name: 'Confirmar Plano' })
+    fireEvent.click(confirmBtn)
+
+    // Verify success message
+    await waitFor(() => {
+      expect(screen.getByText(/Plano salvo com sucesso! Agora ele é o seu plano ativo/i)).toBeInTheDocument()
+    })
+
+    // Verify DB contains it
+    const plansInDb = await db.plano_ativo.toArray()
+    expect(plansInDb.length).toBe(1)
+    expect(plansInDb[0].nome).toBe('Plano IA Força')
+  })
+
+  it('prompts user to save when Gemini returns edit_plan action, and updates IndexedDB upon confirmation', async () => {
+    localStorage.setItem('gemini_api_key', 'valid-key')
+
+    // Initial plan in DB
+    await db.plano_ativo.add({
+      nome: 'Plano Antigo',
+      nivel: 'iniciante',
+      criado_em: new Date().toISOString(),
+      dias: [
+        {
+          dia_semana: 'Segunda',
+          exercicios: [{ nome: 'Flexão', series: 3, repeticoes: 10 }]
+        }
+      ]
+    })
+
+    const mockUpdatedPlan = {
+      nome: 'Plano Atualizado',
+      nivel: 'iniciante',
+      dias: [
+        {
+          dia_semana: 'Segunda',
+          exercicios: [
+            { nome: 'Flexão', series: 3, repeticoes: 10 },
+            { nome: 'Barra', series: 3, repeticoes: 5 }
+          ]
+        }
+      ]
+    }
+
+    generateContentMock.mockResolvedValueOnce({
+      text: JSON.stringify({
+        isWorkout: false,
+        isCalisthenics: true,
+        respostaConversacional: 'Adicionei barra na segunda.',
+        action: 'edit_plan',
+        planoGeral: mockUpdatedPlan
+      })
+    })
+
+    render(<App />)
+
+    // Send edit command
+    const input = screen.getByPlaceholderText(/Envie uma mensagem ou diga o que treinou.../i)
+    fireEvent.change(input, { target: { value: 'adicione barra na segunda' } })
+    fireEvent.click(screen.getByLabelText('Enviar mensagem'))
+
+    // Verify confirmation message
+    await waitFor(() => {
+      expect(screen.getByText(/Adicionei barra na segunda/i)).toBeInTheDocument()
+      expect(screen.getByText(/Plano Sugerido: Plano Atualizado/i)).toBeInTheDocument()
+      expect(screen.getByText(/Deseja salvar estas alterações no seu plano ativo\?/i)).toBeInTheDocument()
+    })
+
+    // Click quick option 'Confirmar Plano'
+    const confirmBtn = screen.getByRole('button', { name: 'Confirmar Plano' })
+    fireEvent.click(confirmBtn)
+
+    // Verify success message
+    await waitFor(() => {
+      expect(screen.getByText(/Plano atualizado com sucesso no banco de dados local/i)).toBeInTheDocument()
+    })
+
+    // Verify DB contains it
+    const plansInDb = await db.plano_ativo.toArray()
+    expect(plansInDb.length).toBe(1)
+    expect(plansInDb[0].nome).toBe('Plano Atualizado')
+  })
 })

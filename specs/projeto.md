@@ -39,7 +39,7 @@ Praticantes de calistenia precisam registrar seus treinos de forma rápida, gera
 - Entrada por texto e por áudio (Web Speech API / SpeechRecognition)
 - Interpretação de linguagem natural via Gemini API (chave e modelo de LLM configurados no PWA pelo usuário final e armazenados localmente)
 - Botões rápidos para consultar informações cadastradas (plano ativo, último treino)
-- Criação de plano de treino: bot sugere, usuário pode editar
+- Criação e edição de plano de treino diretamente por IA conversacional (bot sugere criação/modificação com confirmação interativa do usuário)
 - Registro rápido de exercícios durante o treino (ex: "fiz 15 flexões" ou "3 séries de muscle up")
 - Histórico de treinos com data/hora e exercícios realizados
 - Banco de dados local (IndexedDB via Dexie.js) — sem backend, sem conta

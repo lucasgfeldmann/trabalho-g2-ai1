@@ -168,6 +168,19 @@
 
 ---
 
+## feat-015 · Criação e Edição de Planos via IA
+
+- [ ] A IA reconhece pedidos em linguagem natural livre no chat para criar um novo plano (ex: "crie um plano iniciante de 3 dias") ou para editar o plano ativo (ex: "adicione dips na segunda").
+- [ ] No caso de criação, a IA retorna um JSON contendo `action: "create_plan"` e o novo `planoGeral` estruturado.
+- [ ] No caso de edição, a IA utiliza o plano ativo fornecido em seu contexto, realiza as modificações solicitadas e retorna `action: "edit_plan"` e o `planoGeral` modificado completo.
+- [ ] O app exibe o plano criado/atualizado com botões rápidos "Confirmar Plano" e "Cancelar".
+- [ ] Ao clicar em "Confirmar Plano" (ou digitar "sim"), o plano é persistido na tabela `plano_ativo` do IndexedDB.
+- [ ] Ao clicar em "Cancelar" (ou digitar "não"), a ação é descartada e o plano existente permanece inalterado.
+- [ ] Testes de unidade e integração cobrem a criação e a edição de planos via chamada estruturada do Gemini.
+- [ ] `./init.sh` passa após a implementação.
+
+---
+
 
 
 

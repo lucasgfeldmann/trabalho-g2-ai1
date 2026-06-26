@@ -12,6 +12,8 @@ export interface ParseResult {
   isCalisthenics: boolean;
   exercicios?: ParsedWorkout[];
   respostaConversacional?: string;
+  action?: 'create_plan' | 'edit_plan';
+  planoGeral?: GeneratedPlan;
 }
 
 export interface ChatMessage {
@@ -95,7 +97,32 @@ Se a mensagem for sobre calistenia e descrever exercícios realizados, retorne n
   ]
 }
 
-Se a mensagem for sobre calistenia mas NÃO for um registro de exercício (ex: comprimentos, perguntas gerais de treino):
+Se o usuário pedir para CRIAR um novo plano de treinos (ex: "crie um plano iniciante de 3 dias", "gere um treino de força", "crie uma rotina de exercícios", etc.) ou para EDITAR o plano de treinos ativo existente (ex: "adicione dips na segunda-feira", "remova flexão de quarta", "mude séries de barra para 4", etc.):
+{
+  "isWorkout": false,
+  "isCalisthenics": true,
+  "respostaConversacional": "Uma mensagem amigável explicando o plano gerado ou as alterações feitas.",
+  "action": "create_plan" | "edit_plan",
+  "planoGeral": {
+    "nome": string (ex: "Treino de Força Iniciante" ou "Plano Customizado"),
+    "nivel": "iniciante" | "intermediario" | "avancado",
+    "dias": [
+      {
+        "dia_semana": "Segunda" | "Terça" | "Quarta" | "Quinta" | "Sexta" | "Sábado" | "Domingo",
+        "exercicios": [
+          {
+            "nome": "Flexão" | "Barra" | "Muscle Up" | "Dip" | "Agachamento" | "Archer Push-Up" | "Flexão Diamante" | "L-Sit" | "Handstand" | "Pistol Squat" | "Lunge" | "Prancha" | "Hollow Body",
+            "series": number,
+            "repeticoes": number
+          }
+        ]
+      }
+    ]
+  }
+}
+No caso de "edit_plan", analise o "PLANO DE TREINO ATIVO DO USUÁRIO" fornecido no contexto abaixo, realize as alterações solicitadas (adicionar, remover ou modificar exercícios, séries ou repetições) e retorne a estrutura do plano modificado COMPLETO no campo "planoGeral".
+
+Se a mensagem for sobre calistenia mas NÃO for um registro de exercício nem uma ação de plano (ex: comprimentos, perguntas gerais de treino):
 {
   "isWorkout": false,
   "isCalisthenics": true,

@@ -5,7 +5,7 @@ import { SettingsPanel } from './components/SettingsPanel';
 import { HistoryPanel } from './components/HistoryPanel';
 import { db } from './db/db';
 import { parseUserMessage, generateCalisthenicsPlan } from './services/gemini';
-import type { ParsedWorkout } from './services/gemini';
+import type { ParsedWorkout, GeneratedPlan } from './services/gemini';
 
 interface PlanFlow {
   step: 'none' | 'confirm_replace' | 'level' | 'days' | 'goal' | 'confirm_plan';
@@ -26,6 +26,8 @@ function App() {
   // Confirmation Flow states
   const [pendingWorkout, setPendingWorkout] = useState<ParsedWorkout[] | null>(null);
   const [planFlow, setPlanFlow] = useState<PlanFlow>({ step: 'none' });
+  const [pendingIAPlan, setPendingIAPlan] = useState<GeneratedPlan | null>(null);
+  const [pendingPlanAction, setPendingPlanAction] = useState<'create_plan' | 'edit_plan' | null>(null);
   const [lastUserMessage, setLastUserMessage] = useState('');
 
   const checkPlanAndInit = async (keyToUse = apiKey) => {
@@ -322,6 +324,9 @@ function App() {
     if (pendingWorkout) {
       return ['Confirmar', 'Cancelar'];
     }
+    if (pendingIAPlan) {
+      return ['Confirmar Plano', 'Cancelar'];
+    }
     if (planFlow.step === 'confirm_replace') {
       return ['Sim, substituir', 'Não'];
     }
@@ -393,6 +398,73 @@ function App() {
           ...prev,
           {
             id: `bot-retry-${Date.now()}`,
+            text: 'Por favor, confirme respondendo "sim" ou "não" (ou utilize os botões de confirmação rápidos).',
+            sender: 'bot',
+            timestamp: new Date(),
+          },
+        ]);
+      }
+      return;
+    }
+
+    if (pendingIAPlan) {
+      const isYes = /^(sim|s|yes|y|confirmar|salvar|confirmar plano|salvar plano)$/i.test(text.trim());
+      const isNo = /^(n[aã]o|nao|n|no|cancelar)$/i.test(text.trim());
+
+      if (isYes) {
+        try {
+          await db.plano_ativo.clear();
+          await db.plano_ativo.add({
+            nome: pendingIAPlan.nome,
+            nivel: pendingIAPlan.nivel,
+            criado_em: new Date().toISOString(),
+            dias: pendingIAPlan.dias,
+          });
+
+          setMessages((prev) => [
+            ...prev,
+            {
+              id: `bot-plan-saved-${Date.now()}`,
+              text: pendingPlanAction === 'edit_plan'
+                ? 'Plano atualizado com sucesso no banco de dados local! 💪'
+                : 'Plano salvo com sucesso! Agora ele é o seu plano ativo. Para visualizá-lo a qualquer momento, digite "ver meu plano". 💪',
+              sender: 'bot',
+              timestamp: new Date(),
+            },
+          ]);
+        } catch (err) {
+          console.error('Erro ao salvar plano da IA:', err);
+          setMessages((prev) => [
+            ...prev,
+            {
+              id: `bot-plan-save-err-${Date.now()}`,
+              text: 'Erro ao salvar o plano no banco de dados local.',
+              sender: 'bot',
+              timestamp: new Date(),
+              isError: true,
+            },
+          ]);
+        } finally {
+          setPendingIAPlan(null);
+          setPendingPlanAction(null);
+        }
+      } else if (isNo) {
+        setPendingIAPlan(null);
+        setPendingPlanAction(null);
+        setMessages((prev) => [
+          ...prev,
+          {
+            id: `bot-plan-cancelled-${Date.now()}`,
+            text: pendingPlanAction === 'edit_plan' ? 'Alterações de plano canceladas.' : 'Criação de plano cancelada.',
+            sender: 'bot',
+            timestamp: new Date(),
+          },
+        ]);
+      } else {
+        setMessages((prev) => [
+          ...prev,
+          {
+            id: `bot-confirm-plan-retry-${Date.now()}`,
             text: 'Por favor, confirme respondendo "sim" ou "não" (ou utilize os botões de confirmação rápidos).',
             sender: 'bot',
             timestamp: new Date(),
@@ -718,6 +790,32 @@ function App() {
           {
             id: `bot-confirm-${Date.now()}`,
             text: `Entendi o seguinte treino:\n\n${workoutSummary}\n\nConfirma o registro?`,
+            sender: 'bot',
+            timestamp: new Date(),
+          },
+        ]);
+      } else if (result.action && result.planoGeral) {
+        setPendingIAPlan(result.planoGeral);
+        setPendingPlanAction(result.action);
+        
+        let planDetails = `📋 **Plano Sugerido: ${result.planoGeral.nome}**\n`;
+        planDetails += `💪 Nível: ${result.planoGeral.nivel.toUpperCase()}\n\n`;
+        result.planoGeral.dias.forEach((dia) => {
+          planDetails += `**${dia.dia_semana}**:\n`;
+          dia.exercicios.forEach((ex) => {
+            planDetails += `- ${ex.nome}: ${ex.series}x${ex.repeticoes}\n`;
+          });
+          planDetails += '\n';
+        });
+
+        const actionText = result.action === 'edit_plan' ? 'Deseja salvar estas alterações no seu plano ativo?' : 'Deseja salvar este novo plano como seu plano ativo?';
+        const explainText = result.respostaConversacional ? `${result.respostaConversacional}\n\n` : '';
+
+        setMessages((prev) => [
+          ...prev,
+          {
+            id: `bot-plan-confirm-${Date.now()}`,
+            text: explainText + planDetails + actionText,
             sender: 'bot',
             timestamp: new Date(),
           },

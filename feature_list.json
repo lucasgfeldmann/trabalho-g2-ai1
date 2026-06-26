@@ -111,6 +111,14 @@
       "dependencies": ["feat-013"],
       "status": "completed",
       "evidence": "./init.sh passou: 30/30 testes no Vitest validando a renderização estruturada de tabelas markdown com cabeçalhos e células formatadas, correções de cores neon e correção de wrapping/nowrap em th/td."
+    },
+    {
+      "id": "feat-015",
+      "name": "Criação e Edição de Planos via IA",
+      "description": "Estender o interpretador da IA (parseUserMessage) e a tela de chat (App.tsx) para permitir que o usuário crie novos planos de calistenia ou edite o plano ativo existente de forma livre por chat, apresentando um fluxo de confirmação interativo para persistência no banco local.",
+      "dependencies": ["feat-014"],
+      "status": "completed",
+      "evidence": "./init.sh passou: 34/34 testes no Vitest incluindo testes unitários de parse de plano no gemini.test.ts e testes de integração de confirmação/salvamento do fluxo de IA no App.test.tsx."
     }
   ]
 }

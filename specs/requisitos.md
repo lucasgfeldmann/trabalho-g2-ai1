@@ -106,6 +106,12 @@
 - **Prioridade:** Média
 - **Feature relacionada:** feat-014
 
+### RF-017 — Criação e Edição de Planos via IA Conversacional
+
+- **Descrição:** O usuário deve ser capaz de solicitar à inteligência artificial, em linguagem natural livre, que crie um novo plano ou edite o plano ativo atual (ex: adicionar, remover ou modificar séries/repetições de um exercício de um dia da semana). A IA deve retornar o plano atualizado de forma estruturada e o sistema deve exibir uma tela de confirmação para salvar as alterações no IndexedDB local.
+- **Prioridade:** Alta
+- **Feature relacionada:** feat-015
+
 ---
 
 

@@ -175,5 +175,74 @@ describe('Gemini Service & Context Flow', () => {
         })
       );
     });
+
+    it('should parse a message to create a plan and return action create_plan with planoGeral', async () => {
+      const mockPlan = {
+        nome: 'Plano Força',
+        nivel: 'iniciante',
+        dias: [
+          {
+            dia_semana: 'Segunda',
+            exercicios: [{ nome: 'Flexão', series: 3, repeticoes: 10 }],
+          },
+        ],
+      };
+
+      generateContentMock.mockResolvedValue({
+        text: JSON.stringify({
+          isWorkout: false,
+          isCalisthenics: true,
+          respostaConversacional: 'Aqui está seu novo plano de força.',
+          action: 'create_plan',
+          planoGeral: mockPlan,
+        }),
+      });
+
+      const result = await parseUserMessage('dummy-key', 'dummy-model', 'crie um plano de força iniciante');
+
+      expect(result).toEqual({
+        isWorkout: false,
+        isCalisthenics: true,
+        respostaConversacional: 'Aqui está seu novo plano de força.',
+        action: 'create_plan',
+        planoGeral: mockPlan,
+      });
+    });
+
+    it('should parse a message to edit a plan and return action edit_plan with updated planoGeral', async () => {
+      const mockUpdatedPlan = {
+        nome: 'Plano Customizado',
+        nivel: 'iniciante',
+        dias: [
+          {
+            dia_semana: 'Segunda',
+            exercicios: [
+              { nome: 'Flexão', series: 3, repeticoes: 10 },
+              { nome: 'Barra', series: 3, repeticoes: 5 },
+            ],
+          },
+        ],
+      };
+
+      generateContentMock.mockResolvedValue({
+        text: JSON.stringify({
+          isWorkout: false,
+          isCalisthenics: true,
+          respostaConversacional: 'Adicionei barras na segunda-feira.',
+          action: 'edit_plan',
+          planoGeral: mockUpdatedPlan,
+        }),
+      });
+
+      const result = await parseUserMessage('dummy-key', 'dummy-model', 'adicione barra na segunda feira');
+
+      expect(result).toEqual({
+        isWorkout: false,
+        isCalisthenics: true,
+        respostaConversacional: 'Adicionei barras na segunda-feira.',
+        action: 'edit_plan',
+        planoGeral: mockUpdatedPlan,
+      });
+    });
   });
 });
