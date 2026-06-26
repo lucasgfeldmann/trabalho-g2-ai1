@@ -116,6 +116,11 @@
 - **Descrição:** Botões e campos devem ter labels acessíveis. Contraste mínimo WCAG 2.1 AA. Suporte a navegação por teclado.
 - **Prioridade:** Média
 
+### RNF-007 — Layout de Tela Fixado e Scroll Interno
+
+- **Descrição:** O layout do aplicativo deve manter o Header (título do bot e botões de atalho) e o Footer (barra de input do chat e botões de opções rápidas) fixados nas extremidades da viewport. A rolagem da página inteira (viewport principal do browser) deve ser desabilitada, permitindo que apenas o contêiner interno das mensagens do chat possua barra de scroll vertical.
+- **Prioridade:** Alta
+
 ---
 
 ## Regras de Negócio

@@ -51,6 +51,7 @@
 - [ ] Mensagens do bot aparecem alinhadas à esquerda (bolha escura contrastante)
 - [ ] Interface é usável em tela de 320px (mobile antigo) sem scroll horizontal
 - [ ] Ao enviar uma mensagem, o scroll desce automaticamente para a última mensagem
+- [ ] O layout possui header e footer (campo de entrada/botões) fixos e não roláveis, permitindo scroll vertical apenas dentro do contêiner de mensagens
 - [ ] Existe um botão/ícone de configurações na interface para abrir a gestão de API Key e Modelo
 - [ ] Painel de configurações abre como modal ou aba lateral, contendo campo para API Key e um seletor de Modelo (dropdown com gemini-3-flash-preview, gemini-1.5-flash, gemini-1.5-pro e campo de texto para modelo customizado)
 - [ ] O painel permite salvar e deletar as configurações (API Key e Modelo) no localStorage

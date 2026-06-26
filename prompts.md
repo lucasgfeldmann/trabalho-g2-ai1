@@ -28,3 +28,4 @@
 - **2026-06-26T05:24:31-03:00**: uma coisa que tem que ser adicionada a ia mais para frente quando for implementar é um guardrail para a ia não responder nada que não for relacionado a calistenia
 - **2026-06-26T05:25:40-03:00**: podemos prosseguir
 - **2026-06-26T05:41:39-03:00**: podemos prosseguir
+- **2026-06-26T06:05:14-03:00**: vamos ter que ajustar o layout para ele ter o header e o footer fixos e não rolarem apenas deixando o conteudo do chart scroll. todos esses detalhes a mais voce vai adicionando na especificação

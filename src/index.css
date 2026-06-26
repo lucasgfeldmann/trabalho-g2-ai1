@@ -42,8 +42,9 @@ body {
   width: 100%;
   max-width: 1280px;
   margin: 0 auto;
-  min-height: 100vh;
-  min-height: 100svh;
+  height: 100vh;
+  height: 100svh;
+  overflow: hidden;
   display: flex;
   flex-direction: column;
   background: var(--bg-main);
@@ -53,14 +54,14 @@ body {
 .chat-container {
   display: flex;
   flex-direction: column;
-  height: 100vh;
-  height: 100svh;
+  height: 100%;
   width: 100%;
   max-width: 800px;
   margin: 0 auto;
   border-left: 1px solid var(--border-color);
   border-right: 1px solid var(--border-color);
   background: var(--bg-main);
+  overflow: hidden;
 }
 
 @media (max-width: 800px) {
@@ -80,6 +81,7 @@ body {
   border-bottom: 1px solid var(--border-color);
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
   z-index: 10;
+  flex-shrink: 0;
 }
 
 .header-actions {
@@ -287,6 +289,7 @@ body {
   display: flex;
   flex-direction: column;
   gap: 8px;
+  flex-shrink: 0;
 }
 
 .input-form {
