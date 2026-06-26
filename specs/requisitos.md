@@ -100,7 +100,14 @@
 - **Prioridade:** Média
 - **Feature relacionada:** feat-013
 
+### RF-016 — Suporte a Tabelas em Markdown
+
+- **Descrição:** O componente de renderização de Markdown no chat deve ser capaz de reconhecer e formatar tabelas do Markdown (formato com pipes `|` e traços `-`) em elementos HTML de tabela (`<table>`, `<thead>`, `<tbody>`, `<tr>`, `<th>`, `<td>`).
+- **Prioridade:** Média
+- **Feature relacionada:** feat-014
+
 ---
+
 
 
 

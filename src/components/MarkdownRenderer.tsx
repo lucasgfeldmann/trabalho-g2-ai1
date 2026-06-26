@@ -18,7 +18,6 @@ export const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({ text }) => {
 
   // Função auxiliar para interpretar Markdown inline (**negrito**, *itálico*, `código`)
   const parseInlineMarkdown = (lineText: string): React.ReactNode[] => {
-    // Regex para identificar **bold**, *italic*, `code`
     const regex = /(\*\*.*?\*\*|\*.*?\*|`.*?`)/g;
     const splitParts = lineText.split(regex);
 
@@ -48,14 +47,75 @@ export const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({ text }) => {
     }
   };
 
-  lines.forEach((line, lineIndex) => {
+  let i = 0;
+  while (i < lines.length) {
+    const line = lines[i];
     const trimmed = line.trim();
 
-    // Títulos de nível 3
+    // 1. Parser de Tabela Markdown
+    if (trimmed.startsWith('|') && trimmed.endsWith('|') && trimmed.length > 2) {
+      flushList(); // Garante o fechamento de listas antes de tabelas
+      const tableLines: string[] = [];
+      
+      while (i < lines.length && lines[i].trim().startsWith('|') && lines[i].trim().endsWith('|')) {
+        tableLines.push(lines[i].trim());
+        i++;
+      }
+
+      if (tableLines.length > 0) {
+        const parsedRows = tableLines.map(tLine => {
+          const parts = tLine.split('|').map(p => p.trim());
+          if (parts[0] === '') parts.shift();
+          if (parts[parts.length - 1] === '') parts.pop();
+          return parts;
+        });
+
+        const headerRow = parsedRows[0];
+        const bodyRows: string[][] = [];
+
+        for (let rIdx = 1; rIdx < parsedRows.length; rIdx++) {
+          const row = parsedRows[rIdx];
+          const isSeparator = row.every(cell => /^[:-]+$/.test(cell) || cell === '');
+          if (!isSeparator) {
+            bodyRows.push(row);
+          }
+        }
+
+        elements.push(
+          <div key={`table-wrapper-${i}`} className="markdown-table-wrapper">
+            <table className="markdown-table">
+              <thead>
+                <tr>
+                  {headerRow.map((cell, cIdx) => (
+                    <th key={`th-${cIdx}`}>
+                      {parseInlineMarkdown(cell)}
+                    </th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {bodyRows.map((row, rIdx) => (
+                  <tr key={`tr-${rIdx}`}>
+                    {row.map((cell, cIdx) => (
+                      <td key={`td-${cIdx}`}>
+                        {parseInlineMarkdown(cell)}
+                      </td>
+                    ))}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        );
+      }
+      continue;
+    }
+
+    // 2. Títulos de nível 3
     if (trimmed.startsWith('### ')) {
       flushList();
       elements.push(
-        <h4 key={`h3-${lineIndex}`} className="markdown-h3">
+        <h4 key={`h3-${i}`} className="markdown-h3">
           {parseInlineMarkdown(trimmed.slice(4))}
         </h4>
       );
@@ -64,7 +124,7 @@ export const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({ text }) => {
     else if (trimmed.startsWith('## ')) {
       flushList();
       elements.push(
-        <h3 key={`h2-${lineIndex}`} className="markdown-h2">
+        <h3 key={`h2-${i}`} className="markdown-h2">
           {parseInlineMarkdown(trimmed.slice(3))}
         </h3>
       );
@@ -73,7 +133,7 @@ export const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({ text }) => {
     else if (trimmed.startsWith('# ')) {
       flushList();
       elements.push(
-        <h2 key={`h1-${lineIndex}`} className="markdown-h1">
+        <h2 key={`h1-${i}`} className="markdown-h1">
           {parseInlineMarkdown(trimmed.slice(2))}
         </h2>
       );
@@ -82,7 +142,7 @@ export const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({ text }) => {
     else if (trimmed.startsWith('- ') || trimmed.startsWith('* ')) {
       inList = true;
       listItems.push(
-        <li key={`li-${lineIndex}`} className="markdown-li">
+        <li key={`li-${i}`} className="markdown-li">
           {parseInlineMarkdown(trimmed.slice(2))}
         </li>
       );
@@ -90,18 +150,20 @@ export const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({ text }) => {
     // Linha em branco ou vazia
     else if (trimmed === '') {
       flushList();
-      elements.push(<div key={`space-${lineIndex}`} className="markdown-spacer" />);
+      elements.push(<div key={`space-${i}`} className="markdown-spacer" />);
     }
     // Parágrafo comum
     else {
       flushList();
       elements.push(
-        <p key={`p-${lineIndex}`} className="markdown-p">
+        <p key={`p-${i}`} className="markdown-p">
           {parseInlineMarkdown(line)}
         </p>
       );
     }
-  });
+
+    i++;
+  }
 
   // Garante o fechamento de qualquer lista pendente no final do texto
   flushList();

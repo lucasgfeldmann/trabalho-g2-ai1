@@ -66,4 +66,29 @@ describe('MarkdownRenderer Component', () => {
     const spacer = container.querySelector('.markdown-spacer');
     expect(spacer).toBeInTheDocument();
   });
+
+  it('should render tables correctly', () => {
+    const text = `
+| Exercício | Séries | Repetições |
+|---|---|---|
+| Flexão | 3 | 10 |
+| Barra | 4 | 8 |
+`;
+    render(<MarkdownRenderer text={text} />);
+
+    const table = screen.getByRole('table');
+    expect(table).toHaveClass('markdown-table');
+
+    const headers = screen.getAllByRole('columnheader');
+    expect(headers.length).toBe(3);
+    expect(headers[0].textContent).toBe('Exercício');
+    expect(headers[1].textContent).toBe('Séries');
+    expect(headers[2].textContent).toBe('Repetições');
+
+    const cells = screen.getAllByRole('cell');
+    expect(cells.length).toBe(6);
+    expect(cells[0].textContent).toBe('Flexão');
+    expect(cells[1].textContent).toBe('3');
+    expect(cells[2].textContent).toBe('10');
+  });
 });

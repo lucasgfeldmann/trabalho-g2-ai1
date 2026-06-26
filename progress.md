@@ -25,6 +25,7 @@
 - [x] **feat-011 - Contexto da Conversa (Sessão)**: Enviar histórico de turnos estruturado de forma alternada (user/model) e robusta, permitindo que a IA entenda referências e pronomes no chat.
 - [x] **feat-012 - Consulta de Dados Locais pela IA**: Enviar dados do IndexedDB (plano ativo, histórico recente de treinos, data/dia atual) para a IA responder a consultas e perguntas sobre o progresso e treinos realizados do usuário.
 - [x] **feat-013 - Formatador de Respostas em Markdown**: Implementar um componente renderizador de Markdown seguro e sem dependências externas para formatar as respostas do bot no chat, incluindo títulos, listas, negrito, itálico e tags de código inline com estilos neon.
+- [x] **feat-014 - Suporte a Tabelas no Markdown**: Estender o componente MarkdownRenderer para reconhecer e renderizar tabelas markdown em elementos HTML estruturados com estilo Neon Calisthenics e responsividade horizontal.
 
 ### What's In Progress
 
@@ -52,11 +53,11 @@
 
 - `feature_list.json`, `progress.md`, `prompts.md`, `specs/requisitos.md`, `specs/projeto.md`, `specs/criterios-aceite.md`
 - `src/services/gemini.ts`, `src/App.tsx`, `src/components/ChatWindow.tsx`, `src/components/MarkdownRenderer.tsx`, `src/index.css`
-- `src/test/gemini.test.ts`, `src/test/MarkdownRenderer.test.tsx`, `src/test/App.test.tsx`, `docs/feat-011.md`, `docs/feat-012.md`, `docs/feat-013.md`
+- `src/test/gemini.test.ts`, `src/test/MarkdownRenderer.test.tsx`, `src/test/App.test.tsx`, `docs/feat-011.md`, `docs/feat-012.md`, `docs/feat-013.md`, `docs/feat-014.md`
 
 ## Evidence of Completion
 
-- [x] `./init.sh` limpo com todos os 29 testes passando:
+- [x] `./init.sh` limpo com todos os 30 testes passando:
 ```
 === npm run lint ===
 Found 0 warnings and 0 errors.
@@ -66,9 +67,9 @@ Found 0 warnings and 0 errors.
 
 === npm test ===
 ✓ src/test/gemini.test.ts (6 tests) 6ms
-✓ src/test/MarkdownRenderer.test.tsx (6 tests) 108ms
-✓ src/test/App.test.tsx (17 tests) 664ms
-Test Files  3 passed (3) | Tests  29 passed (29)
+✓ src/test/MarkdownRenderer.test.tsx (7 tests) 129ms
+✓ src/test/App.test.tsx (17 tests) 671ms
+Test Files  3 passed (3) | Tests  30 passed (30)
 === Verification Complete ===
 ```
 

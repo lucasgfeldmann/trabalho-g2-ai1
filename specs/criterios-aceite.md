@@ -155,6 +155,19 @@
 
 ---
 
+## feat-014 · Suporte a Tabelas no Markdown
+
+- [ ] Tabelas do Markdown (linhas contendo `|` separando colunas) são identificadas e agrupadas pelo parser.
+- [ ] O parser ignora ou processa a linha separadora/alinhamento (ex: `|---|---|`).
+- [ ] A primeira linha da tabela é renderizada como cabeçalho (`<thead>` e `<th>`).
+- [ ] As linhas seguintes da tabela são renderizadas como corpo (`<tbody>`, `<tr>` e `<td>`).
+- [ ] Estilos em `src/index.css` fornecem um layout de tabela premium: bordas finas neon, linhas alternadas (zebra striping) e espaçamento elegante.
+- [ ] Testes unitários validam a renderização de tabelas com diferentes colunas e conteúdo de texto.
+- [ ] `./init.sh` passa após a implementação.
+
+---
+
+
 
 
 

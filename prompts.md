@@ -34,3 +34,4 @@
 - **2026-06-26T06:25:36-03:00**: preciso que a ia tenha e mantenha o contexto da conversa, ou seja, deve se manter a sessão com a ia
 - **2026-06-26T06:36:37-03:00**: a ia tem que ser capaz de consultar as informações salvas como o plano registrado , o historio de exercicios realizado, etc
 - **2026-06-26T06:45:15-03:00**: faça com que as respostas da ia em markdown sejam apresentadas formatadas e não em texto puro
+- **2026-06-26T06:55:06-03:00**: a formatação de tabelas do markdown não está funcionando
