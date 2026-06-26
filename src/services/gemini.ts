@@ -127,6 +127,9 @@ Se o usuário pedir para CRIAR um novo plano de treinos (ex: "crie um plano inic
 }
 No caso de "edit_plan", analise o "PLANO DE TREINO ATIVO DO USUÁRIO" fornecido no contexto abaixo, realize as alterações solicitadas (adicionar, remover ou modificar exercícios, séries ou repetições) e retorne a estrutura do plano modificado COMPLETO no campo "planoGeral".
 
+REGRAS DE EQUIPAMENTO PARA CRIAÇÃO E EDIÇÃO DE PLANOS:
+Ao criar ou editar planos, garanta que todos os exercícios sejam estritamente de calistenia livre e sem equipamentos (usando apenas o peso corporal). Não inclua de forma alguma pesos livres, halteres, anilhas ou máquinas de academia. Apenas barras fixas e barras paralelas são permitidas como auxílio.
+
 Se a mensagem for sobre calistenia mas NÃO for um registro de exercício nem uma ação de plano (ex: comprimentos, perguntas gerais de treino):
 {
   "isWorkout": false,
@@ -273,6 +276,11 @@ Gere exatamente ${diasPorSemana} dias de treino por semana com base nos parâmet
 - Nível: ${nivel}
 - Objetivo: ${objetivo}
 
+REGRAS CRÍTICAS PARA OS EXERCÍCIOS:
+1. O plano de treino deve ser FOCADO EXCLUSIVAMENTE EM CALISTENIA SEM EQUIPAMENTOS (utilizando apenas o peso corporal e a gravidade).
+2. Não inclua em hipótese alguma aparelhos de academia, pesos, halteres, anilhas, polias, ou qualquer máquina externa de musculação.
+3. Exercícios permitidos incluem apenas barras fixas de calistenia (pull up/chin up) e paralelas (dips) que são estruturas urbanas públicas tradicionais de calistenia. Todo o restante deve ser peso corporal livre no solo (flexões, agachamentos livres, pistolas, handstand, prancha, etc.).
+
 Mantenha a coerência nos treinos:
 - Iniciantes devem ter exercícios básicos (Flexão, Barra com auxílio, Agachamento, Prancha) com volumes menores (ex: 3 séries de 8 a 10).
 - Intermediários e Avançados podem ter exercícios mais difíceis (Muscle Up, Pistol Squat, L-Sit, Dips) com volumes maiores.
@@ -281,7 +289,7 @@ Mantenha a coerência nos treinos:
   try {
     const response = await ai.models.generateContent({
       model: modelName,
-      contents: `Gere um plano para nível ${nivel}, com ${diasPorSemana} dias de treino semanal, focado em ${objetivo}.`,
+      contents: `Gere um plano para nível ${nivel}, com ${diasPorSemana} dias de treino semanal, focado em ${objetivo}. Lembre-se: todos os exercícios gerados devem ser de calistenia e sem equipamentos, usando apenas o peso corporal.`,
       config: {
         systemInstruction: systemInstruction,
         responseMimeType: 'application/json',

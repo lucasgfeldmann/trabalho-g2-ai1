@@ -167,6 +167,14 @@
       "dependencies": ["feat-020"],
       "status": "completed",
       "evidence": "./init.sh passou: lint 0 erros, typecheck limpo, 43/43 testes no Vitest validando o reset completo de dados locais e a disponibilidade dos novos modelos."
+    },
+    {
+      "id": "feat-022",
+      "name": "Foco em Exercícios sem Equipamentos na Criação de Planos",
+      "description": "Ajustar o início do fluxo de criação de plano guiado para explicitar o foco em exercícios de calistenia sem equipamentos (peso corporal). Modificar o prompt do gerador de planos (generateCalisthenicsPlan e parseUserMessage) para que a IA gere rotinas focadas estritamente em exercícios corporais e sem equipamentos.",
+      "dependencies": ["feat-021"],
+      "status": "completed",
+      "evidence": "./init.sh passou: lint 0 erros, typecheck limpo, 44/44 testes no Vitest validando o foco em calistenia sem equipamentos no fluxo e no prompt do Gemini."
     }
   ]
 }

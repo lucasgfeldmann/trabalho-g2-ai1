@@ -254,6 +254,16 @@
 
 ---
 
+## feat-022 · Foco em Exercícios sem Equipamentos na Criação de Planos
+
+- [ ] O texto do fluxo guiado de criação de plano no chat de boas-vindas inicial explicita que o plano gerado será voltado para exercícios de calistenia sem equipamentos (peso corporal).
+- [ ] O texto de confirmação ou reinicialização de criação de plano do chatbot também menciona que o plano gerado será sem equipamentos.
+- [ ] O prompt do gerador de planos no Gemini API (`generateCalisthenicsPlan` e `parseUserMessage`) exige e instrui explicitamente a IA a gerar planos de calistenia utilizando apenas o peso corporal, excluindo equipamentos pesados ou complexos de academia.
+- [ ] Testes validam que as mensagens de fluxo contêm a menção a exercícios sem equipamentos.
+- [ ] `./init.sh` passa após a implementação.
+
+---
+
 
 
 

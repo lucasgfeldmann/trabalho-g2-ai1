@@ -24,6 +24,9 @@ vi.mock('@google/genai', () => {
 describe('CalisBot App & Components', () => {
   beforeEach(async () => {
     localStorage.clear()
+    if (!db.isOpen()) {
+      await db.open()
+    }
     await db.historico_treinos.clear()
     await db.plano_ativo.clear()
     generateContentMock.mockReset()
@@ -337,7 +340,7 @@ describe('CalisBot App & Components', () => {
     render(<App />)
 
     await waitFor(() => {
-      expect(screen.getByText(/Vejo que você ainda não possui um plano de treino active/i)).toBeInTheDocument()
+      expect(screen.getByText(/Vejo que você ainda não possui um plano de treino ativo\. Vamos criar um plano de calistenia personalizado focado inteiramente em exercícios com o peso do corpo e sem equipamentos!/i)).toBeInTheDocument()
       expect(screen.getByRole('button', { name: /^Iniciante$/i })).toBeInTheDocument()
       expect(screen.getByRole('button', { name: /^Intermediário$/i })).toBeInTheDocument()
       expect(screen.getByRole('button', { name: /^Avançado$/i })).toBeInTheDocument()
@@ -468,7 +471,7 @@ describe('CalisBot App & Components', () => {
     fireEvent.click(screen.getByRole('button', { name: /^Sim, substituir$/i }))
 
     await waitFor(() => {
-      expect(screen.getByText(/Escolha o seu nível de experiência na calistenia:/i)).toBeInTheDocument()
+      expect(screen.getByText(/Para criarmos o plano focado em exercícios sem equipamentos, escolha o seu nível de experiência na calistenia:/i)).toBeInTheDocument()
       expect(screen.getByRole('button', { name: /^Iniciante$/i })).toBeInTheDocument()
     })
   })
@@ -1149,6 +1152,62 @@ describe('CalisBot App & Components', () => {
       writable: true,
       configurable: true
     })
+  })
+
+  it('emphasizes equipment-free workouts in the plan creation flow and prompt', async () => {
+    localStorage.setItem('gemini_api_key', 'valid-key')
+
+    generateContentMock.mockResolvedValue({
+      text: JSON.stringify({
+        nome: 'Treino Calistenia Sem Equipamentos',
+        nivel: 'iniciante',
+        dias: [
+          {
+            dia_semana: 'Segunda',
+            exercicios: [
+              { nome: 'Flexão', series: 3, repeticoes: 10 },
+              { nome: 'Agachamento', series: 3, repeticoes: 12 }
+            ]
+          }
+        ]
+      })
+    })
+
+    render(<App />)
+
+    // 1. Verify intro text on mount includes "sem equipamentos"
+    await waitFor(() => {
+      expect(screen.getByText(/focado inteiramente em exercícios com o peso do corpo e sem equipamentos/i)).toBeInTheDocument()
+    })
+
+    // Click Iniciante to advance
+    fireEvent.click(screen.getByRole('button', { name: /^Iniciante$/i }))
+
+    // 2. Select days
+    await waitFor(() => {
+      expect(screen.getByText(/Quantos dias por semana você deseja treinar\?/i)).toBeInTheDocument()
+    })
+    fireEvent.click(screen.getByRole('button', { name: /^3 dias$/i }))
+
+    // 3. Select objective (e.g. Força)
+    await waitFor(() => {
+      expect(screen.getByText(/Qual é o seu principal objetivo\?/i)).toBeInTheDocument()
+    })
+    fireEvent.click(screen.getByRole('button', { name: /^Força$/i }))
+
+    // 4. Verify that generateCalisthenicsPlan was called and the prompt has been sent
+    await waitFor(() => {
+      expect(generateContentMock).toHaveBeenCalled()
+    })
+
+    // Check system instruction or prompt context
+    const lastCall = generateContentMock.mock.calls[generateContentMock.mock.calls.length - 1]
+    const callConfig = lastCall[0]
+    
+    // Verify systemInstruction contains "SEM EQUIPAMENTOS" and "peso corporal"
+    expect(callConfig.config.systemInstruction).toContain('CALISTENIA SEM EQUIPAMENTOS')
+    expect(callConfig.config.systemInstruction).toContain('peso corporal')
+    expect(callConfig.contents).toContain('sem equipamentos, usando apenas o peso corporal')
   })
 })
 

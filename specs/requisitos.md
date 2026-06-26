@@ -178,6 +178,12 @@
 - **Prioridade:** Alta
 - **Feature relacionada:** feat-021
 
+### RF-029 — Foco em Exercícios de Calistenia sem Equipamentos na Criação de Planos
+
+- **Descrição:** O início do fluxo guiado de criação de planos de treino e o gerador de planos (Gemini API) devem enfatizar e focar estritamente em exercícios corporais de calistenia que não necessitam de equipamentos (peso corporal). Mensagens do chat e prompts enviados ao Gemini devem ser atualizados para garantir que nenhuma rotina exija pesos ou aparelhos externos complexos, usando apenas o próprio peso do corpo.
+- **Prioridade:** Alta
+- **Feature relacionada:** feat-022
+
 ---
 
 ## Requisitos Não Funcionais

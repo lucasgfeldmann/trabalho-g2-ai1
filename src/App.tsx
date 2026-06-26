@@ -60,7 +60,7 @@ function App() {
             ...prev,
             {
               id: `bot-intro-plan-${Date.now()}`,
-              text: 'Olá! Vejo que você ainda não possui um plano de treino active. Vamos criar um juntos! 🚀\n\nEscolha o seu nível de experiência na calistenia:',
+              text: 'Olá! Vejo que você ainda não possui um plano de treino ativo. Vamos criar um plano de calistenia personalizado focado inteiramente em exercícios com o peso do corpo e sem equipamentos! 🚀\n\nEscolha o seu nível de experiência na calistenia:',
               sender: 'bot',
               timestamp: new Date(),
             },
@@ -377,7 +377,7 @@ function App() {
           ...prev,
           {
             id: `bot-level-start-${Date.now()}`,
-            text: 'Vamos criar um novo plano de treino! Escolha o seu nível de experiência na calistenia:',
+            text: 'Vamos criar um novo plano de treino de calistenia focado inteiramente em exercícios sem equipamentos! Escolha o seu nível de experiência na calistenia:',
             sender: 'bot',
             timestamp: new Date(),
           },
@@ -661,7 +661,7 @@ function App() {
             ...prev,
             {
               id: `bot-level-${Date.now()}`,
-              text: 'Escolha o seu nível de experiência na calistenia:',
+              text: 'Para criarmos o plano focado em exercícios sem equipamentos, escolha o seu nível de experiência na calistenia:',
               sender: 'bot',
               timestamp: new Date(),
             },
