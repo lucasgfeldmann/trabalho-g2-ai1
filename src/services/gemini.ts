@@ -14,10 +14,57 @@ export interface ParseResult {
   respostaConversacional?: string;
 }
 
+export interface ChatMessage {
+  text: string;
+  sender: 'user' | 'bot';
+  isError?: boolean;
+}
+
+export function buildGeminiContents(
+  history: ChatMessage[],
+  currentPrompt: string
+): any[] {
+  const filtered = history.filter((msg) => {
+    if (msg.isError) return false;
+    const txt = msg.text.trim();
+    if (!txt) return false;
+    if (txt === 'Pensando...') return false;
+    if (txt.includes('Gerando seu plano semanal com Gemini')) return false;
+    return true;
+  });
+
+  const rawTurns: { role: 'user' | 'model'; text: string }[] = filtered.map((msg) => ({
+    role: msg.sender === 'user' ? 'user' : 'model',
+    text: msg.text,
+  }));
+
+  rawTurns.push({ role: 'user', text: currentPrompt });
+
+  const mergedTurns: { role: 'user' | 'model'; text: string }[] = [];
+  for (const turn of rawTurns) {
+    const lastMerged = mergedTurns[mergedTurns.length - 1];
+    if (lastMerged && lastMerged.role === turn.role) {
+      lastMerged.text += '\n' + turn.text;
+    } else {
+      mergedTurns.push({ ...turn });
+    }
+  }
+
+  while (mergedTurns.length > 0 && mergedTurns[0].role !== 'user') {
+    mergedTurns.shift();
+  }
+
+  return mergedTurns.map((turn) => ({
+    role: turn.role,
+    parts: [{ text: turn.text }],
+  }));
+}
+
 export async function parseUserMessage(
   apiKey: string,
   modelName: string,
-  text: string
+  text: string,
+  history: ChatMessage[] = []
 ): Promise<ParseResult> {
   const ai = new GoogleGenAI({ apiKey });
 
@@ -72,9 +119,11 @@ Se for mencionado "3x10 flexões" ou "3 séries de 10 flexões", series = 3 e re
 `;
 
   try {
+    const contents = buildGeminiContents(history, text);
+
     const response = await ai.models.generateContent({
       model: modelName,
-      contents: text,
+      contents: contents,
       config: {
         systemInstruction: systemInstruction,
         responseMimeType: 'application/json',

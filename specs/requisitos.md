@@ -82,7 +82,14 @@
 - **Prioridade:** Alta
 - **Feature relacionada:** feat-006 / feat-008
 
+### RF-013 — Manutenção de Contexto da Conversa (Sessão)
+
+- **Descrição:** O sistema deve manter o histórico e contexto da conversa atual com o Gemini, garantindo que o bot consiga responder e interpretar novos comandos com base nas mensagens anteriores enviadas durante a mesma sessão.
+- **Prioridade:** Alta
+- **Feature relacionada:** feat-011
+
 ---
+
 
 ## Requisitos Não Funcionais
 

@@ -665,7 +665,16 @@ function App() {
     ]);
 
     try {
-      const result = await parseUserMessage(apiKey, activeModel, text);
+      let userMsgIndex = -1;
+      for (let i = messages.length - 1; i >= 0; i--) {
+        if (messages[i].sender === 'user' && messages[i].text === text) {
+          userMsgIndex = i;
+          break;
+        }
+      }
+      const historyForGemini = userMsgIndex !== -1 ? messages.slice(0, userMsgIndex) : messages;
+
+      const result = await parseUserMessage(apiKey, activeModel, text, historyForGemini);
 
       setMessages((prev) => prev.filter((m) => m.id !== thinkingId));
 

@@ -120,6 +120,18 @@
 
 ---
 
+## feat-011 · Contexto da Conversa (Sessão)
+
+- [ ] A API do Gemini recebe o histórico completo da conversa atual (turnos alternados de `user` e `model`).
+- [ ] O histórico da conversa é filtrado para remover mensagens com erro (`isError: true`) ou mensagens temporárias de carregamento.
+- [ ] Múltiplos turnos consecutivos do mesmo autor (`user` ou `bot`) são agrupados/mesclados para garantir que os papéis estritamente alternem (`user`, `model`, `user`, `model`...).
+- [ ] O parser reconhece pronomes e referências com base na mensagem anterior (ex: se o usuário diz "fiz 3x10 flexões" e depois diz "e mais 5", o bot interpreta "mais 5" como flexões).
+- [ ] Teste unitário e de integração cobrem a passagem do histórico e resolução de pronomes/contexto.
+- [ ] `./init.sh` passa após a implementação.
+
+---
+
+
 ## Template para novas features
 
 ```markdown

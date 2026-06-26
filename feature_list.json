@@ -79,6 +79,14 @@
       "dependencies": ["feat-009"],
       "status": "completed",
       "evidence": "Componente HistoryPanel reativo com useLiveQuery, integrado com banco local Dexie.js e ordenação cronológica decrescente. Atalho por calendário no cabeçalho e comando conversacional 'ver histórico' implementados, com testes de integração passando."
+    },
+    {
+      "id": "feat-011",
+      "name": "Contexto da Conversa (Sessão)",
+      "description": "Manter o histórico de conversa com o Gemini, enviando turnos estruturados de forma alternada (user/model), filtrando erros e agrupando turnos duplicados. Permite que o bot entenda referências e pronomes em mensagens subsequentes.",
+      "dependencies": ["feat-010"],
+      "status": "completed",
+      "evidence": "./init.sh passou: 22/22 testes no Vitest validando a junção de turnos, remoção de erros/mensagens de carregamento e montagem correta de payload para a API do Gemini."
     }
   ]
 }
