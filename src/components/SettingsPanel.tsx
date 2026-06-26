@@ -15,7 +15,7 @@ export const SettingsPanel: React.FC<SettingsPanelProps> = ({
   onClose,
   onSave,
   initialApiKey = '',
-  initialModel = 'gemini-3-flash-preview',
+  initialModel = 'gemini-2.5-flash',
   initialCustomModel = '',
 }) => {
   const [apiKey, setApiKey] = useState(initialApiKey);
@@ -39,9 +39,9 @@ export const SettingsPanel: React.FC<SettingsPanelProps> = ({
 
   const handleClear = () => {
     setApiKey('');
-    setModel('gemini-3-flash-preview');
+    setModel('gemini-2.5-flash');
     setCustomModel('');
-    onSave('', 'gemini-3-flash-preview', '');
+    onSave('', 'gemini-2.5-flash', '');
   };
 
   const handleResetApp = async () => {
@@ -93,16 +93,19 @@ export const SettingsPanel: React.FC<SettingsPanelProps> = ({
               onChange={(e) => setModel(e.target.value)}
               className="select-input"
             >
-              <option value="gemini-3-flash-preview">gemini-3-flash-preview (Padrão / Recomendado)</option>
-              <option value="gemini-3.5-flash">gemini-3.5-flash</option>
-              <option value="gemini-3.1-flash-lite">gemini-3.1-flash-lite</option>
+              <option value="gemini-2.5-flash">gemini-2.5-flash (Estável / Recomendado)</option>
+              <option value="gemini-2.5-flash-lite">gemini-2.5-flash-lite (Mais rápido)</option>
+              <option value="gemini-3-flash-preview">gemini-3-flash-preview (Preview)</option>
+              <option value="gemini-3.5-flash">gemini-3.5-flash (Preview)</option>
+              <option value="gemini-3.1-flash-lite">gemini-3.1-flash-lite (Preview)</option>
               <option value="gemini-flash-lite-latest">gemini-flash-lite-latest</option>
-              <option value="gemini-2.5-flash">gemini-2.5-flash</option>
-              <option value="gemini-2.5-flash-lite">gemini-2.5-flash-lite</option>
               <option value="gemini-1.5-flash">gemini-1.5-flash</option>
               <option value="gemini-1.5-pro">gemini-1.5-pro</option>
               <option value="custom">Outro / Customizado</option>
             </select>
+            <small className="help-text">
+              Se ocorrer erro de resposta vazia, use <strong>gemini-2.5-flash</strong> (mais estável). Modelos "Preview" podem estar indisponíveis dependendo da sua API key.
+            </small>
           </div>
 
           {model === 'custom' && (

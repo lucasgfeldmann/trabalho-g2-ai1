@@ -2,7 +2,7 @@
 
 ## Current State
 
-**Last Updated:** 2026-06-26 11:26
+**Last Updated:** 2026-06-26 11:45
 **Active Feature:** Nenhuma (Todas as features concluídas! 🎉)
 
 ## Status
@@ -35,6 +35,7 @@
 - [x] **feat-021 - Novos Modelos Gemini e Botão de Reset Completo**: Adicionar os novos modelos oficiais do Gemini nas opções de configuração e botão de Reset Completo de dados no painel para re-inicializar a aplicação de forma limpa.
 - [x] **feat-022 - Foco em Exercícios sem Equipamentos na Criação de Planos**: Ajustar as mensagens iniciais e de substituição de plano, bem como a systemInstruction e o prompt do Gemini em `generateCalisthenicsPlan` e `parseUserMessage` para que todos os planos sejam criados focando em calistenia sem equipamentos (peso corporal).
 - [x] **feat-023 - Bloqueio de Texto e Voz na Seleção do Plano Guiado**: Desabilitar a inserção de texto e captação de voz (microfone) no chat durante as etapas obrigatórias de seleção guiada de plano (nível, dias, objetivo e substituição de plano), forçando o usuário a selecionar as opções predefinidas (quick options).
+- [x] **feat-024 - Barra de Entrada de Chat Responsiva e Textarea Expansível**: Substituir o input de texto do chat por um textarea auto-expansível com quebra de linha. Ajustar estilos CSS do container e dos botões com min-width, flex-shrink e media queries para evitar transbordamento horizontal em telas de celular.
 
 ### What's In Progress
 
@@ -61,7 +62,7 @@
 ## Files Modified This Session
 
 - `feature_list.json`, `progress.md`, `specs/requisitos.md`, `specs/projeto.md`, `specs/criterios-aceite.md`
-- `src/db/db.ts`, `src/services/gemini.ts`, `src/App.tsx`, `src/components/ChatWindow.tsx`, `src/components/HistoryPanel.tsx`, `src/components/PlanTabContent.tsx`, `src/index.css`, `src/test/App.test.tsx`, `docs/feat-017.md`, `docs/feat-018.md`, `docs/feat-022.md`, `docs/feat-023.md`
+- `src/db/db.ts`, `src/services/gemini.ts`, `src/App.tsx`, `src/components/ChatWindow.tsx`, `src/components/HistoryPanel.tsx`, `src/components/PlanTabContent.tsx`, `src/index.css`, `src/test/App.test.tsx`, `docs/feat-017.md`, `docs/feat-018.md`, `docs/feat-022.md`, `docs/feat-023.md`, `docs/feat-024.md`
 
 ## Evidence of Completion
 

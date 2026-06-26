@@ -210,9 +210,19 @@ Se o usuário perguntar sobre o seu plano de treino, sobre o seu histórico de t
       }
     });
 
+    // Verifica se a resposta foi bloqueada por safety ou outro motivo
+    const candidate = response.candidates?.[0];
+    const finishReason = candidate?.finishReason;
+    if (finishReason && finishReason !== 'STOP' && finishReason !== 'MAX_TOKENS') {
+      const reason = finishReason === 'SAFETY'
+        ? 'A resposta foi bloqueada por filtros de segurança. Tente reformular sua mensagem.'
+        : `A resposta foi encerrada pelo modelo (motivo: ${finishReason}). Tente novamente ou mude o modelo nas configurações.`;
+      throw new Error(reason);
+    }
+
     const responseText = response.text?.trim() || '';
     if (!responseText) {
-      throw new Error('Resposta vazia da API do Gemini.');
+      throw new Error('O modelo não retornou nenhuma resposta. Verifique se o modelo selecionado nas configurações é válido e tente novamente.');
     }
 
     let cleanedText = responseText;
@@ -224,6 +234,10 @@ Se o usuário perguntar sobre o seu plano de treino, sobre o seu histórico de t
     return parsed;
   } catch (error) {
     console.error('Error parsing message with Gemini:', error);
+    // Re-lança o erro com mensagem amigável se for o erro da SDK
+    if (error instanceof Error && error.message.includes('model output must contain either output text or tool calls')) {
+      throw new Error('O modelo não retornou uma resposta válida. Isso pode acontecer com modelos que não suportam JSON estruturado. Tente mudar o modelo nas Configurações.');
+    }
     throw error;
   }
 }
@@ -296,9 +310,19 @@ Mantenha a coerência nos treinos:
       }
     });
 
+    // Verifica se a resposta foi bloqueada por safety ou outro motivo
+    const candidate = response.candidates?.[0];
+    const finishReason = candidate?.finishReason;
+    if (finishReason && finishReason !== 'STOP' && finishReason !== 'MAX_TOKENS') {
+      const reason = finishReason === 'SAFETY'
+        ? 'A geração do plano foi bloqueada por filtros de segurança.'
+        : `A geração foi encerrada pelo modelo (motivo: ${finishReason}). Tente novamente ou mude o modelo nas configurações.`;
+      throw new Error(reason);
+    }
+
     const responseText = response.text?.trim() || '';
     if (!responseText) {
-      throw new Error('Resposta vazia da API do Gemini.');
+      throw new Error('O modelo não retornou nenhum plano. Verifique se o modelo selecionado nas configurações é válido e tente novamente.');
     }
 
     let cleanedText = responseText;
@@ -310,6 +334,10 @@ Mantenha a coerência nos treinos:
     return parsed;
   } catch (error) {
     console.error('Error generating plan with Gemini:', error);
+    // Re-lança o erro com mensagem amigável se for o erro da SDK
+    if (error instanceof Error && error.message.includes('model output must contain either output text or tool calls')) {
+      throw new Error('O modelo não retornou uma resposta válida ao gerar o plano. Tente mudar o modelo nas Configurações (recomendado: gemini-2.5-flash).');
+    }
     throw error;
   }
 }

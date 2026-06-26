@@ -275,6 +275,18 @@
 
 ---
 
+## feat-024 · Barra de Entrada de Chat Responsiva e Textarea Expansível
+
+- [ ] O campo de texto da barra de chat é um elemento `<textarea>` em vez de um `<input type="text">`.
+- [ ] Ao digitar um texto longo, o textarea quebra de linha automaticamente e expande sua altura de forma dinâmica até um limite definido, mantendo todo o conteúdo visível.
+- [ ] O pressionamento da tecla `Enter` envia a mensagem normalmente, enquanto `Shift + Enter` insere uma quebra de linha física no textarea.
+- [ ] Estilos CSS evitam transbordamento horizontal da barra de entrada de chat, garantindo adaptação elástica em displays estreitos de celular (320px+).
+- [ ] Configurado `min-width: 0` no flex item do input/textarea e flex-shrink apropriado nos botões laterais (microfone e enviar) para conter e ajustar a largura do formulário.
+- [ ] Testes validam que o input e botões continuam operacionais e respondem às quebras de linha e ações.
+- [ ] `./init.sh` passa após a implementação.
+
+---
+
 
 
 

@@ -190,6 +190,12 @@
 - **Prioridade:** Alta
 - **Feature relacionada:** feat-023
 
+### RF-031 — Campo de Entrada Multilinha e Responsividade da Barra de Chat
+
+- **Descrição:** O campo de texto da barra de chat deve permitir a quebra de linha natural e expansão de altura (textarea) quando o usuário digitar textos longos, permanecendo totalmente visível. Adicionalmente, a barra de entrada (microfone, campo de texto e botão de enviar) deve se adaptar e encolher de forma responsiva sem causar transbordamento horizontal (overflow-x) ou quebra de layout em telas de smartphones pequenos (320px+).
+- **Prioridade:** Alta
+- **Feature relacionada:** feat-024
+
 ---
 
 ## Requisitos Não Funcionais

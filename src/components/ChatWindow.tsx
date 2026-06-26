@@ -264,8 +264,7 @@ export const ChatWindow: React.FC<ChatWindowProps> = ({
                 >
                   🎤
                 </button>
-                <input
-                  type="text"
+                <textarea
                   className="chat-input"
                   placeholder={
                     disableTextInput
@@ -277,6 +276,28 @@ export const ChatWindow: React.FC<ChatWindowProps> = ({
                   value={inputText}
                   onChange={(e) => setInputText(e.target.value)}
                   disabled={!hasApiKey || disableTextInput}
+                  rows={1}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' && !e.shiftKey) {
+                      e.preventDefault();
+                      // Simular submit enviando o form
+                      const form = e.currentTarget.form;
+                      if (form) {
+                        form.requestSubmit();
+                      }
+                    }
+                  }}
+                  style={{
+                    resize: 'none',
+                    height: 'auto',
+                    minHeight: '44px',
+                    maxHeight: '120px',
+                    lineHeight: '1.4',
+                    boxSizing: 'border-box',
+                    overflowY: 'auto',
+                    paddingTop: '10px',
+                    paddingBottom: '10px'
+                  }}
                 />
                 <button
                   type="submit"

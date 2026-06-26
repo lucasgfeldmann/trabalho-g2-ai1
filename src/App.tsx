@@ -19,7 +19,7 @@ function App() {
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [activeTab, setActiveTab] = useState<'chat' | 'history' | 'plan'>('chat');
   const [apiKey, setApiKey] = useState('');
-  const [model, setModel] = useState('gemini-3-flash-preview');
+  const [model, setModel] = useState('gemini-2.5-flash');
   const [customModel, setCustomModel] = useState('');
 
   // Confirmation Flow states
@@ -75,7 +75,7 @@ function App() {
   // Load settings from localStorage on mount
   useEffect(() => {
     const savedKey = localStorage.getItem('gemini_api_key') || '';
-    const savedModel = localStorage.getItem('gemini_model') || 'gemini-3-flash-preview';
+    const savedModel = localStorage.getItem('gemini_model') || 'gemini-2.5-flash';
     const savedCustom = localStorage.getItem('gemini_custom_model') || '';
 
     setApiKey(savedKey);
