@@ -16,8 +16,8 @@
 - **2026-06-26T04:29:15-03:00**: adicione uma regra de documentar toda feature implementada dentro do diretorio docs. a documentação deve ser realizada automaticamente assim que terminar de realizar a feature
 - **2026-06-26T04:40:10-03:00**: crie um arquivo readme.md dentro de specs que tera especificações do que deve e não deve estar dentro dos arquivos desse diretorio, deve sempre ter definido as ferramentas que serão necessarias ou uteis detalhadas como por exemplo sempre questione o usuario sobre o como pode ser essa aplicação
 - **2026-06-26T04:48:21-03:00**: me ajude com as specs
-
-
+- **2026-06-26T04:55:24-03:00**: seria interessante o usuario adicionar o modelo que ele quer utilizar junto a api?
+- **2026-06-26T04:56:24-03:00**: sim atualize
 
 
 

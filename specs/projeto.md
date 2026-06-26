@@ -37,7 +37,7 @@ Praticantes de calistenia precisam registrar seus treinos de forma rápida, gera
 - Interface de chat responsiva — web, mobile e desktop (320px a 1280px+)
 - Tema Neon Calisthenics como padrão: Fundo chumbo (#0f172a), detalhes/botões em verde-esmeralda/neon (#10b981) e tipografia moderna (Inter)
 - Entrada por texto e por áudio (Web Speech API / SpeechRecognition)
-- Interpretação de linguagem natural via Gemini API (chave configurada no PWA pelo usuário final e armazenada localmente)
+- Interpretação de linguagem natural via Gemini API (chave e modelo de LLM configurados no PWA pelo usuário final e armazenados localmente)
 - Botões rápidos para consultar informações cadastradas (plano ativo, último treino)
 - Criação de plano de treino: bot sugere, usuário pode editar
 - Registro rápido de exercícios durante o treino (ex: "fiz 15 flexões" ou "3 séries de muscle up")
@@ -67,7 +67,7 @@ Praticantes de calistenia precisam registrar seus treinos de forma rápida, gera
 | Bundler | Vite 8 |
 | Banco local | IndexedDB via Dexie.js |
 | Entrada de voz | Web Speech API (SpeechRecognition) — clique único para gravar/parar, permitindo edição no input de chat antes de enviar |
-| IA / LLM | Gemini API (Google) — Chave inserida pelo usuário em painel local |
+| IA / LLM | Gemini API (Google) — Chave e modelo (Flash/Pro/Customizado) inseridos pelo usuário em painel local |
 | Testes | Vitest + @testing-library/react |
 | Linter | Oxlint |
 | Estilização | CSS Vanilla — Tema Neon Calisthenics, mobile-first |
