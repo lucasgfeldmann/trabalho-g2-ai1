@@ -166,6 +166,18 @@
 - **Prioridade:** Alta
 - **Feature relacionada:** feat-020
 
+### RF-027 — Atualização de Modelos Gemini Disponíveis nas Configurações
+
+- **Descrição:** O painel de configurações de IA do chatbot deve exibir e disponibilizar os seguintes modelos oficiais do Gemini para escolha do usuário: gemini-3.5-flash, gemini-3.1-flash-lite, gemini-3-flash-preview, gemini-flash-lite-latest, gemini-2.5-flash, gemini-2.5-flash-lite.
+- **Prioridade:** Média
+- **Feature relacionada:** feat-021
+
+### RF-028 — Botão de Reset Completo da Aplicação
+
+- **Descrição:** O painel de configurações deve conter um botão de "Reset Completo" que apaga todos os dados da aplicação armazenados no navegador (incluindo todas as tabelas do IndexedDB do Dexie e todas as chaves do localStorage) e recarrega a página de forma limpa.
+- **Prioridade:** Alta
+- **Feature relacionada:** feat-021
+
 ---
 
 ## Requisitos Não Funcionais

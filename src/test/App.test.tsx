@@ -1086,5 +1086,69 @@ describe('CalisBot App & Components', () => {
     expect(savedWorkout).toBeDefined()
     expect(savedWorkout?.exercicios_realizados[0].series).toBe(4)
   })
+
+  it('displays the new Gemini models and handles app reset in settings modal', async () => {
+    // Mock window reload and confirm
+    const originalReload = window.location.reload
+    const reloadSpy = vi.fn()
+    Object.defineProperty(window, 'location', {
+      value: { reload: reloadSpy },
+      writable: true,
+      configurable: true
+    })
+
+    const originalConfirm = window.confirm
+    window.confirm = vi.fn(() => true)
+
+    localStorage.setItem('gemini_api_key', 'test-key-to-reset')
+
+    render(<App />)
+
+    // Open Settings Modal
+    const settingsBtn = screen.getByLabelText('Abrir configurações')
+    fireEvent.click(settingsBtn)
+
+    // 1. Verify all new models are present in the select options
+    const modelSelect = screen.getByLabelText(/Modelo de IA/i) as HTMLSelectElement
+    expect(modelSelect).toBeInTheDocument()
+
+    const expectedModels = [
+      'gemini-3.5-flash',
+      'gemini-3.1-flash-lite',
+      'gemini-3-flash-preview',
+      'gemini-flash-lite-latest',
+      'gemini-2.5-flash',
+      'gemini-2.5-flash-lite',
+      'custom'
+    ]
+
+    expectedModels.forEach((modelOption) => {
+      const option = modelSelect.querySelector(`option[value="${modelOption}"]`)
+      expect(option).toBeInTheDocument()
+    })
+
+    // 2. Click Reset App button
+    const resetBtn = screen.getByRole('button', { name: /Reset Completo da Aplicação/i })
+    expect(resetBtn).toBeInTheDocument()
+
+    fireEvent.click(resetBtn)
+
+    // Verify confirmation was asked
+    expect(window.confirm).toHaveBeenCalled()
+
+    // Verify localStorage was cleared and reload was triggered
+    await waitFor(() => {
+      expect(localStorage.getItem('gemini_api_key')).toBeNull()
+      expect(reloadSpy).toHaveBeenCalled()
+    })
+
+    // Restore window.confirm and reload properties
+    window.confirm = originalConfirm
+    Object.defineProperty(window, 'location', {
+      value: { reload: originalReload },
+      writable: true,
+      configurable: true
+    })
+  })
 })
 

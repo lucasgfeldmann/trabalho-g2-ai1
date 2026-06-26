@@ -244,6 +244,16 @@
 
 ---
 
+## feat-021 · Novos Modelos Gemini e Botão de Reset Completo
+
+- [ ] O painel de configurações exibe no select de modelos as opções: `gemini-3.5-flash`, `gemini-3.1-flash-lite`, `gemini-3-flash-preview`, `gemini-flash-lite-latest`, `gemini-2.5-flash`, `gemini-2.5-flash-lite`, além da opção "Outro (Modelo customizado)".
+- [ ] O painel de configurações exibe um botão de "Reset Completo da Aplicação" ou equivalente.
+- [ ] Ao clicar no botão de reset, todos os dados locais do aplicativo armazenados no navegador são apagados (localStorage limpo, tabelas do IndexedDB limpas) e a página recarregada.
+- [ ] Testes validam a presença dos novos modelos no select de configurações e a funcionalidade do botão de reset de dados.
+- [ ] `./init.sh` passa após a implementação.
+
+---
+
 
 
 
