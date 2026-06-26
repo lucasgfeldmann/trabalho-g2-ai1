@@ -181,12 +181,12 @@
 
 ---
 
-## feat-016 · Exibição de Data nos Exercícios do Histórico
+## feat-016 · Estruturação do Histórico de Exercícios em Tabela
 
-- [ ] A tela de histórico (`HistoryPanel.tsx`) exibe a data da realização de cada exercício diretamente na lista de itens do treino.
-- [ ] A data exibida individualmente no exercício é formatada no padrão brasileiro (`DD/MM/AAAA`).
-- [ ] A data individual do exercício é estilizada com classe CSS própria (`.ex-date`) para ter subtexto legível com tamanho menor e cor atenuada (`var(--text-muted)`).
-- [ ] Os testes de renderização do `HistoryPanel` são atualizados para verificar se a data individual do exercício está presente no documento.
+- [ ] A tela de histórico (`HistoryPanel.tsx`) exibe os treinos em uma tabela geral corrida contendo as colunas: Data, Exercício, Séries e Repetições.
+- [ ] A coluna Data exibe a data no padrão brasileiro (`DD/MM/AAAA`).
+- [ ] A tabela utiliza estilos visuais premium equivalentes às tabelas neon do aplicativo (como bordas neon finas, zebra striping e sem quebras de linha indesejadas).
+- [ ] Os testes de renderização do `HistoryPanel` em `App.test.tsx` verificam se as colunas e células de dados da tabela (Data, nome do exercício, número de séries e número de repetições) são exibidas de forma correta.
 - [ ] `./init.sh` passa após a implementação.
 
 ---

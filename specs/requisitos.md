@@ -50,7 +50,7 @@
 
 ### RF-008 — Histórico de Treinos
 
-- **Descrição:** O sistema deve exibir uma tela de histórico com todos os treinos realizados, agrupados por data, mostrando os exercícios e séries de cada sessão. Cada exercício no histórico deve exibir explicitamente a data em que foi realizado.
+- **Descrição:** O sistema deve exibir uma tela de histórico com todos os treinos realizados em formato de tabela estruturada contendo colunas de Data, Exercício, Séries e Repetições, ordenados do mais recente ao mais antigo.
 - **Prioridade:** Alta
 - **Feature relacionada:** feat-010 / feat-016
 

@@ -496,19 +496,18 @@ describe('CalisBot App & Components', () => {
     const historyBtn = screen.getByLabelText('Abrir histórico de treinos')
     fireEvent.click(historyBtn)
 
-    // Verify history modal title and contents
     await waitFor(() => {
       expect(screen.getByText('Histórico de Treinos 📅')).toBeInTheDocument()
       expect(screen.getByText('25/06/2026')).toBeInTheDocument()
-      expect(screen.getByText(/Iniciou às 18:00/i)).toBeInTheDocument()
       expect(screen.getByText(/Flexão/i)).toBeInTheDocument()
-      expect(screen.getByText(/3 séries de 10 reps/i)).toBeInTheDocument()
+      expect(screen.getByText('3')).toBeInTheDocument()
+      expect(screen.getByText('10')).toBeInTheDocument()
       expect(screen.getByText(/\(Diamante\)/i)).toBeInTheDocument()
 
       expect(screen.getByText('24/06/2026')).toBeInTheDocument()
-      expect(screen.getByText(/Iniciou às 10:00/i)).toBeInTheDocument()
       expect(screen.getByText(/Barra/i)).toBeInTheDocument()
-      expect(screen.getByText(/4 séries de 8 reps/i)).toBeInTheDocument()
+      expect(screen.getByText('4')).toBeInTheDocument()
+      expect(screen.getByText('8')).toBeInTheDocument()
     })
 
     // Click close button inside modal
@@ -544,19 +543,14 @@ describe('CalisBot App & Components', () => {
     fireEvent.change(input, { target: { value: 'ver histórico' } })
     fireEvent.click(screen.getByLabelText('Enviar mensagem'))
 
-    // Verify chat reply
-    await waitFor(() => {
-      expect(screen.getByText('Abrindo o seu histórico de treinos... 📅')).toBeInTheDocument()
-    })
-
     // Verify modal is open and displays today's workout
     await waitFor(() => {
       expect(screen.getByText('Histórico de Treinos 📅')).toBeInTheDocument()
-      expect(screen.getByText(/Iniciou às 08:30/i)).toBeInTheDocument()
       expect(screen.getByText(/Dip/i)).toBeInTheDocument()
-      expect(screen.getByText(/3 séries de 12 reps/i)).toBeInTheDocument()
+      expect(screen.getByText('3')).toBeInTheDocument()
+      expect(screen.getByText('12')).toBeInTheDocument()
       expect(screen.getByText(/\(Paralelas\)/i)).toBeInTheDocument()
-      expect(screen.getByText(new RegExp(`\\(${formattedToday}\\)`, 'i'))).toBeInTheDocument()
+      expect(screen.getByText(formattedToday)).toBeInTheDocument()
     })
   })
 

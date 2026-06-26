@@ -27,7 +27,7 @@
 - [x] **feat-013 - Formatador de Respostas em Markdown**: Implementar um componente renderizador de Markdown seguro e sem dependências externas para formatar as respostas do bot no chat, incluindo títulos, listas, negrito, itálico e tags de código inline com estilos neon.
 - [x] **feat-014 - Suporte a Tabelas no Markdown**: Estender o componente MarkdownRenderer para reconhecer e renderizar tabelas markdown em elementos HTML estruturados com estilo Neon Calisthenics e responsividade horizontal.
 - [x] **feat-015 - Criação e Edição de Planos via IA**: Permitir que o usuário utilize chat de texto livre para pedir para a IA criar novos planos ou alterar o plano ativo existente, com confirmação e persistência no IndexedDB.
-- [x] **feat-016 - Exibição de Data nos Exercícios do Histórico**: Adicionar a data de realização de cada exercício diretamente nos itens da lista do histórico no componente HistoryPanel com estilo visual atenuado.
+- [x] **feat-016 - Estruturação do Histórico de Exercícios em Tabela**: Reestruturar a visualização do histórico de treinos no HistoryPanel em uma tabela corrida com colunas de Data, Exercício, Séries e Repetições, utilizando o estilo premium de tabelas neon do aplicativo.
 
 ### What's In Progress
 
