@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { ChatWindow } from './components/ChatWindow';
 import type { Message } from './components/ChatWindow';
 import { SettingsPanel } from './components/SettingsPanel';
+import { HistoryPanel } from './components/HistoryPanel';
 import { db } from './db/db';
 import { parseUserMessage, generateCalisthenicsPlan } from './services/gemini';
 import type { ParsedWorkout } from './services/gemini';
@@ -17,6 +18,7 @@ interface PlanFlow {
 function App() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
+  const [isHistoryOpen, setIsHistoryOpen] = useState(false);
   const [apiKey, setApiKey] = useState('');
   const [model, setModel] = useState('gemini-3-flash-preview');
   const [customModel, setCustomModel] = useState('');
@@ -583,6 +585,21 @@ function App() {
       return;
     }
 
+    const isHistoryCommand = /^(ver hist[oó]rico|hist[oó]rico|ver historico|historico)$/i.test(normalizedInput);
+    if (isHistoryCommand) {
+      setIsHistoryOpen(true);
+      setMessages((prev) => [
+        ...prev,
+        {
+          id: `bot-open-history-${Date.now()}`,
+          text: 'Abrindo o seu histórico de treinos... 📅',
+          sender: 'bot',
+          timestamp: new Date(),
+        },
+      ]);
+      return;
+    }
+
     const activeModel = model === 'custom' ? customModel : model;
 
     // Check internet connection
@@ -688,6 +705,7 @@ function App() {
         messages={messages}
         onSend={handleSendMessage}
         onOpenSettings={() => setIsSettingsOpen(true)}
+        onOpenHistory={() => setIsHistoryOpen(true)}
         hasApiKey={!!apiKey}
         quickOptions={getQuickOptions()}
       />
@@ -698,6 +716,10 @@ function App() {
         initialApiKey={apiKey}
         initialModel={model}
         initialCustomModel={customModel}
+      />
+      <HistoryPanel
+        isOpen={isHistoryOpen}
+        onClose={() => setIsHistoryOpen(false)}
       />
     </>
   );

@@ -12,6 +12,7 @@ interface ChatWindowProps {
   messages: Message[];
   onSend: (text: string) => void;
   onOpenSettings: () => void;
+  onOpenHistory?: () => void;
   hasApiKey: boolean;
   quickOptions?: string[];
 }
@@ -20,6 +21,7 @@ export const ChatWindow: React.FC<ChatWindowProps> = ({
   messages,
   onSend,
   onOpenSettings,
+  onOpenHistory,
   hasApiKey,
   quickOptions = [],
 }) => {
@@ -139,15 +141,28 @@ export const ChatWindow: React.FC<ChatWindowProps> = ({
             <span className="status-indicator">Ativo</span>
           </div>
         </div>
-        <button
-          type="button"
-          className="icon-btn settings-toggle"
-          onClick={onOpenSettings}
-          title="Configurações do Gemini"
-          aria-label="Abrir configurações"
-        >
-          ⚙️
-        </button>
+        <div className="header-actions">
+          {onOpenHistory && (
+            <button
+              type="button"
+              className="icon-btn history-toggle"
+              onClick={onOpenHistory}
+              title="Histórico de Treinos"
+              aria-label="Abrir histórico de treinos"
+            >
+              📅
+            </button>
+          )}
+          <button
+            type="button"
+            className="icon-btn settings-toggle"
+            onClick={onOpenSettings}
+            title="Configurações do Gemini"
+            aria-label="Abrir configurações"
+          >
+            ⚙️
+          </button>
+        </div>
       </header>
 
       {/* Message Area */}

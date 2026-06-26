@@ -82,6 +82,11 @@ body {
   z-index: 10;
 }
 
+.header-actions {
+  display: flex;
+  gap: 8px;
+}
+
 .bot-info {
   display: flex;
   align-items: center;
@@ -637,4 +642,102 @@ body {
 
 .quick-option-btn:active {
   transform: translateY(0);
+}
+
+/* History Modal CSS */
+.history-modal-content {
+  max-width: 550px !important;
+  display: flex;
+  flex-direction: column;
+  max-height: 85vh;
+}
+
+.history-body {
+  flex: 1;
+  overflow-y: auto;
+  margin-top: 12px;
+  margin-bottom: 12px;
+  padding-right: 4px;
+}
+
+.history-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.history-card {
+  background-color: rgba(15, 23, 42, 0.4);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 16px;
+  box-shadow: var(--shadow);
+}
+
+.history-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  padding-bottom: 8px;
+  margin-bottom: 12px;
+}
+
+.history-card-date {
+  color: var(--accent-color);
+  font-weight: 700;
+  font-size: 15px;
+}
+
+.history-card-time {
+  color: var(--text-muted);
+  font-size: 13px;
+}
+
+.history-exercicios-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.history-exercicio-item {
+  font-size: 14px;
+  color: var(--text-main);
+  line-height: 1.4;
+}
+
+.history-exercicio-item span {
+  font-weight: 600;
+  color: var(--text-title);
+}
+
+.ex-obs {
+  font-style: italic;
+  color: var(--text-muted);
+  font-size: 13px;
+}
+
+.empty-history {
+  text-align: center;
+  padding: 40px 20px;
+  color: var(--text-muted);
+}
+
+.empty-hint {
+  font-size: 13px;
+  margin-top: 8px;
+  opacity: 0.8;
+}
+
+.loading-text {
+  text-align: center;
+  color: var(--text-muted);
+  padding: 20px;
+}
+
+.justify-center {
+  justify-content: center !important;
 }

@@ -2,8 +2,8 @@
 
 ## Current State
 
-**Last Updated:** 2026-06-26 05:45
-**Active Feature:** feat-010 - Histórico de Treinos
+**Last Updated:** 2026-06-26 06:02
+**Active Feature:** Nenhuma (Todas as features concluídas! 🎉)
 
 ## Status
 
@@ -21,14 +21,15 @@
 - [x] **feat-007 - Entrada por Áudio (Web Speech API)**: Integração do botão de microfone com a Web Speech API para transcrição em tempo real de voz para o input do chat.
 - [x] **feat-008 - Registro de Exercícios via Chat**: Conexão com o SDK `@google/genai`, parser estruturado em JSON para exercícios de calistenia, fluxo de confirmação rápida e persistência no IndexedDB via Dexie.js com suporte a guardrails.
 - [x] **feat-009 - Criação e Gestão do Plano de Exercícios**: Desenvolver fluxo de perguntas estruturado para nível/frequência/objetivo, chamada com inteligência artificial para gerar plano semanal personalizado, persistência local no Dexie e comandos como "ver meu plano".
+- [x] **feat-010 - Histórico de Treinos**: Criar tela/seção de histórico acessível via chat ou navegação. Exibir treinos agrupados por data. Dados persistem via IndexedDB.
 
 ### What's In Progress
 
-- **feat-010 - Histórico de Treinos**: Criar tela/seção de histórico acessível via chat ou navegação. Exibir treinos agrupados por data (mais recente primeiro). Cada sessão mostra: data, exercícios e séries realizadas. Dados persistem entre sessões via IndexedDB.
+- Nenhum.
 
 ### What's Next
 
-- **feat-010 - Histórico de Treinos**: Criação de visualização do histórico e ordenação de sessões.
+- Nenhum. Todas as features planejadas foram concluídas com sucesso.
 
 ## Blockers / Risks
 
@@ -43,12 +44,12 @@
 
 ## Files Modified This Session
 
-- `feature_list.json`, `progress.md`, `docs/feat-009.md`
-- `src/components/ChatWindow.tsx`, `src/index.css`, `src/App.tsx`, `src/test/App.test.tsx`
+- `feature_list.json`, `progress.md`, `docs/feat-009.md`, `docs/feat-010.md`
+- `src/components/HistoryPanel.tsx`, `src/components/ChatWindow.tsx`, `src/index.css`, `src/App.tsx`, `src/test/App.test.tsx`
 
 ## Evidence of Completion
 
-- [x] `./init.sh` limpo com 14 testes passando:
+- [x] `./init.sh` limpo com todos os 16 testes passando:
 ```
 === npm run lint ===
 Found 0 warnings and 0 errors.
@@ -57,12 +58,12 @@ Found 0 warnings and 0 errors.
 (sem erros)
 
 === npm test ===
-✓ src/test/App.test.tsx (14 tests) 576ms
-   ✓ CalisBot App & Components (14)
-Test Files  1 passed (1) | Tests  14 passed (14)
+✓ src/test/App.test.tsx (16 tests) 611ms
+   ✓ CalisBot App & Components (16)
+Test Files  1 passed (1) | Tests  16 passed (16)
 === Verification Complete ===
 ```
 
 ## Notes for Next Session
 
-A funcionalidade `feat-009` (Criação e Gestão do Plano de Exercícios) foi totalmente integrada e testada. O próximo agente deve focar na `feat-010` (Histórico de Treinos) criando a interface/seção de histórico acessível pelo chat ou navegação de treinos passados no IndexedDB.
+Todas as 10 features do roadmap inicial (incluindo o fluxo de áudio, integração com Gemini,IndexedDB com Dexie.js, planos de exercícios e histórico de treinos) foram concluídas, testadas e documentadas com sucesso. O repositório está limpo e totalmente funcional.

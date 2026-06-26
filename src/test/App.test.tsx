@@ -470,4 +470,86 @@ describe('CalisBot App & Components', () => {
       expect(screen.getByRole('button', { name: /^Iniciante$/i })).toBeInTheDocument()
     })
   })
+
+  it('renders history modal with seeded data when clicking calendar button', async () => {
+    localStorage.setItem('gemini_api_key', 'valid-key')
+
+    // Seed db with past workouts
+    await db.historico_treinos.add({
+      data: '2026-06-25',
+      hora_inicio: '18:00',
+      exercicios_realizados: [
+        { nome: 'Flexão', series: 3, repeticoes: 10, observacao: 'Diamante' }
+      ]
+    })
+    await db.historico_treinos.add({
+      data: '2026-06-24',
+      hora_inicio: '10:00',
+      exercicios_realizados: [
+        { nome: 'Barra', series: 4, repeticoes: 8, observacao: '' }
+      ]
+    })
+
+    render(<App />)
+
+    // Click history calendar button
+    const historyBtn = screen.getByLabelText('Abrir histórico de treinos')
+    fireEvent.click(historyBtn)
+
+    // Verify history modal title and contents
+    await waitFor(() => {
+      expect(screen.getByText('Histórico de Treinos 📅')).toBeInTheDocument()
+      expect(screen.getByText('25/06/2026')).toBeInTheDocument()
+      expect(screen.getByText(/Iniciou às 18:00/i)).toBeInTheDocument()
+      expect(screen.getByText(/Flexão/i)).toBeInTheDocument()
+      expect(screen.getByText(/3 séries de 10 reps/i)).toBeInTheDocument()
+      expect(screen.getByText(/\(Diamante\)/i)).toBeInTheDocument()
+
+      expect(screen.getByText('24/06/2026')).toBeInTheDocument()
+      expect(screen.getByText(/Iniciou às 10:00/i)).toBeInTheDocument()
+      expect(screen.getByText(/Barra/i)).toBeInTheDocument()
+      expect(screen.getByText(/4 séries de 8 reps/i)).toBeInTheDocument()
+    })
+
+    // Click close button inside modal
+    const closeBtn = screen.getByRole('button', { name: /^Fechar$/i })
+    fireEvent.click(closeBtn)
+
+    await waitFor(() => {
+      expect(screen.queryByText('Histórico de Treinos 📅')).not.toBeInTheDocument()
+    })
+  })
+
+  it('opens history modal when sending ver histórico command and shows todays workouts', async () => {
+    localStorage.setItem('gemini_api_key', 'valid-key')
+
+    const todayStr = new Date().toISOString().split('T')[0]
+    await db.historico_treinos.add({
+      data: todayStr,
+      hora_inicio: '08:30',
+      exercicios_realizados: [
+        { nome: 'Dip', series: 3, repeticoes: 12, observacao: 'Paralelas' }
+      ]
+    })
+
+    render(<App />)
+
+    const input = screen.getByPlaceholderText(/Envie uma mensagem ou diga o que treinou.../i)
+    fireEvent.change(input, { target: { value: 'ver histórico' } })
+    fireEvent.click(screen.getByLabelText('Enviar mensagem'))
+
+    // Verify chat reply
+    await waitFor(() => {
+      expect(screen.getByText('Abrindo o seu histórico de treinos... 📅')).toBeInTheDocument()
+    })
+
+    // Verify modal is open and displays today's workout
+    await waitFor(() => {
+      expect(screen.getByText('Histórico de Treinos 📅')).toBeInTheDocument()
+      expect(screen.getByText(/Iniciou às 08:30/i)).toBeInTheDocument()
+      expect(screen.getByText(/Dip/i)).toBeInTheDocument()
+      expect(screen.getByText(/3 séries de 12 reps/i)).toBeInTheDocument()
+      expect(screen.getByText(/\(Paralelas\)/i)).toBeInTheDocument()
+    })
+  })
 })

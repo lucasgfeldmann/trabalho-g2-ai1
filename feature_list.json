@@ -77,8 +77,8 @@
       "name": "Histórico de Treinos",
       "description": "Criar tela/seção de histórico acessível via chat ou navegação. Exibir treinos agrupados por data (mais recente primeiro). Cada sessão mostra: data, exercícios e séries realizadas. Dados persistem entre sessões via IndexedDB.",
       "dependencies": ["feat-009"],
-      "status": "not-started",
-      "evidence": ""
+      "status": "completed",
+      "evidence": "Componente HistoryPanel reativo com useLiveQuery, integrado com banco local Dexie.js e ordenação cronológica decrescente. Atalho por calendário no cabeçalho e comando conversacional 'ver histórico' implementados, com testes de integração passando."
     }
   ]
 }
