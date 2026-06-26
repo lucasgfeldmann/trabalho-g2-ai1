@@ -2,7 +2,7 @@
 
 ## Current State
 
-**Last Updated:** 2026-06-26 10:40
+**Last Updated:** 2026-06-26 10:50
 **Active Feature:** Nenhuma (Todas as features concluídas! 🎉)
 
 ## Status
@@ -31,14 +31,7 @@
 - [x] **feat-017 - Abas de Navegação Inferiores, Registro de Horário e Importação/Exportação CSV**: Implementar barra de abas de navegação inferior (Chat, Histórico, Plano). Registrar horário específico para cada exercício. Aba Histórico com filtro de data por dia e importação/exportação de arquivo CSV. Aba Plano com checkboxes para inserção rápida de exercícios.
 - [x] **feat-018 - Filtro Diário no Plano de Treinos e Alternância de Visualização Completa**: Alterar a aba de Plano para exibir por padrão apenas o treino do dia de hoje, adicionando um botão de alternância para o plano completo e removendo os checkboxes de marcação rápida.
 - [x] **feat-019 - Modos de Visualização no Histórico (Tabela e Cards)**: Adicionar controles visuais na aba de Histórico para alternar entre visualização de Tabela (tabular clássico) e Cards (listagem estruturada em cartões adequada para smartphones).
-
-### What's In Progress
-
-- Nenhum.
-
-### What's Next
-
-- Nenhum. Todas as features planejadas foram concluídas com sucesso.ápida.
+- [x] **feat-020 - Correção Conversacional de Operações e Reconhecimento de Datas no Registro de Treino**: Adicionar botão e controle de fluxo conversacional de correção para treinos e planos pendentes de confirmação. Permitir a extração e o cálculo automático de datas absolutas e relativas (ex: "ontem") no registro de exercícios.
 
 ### What's In Progress
 

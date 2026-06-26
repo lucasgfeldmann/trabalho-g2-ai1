@@ -11,6 +11,7 @@ export interface ParsedWorkout {
 export interface ParseResult {
   isWorkout: boolean;
   isCalisthenics: boolean;
+  data?: string;
   exercicios?: ParsedWorkout[];
   respostaConversacional?: string;
   action?: 'create_plan' | 'edit_plan';
@@ -28,6 +29,8 @@ export interface UserContextData {
   historicoTreinos?: any[];
   dataAtual: string;
   diaSemanaAtual: string;
+  pendingWorkout?: ParsedWorkout[];
+  pendingIAPlan?: GeneratedPlan;
 }
 
 export function buildGeminiContents(
@@ -88,6 +91,7 @@ Se a mensagem for sobre calistenia e descrever exercícios realizados, retorne n
 {
   "isWorkout": true,
   "isCalisthenics": true,
+  "data": "YYYY-MM-DD", // Data identificada a partir do texto do usuário se houver menção de data ou dia específico (ex: "ontem", "anteontem", "terça passada", etc.). Caso o usuário não informe a data ou dia, defina como null.
   "exercicios": [
     {
       "nome": "Flexão" | "Barra" | "Muscle Up" | "Dip" | "Agachamento" | "Archer Push-Up" | "Flexão Diamante" | "L-Sit" | "Handstand" | "Pistol Squat" | "Lunge" | "Prancha" | "Hollow Body",
@@ -160,11 +164,32 @@ Se for mencionado "3x10 flexões" ou "3 séries de 10 flexões", series = 3 e re
 ESTADO ATUAL DO USUÁRIO:
 - Data de hoje: ${contextData.dataAtual} (${contextData.diaSemanaAtual})
 
+OPERAÇÕES PENDENTES DE CONFIRMAÇÃO (SE HOUVER):
+${contextData.pendingWorkout ? `- Treino pendente atual: ${JSON.stringify(contextData.pendingWorkout)}` : ''}
+${contextData.pendingIAPlan ? `- Plano pendente atual: ${JSON.stringify(contextData.pendingIAPlan)}` : ''}
+
 PLANO DE TREINO ATIVO DO USUÁRIO:
 ${contextData.planoAtivo ? JSON.stringify(contextData.planoAtivo, null, 2) : 'Nenhum plano ativo registrado.'}
 
 HISTÓRICO RECENTE DE TREINOS DO USUÁRIO:
 ${contextData.historicoTreinos && contextData.historicoTreinos.length > 0 ? JSON.stringify(contextData.historicoTreinos, null, 2) : 'Nenhum treino realizado ainda.'}
+
+DIRETRIZES IMPORTANTES DE CORREÇÃO:
+Se o usuário estiver fornecendo uma correção (a mensagem começa com "[SOLICITAÇÃO DE CORREÇÃO DO USUÁRIO]:" ou se refere explicitamente a corrigir a operação pendente atual):
+1. Analise o que está pendente no contexto ("Treino pendente atual" ou "Plano pendente atual").
+2. Aplique a modificação solicitada pelo usuário (ex: alterar exercícios, séries, repetições, observações ou a data do treino/plano).
+3. Se estiver corrigindo um treino, retorne o JSON estruturado contendo a nova lista de exercícios corrigida com "isWorkout": true, e inclua também o campo "data" com a data correta (calculada caso o usuário tenha corrigido o dia do treino, ex: "mude a data para ontem").
+4. Se estiver corrigindo um plano, retorne o JSON com "action": "create_plan" ou "edit_plan", e "planoGeral" contendo o plano de treinos completo com a correção aplicada.
+5. Escreva no campo "respostaConversacional" uma explicação bem curta e objetiva confirmando as correções que você realizou.
+
+DIRETRIZES DE RECONHECIMENTO DE DATAS NO REGISTRO DE TREINO:
+- Se a mensagem do usuário (ou a correção) indicar que o treino foi realizado em um dia específico (como "ontem", "anteontem", "terça-feira passada", "na última quarta", "dia 20/06", "dia 15", etc.), calcule e retorne a data exata correspondente no formato "YYYY-MM-DD" no campo "data" no nível superior do JSON.
+- Para calcular as datas relativas com precisão, utilize a "Data de hoje" fornecida no contexto. Por exemplo, se hoje é 2026-06-26 (Sexta-feira):
+  - "ontem" corresponde a "2026-06-25"
+  - "anteontem" corresponde a "2026-06-24"
+  - "terça-feira" ou "terça" ou "terça passada" corresponde a "2026-06-23"
+  - "segunda-feira passada" ou "segunda passada" corresponde a "2026-06-22"
+- Se a mensagem NÃO mencionar nenhuma data ou dia de treino, o campo "data" deve ser retornado como null ou omitido (o que subentende o dia de hoje).
 
 Se o usuário perguntar sobre o seu plano de treino, sobre o seu histórico de treinos (ex: o que treinou hoje, o que fez ontem, se bateu a meta, quantos exercícios já fez, etc.), responda à pergunta na chave "respostaConversacional" usando as informações acima de forma amigável, clara e motivadora.
 `;

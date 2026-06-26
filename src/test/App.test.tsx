@@ -131,7 +131,7 @@ describe('CalisBot App & Components', () => {
 
     // Wait for success message
     await waitFor(() => {
-      expect(screen.getByText(/Treino registrado com sucesso no histórico do dia!/i)).toBeInTheDocument()
+      expect(screen.getByText(/Treino registrado com sucesso no histórico do dia/i)).toBeInTheDocument()
     })
 
     // Verify saved workout exists in Dexie IndexedDB
@@ -970,6 +970,121 @@ describe('CalisBot App & Components', () => {
     await waitFor(() => {
       expect(screen.getAllByRole('cell').length).toBeGreaterThan(0)
     })
+  })
+
+  it('parses workout with a specific date and saves to that date in IndexedDB', async () => {
+    localStorage.setItem('gemini_api_key', 'valid-key')
+
+    // Mock Gemini response returning a specific date (yesterday)
+    generateContentMock.mockResolvedValue({
+      text: JSON.stringify({
+        isWorkout: true,
+        isCalisthenics: true,
+        data: '2026-06-25',
+        exercicios: [
+          { nome: 'Agachamento', series: 3, repeticoes: 15, observacao: '' }
+        ]
+      })
+    })
+
+    render(<App />)
+
+    const input = screen.getByPlaceholderText(/Envie uma mensagem ou diga o que treinou.../i)
+    fireEvent.change(input, { target: { value: 'ontem fiz 3x15 agachamentos' } })
+
+    const sendBtn = screen.getByLabelText('Enviar mensagem')
+    fireEvent.click(sendBtn)
+
+    // Wait for the confirmation to show the specific date label
+    await waitFor(() => {
+      expect(screen.getByText(/Entendi o seguinte treino \(para o dia 25\/06\/2026\):/i)).toBeInTheDocument()
+    })
+
+    // Click Confirm
+    const confirmBtn = screen.getByRole('button', { name: /^Confirmar$/i })
+    fireEvent.click(confirmBtn)
+
+    // Wait for success message confirming the target date
+    await waitFor(() => {
+      expect(screen.getByText(/Treino registrado com sucesso no histórico do dia 25\/06\/2026!/i)).toBeInTheDocument()
+    })
+
+    // Check IndexedDB
+    const savedWorkout = await db.historico_treinos.where('data').equals('2026-06-25').first()
+    expect(savedWorkout).toBeDefined()
+    expect(savedWorkout?.exercicios_realizados[0].nome).toBe('Agachamento')
+  })
+
+  it('allows the user to correct a workout before confirming', async () => {
+    localStorage.setItem('gemini_api_key', 'valid-key')
+
+    // 1. Initial mock response (incorrect series count)
+    generateContentMock.mockResolvedValueOnce({
+      text: JSON.stringify({
+        isWorkout: true,
+        isCalisthenics: true,
+        exercicios: [
+          { nome: 'Flexão', series: 3, repeticoes: 10, observacao: '' }
+        ]
+      })
+    })
+
+    render(<App />)
+
+    const input = screen.getByPlaceholderText(/Envie uma mensagem ou diga o que treinou.../i)
+    fireEvent.change(input, { target: { value: 'fiz 4x10 flexões' } })
+
+    const sendBtn = screen.getByLabelText('Enviar mensagem')
+    fireEvent.click(sendBtn)
+
+    // Wait for initial confirmation
+    await waitFor(() => {
+      expect(screen.getByText(/Flexão: 3 série\(s\) de 10 repetição\(ões\)/i)).toBeInTheDocument()
+    })
+
+    // 2. Click "Corrigir" quick action button
+    const correctBtn = screen.getByRole('button', { name: /^Corrigir$/i })
+    fireEvent.click(correctBtn)
+
+    // Wait for instruction message
+    await waitFor(() => {
+      expect(screen.getByText(/Por favor, digite a correção que deseja fazer/i)).toBeInTheDocument()
+    })
+
+    // 3. Mock correction response
+    generateContentMock.mockResolvedValueOnce({
+      text: JSON.stringify({
+        isWorkout: true,
+        isCalisthenics: true,
+        exercicios: [
+          { nome: 'Flexão', series: 4, repeticoes: 10, observacao: '' }
+        ]
+      })
+    })
+
+    // Type the correction
+    fireEvent.change(input, { target: { value: 'mude para 4 séries' } })
+    fireEvent.click(sendBtn)
+
+    // Wait for corrected confirmation
+    await waitFor(() => {
+      expect(screen.getByText(/Flexão: 4 série\(s\) de 10 repetição\(ões\)/i)).toBeInTheDocument()
+    })
+
+    // 4. Click Confirm
+    const confirmBtn = screen.getByRole('button', { name: /^Confirmar$/i })
+    fireEvent.click(confirmBtn)
+
+    // Wait for success message
+    await waitFor(() => {
+      expect(screen.getByText(/Treino registrado com sucesso no histórico/i)).toBeInTheDocument()
+    })
+
+    // Check IndexedDB
+    const today = new Date().toISOString().split('T')[0]
+    const savedWorkout = await db.historico_treinos.where('data').equals(today).first()
+    expect(savedWorkout).toBeDefined()
+    expect(savedWorkout?.exercicios_realizados[0].series).toBe(4)
   })
 })
 

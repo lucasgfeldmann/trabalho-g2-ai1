@@ -24,10 +24,25 @@ function App() {
 
   // Confirmation Flow states
   const [pendingWorkout, setPendingWorkout] = useState<ParsedWorkout[] | null>(null);
+  const [pendingWorkoutDate, setPendingWorkoutDate] = useState<string | null>(null);
+  const [isAwaitingCorrection, setIsAwaitingCorrection] = useState<'workout' | 'plan' | null>(null);
   const [planFlow, setPlanFlow] = useState<PlanFlow>({ step: 'none' });
   const [pendingIAPlan, setPendingIAPlan] = useState<GeneratedPlan | null>(null);
   const [pendingPlanAction, setPendingPlanAction] = useState<'create_plan' | 'edit_plan' | null>(null);
   const [lastUserMessage, setLastUserMessage] = useState('');
+
+  const formatDate = (dateStr: string) => {
+    try {
+      const date = new Date(`${dateStr}T00:00:00`);
+      return date.toLocaleDateString('pt-BR', {
+        day: '2-digit',
+        month: '2-digit',
+        year: 'numeric',
+      });
+    } catch {
+      return dateStr;
+    }
+  };
 
   const checkPlanAndInit = async (keyToUse = apiKey) => {
     if (!keyToUse) return;
@@ -100,6 +115,7 @@ function App() {
     if (!pendingWorkout) return;
 
     const today = new Date().toISOString().split('T')[0];
+    const targetDate = pendingWorkoutDate || today;
     const time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
     const mappedWorkout = pendingWorkout.map((ex) => ({
       ...ex,
@@ -108,14 +124,14 @@ function App() {
 
     try {
       // RN-002: Multiple workouts in the same day belong to the same session
-      const existingSession = await db.historico_treinos.where('data').equals(today).first();
+      const existingSession = await db.historico_treinos.where('data').equals(targetDate).first();
 
       if (existingSession) {
         existingSession.exercicios_realizados.push(...mappedWorkout);
         await db.historico_treinos.put(existingSession);
       } else {
         await db.historico_treinos.add({
-          data: today,
+          data: targetDate,
           hora_inicio: time,
           exercicios_realizados: mappedWorkout,
         });
@@ -125,7 +141,7 @@ function App() {
         ...prev,
         {
           id: `bot-success-${Date.now()}`,
-          text: 'Treino registrado com sucesso no histórico do dia! 💪',
+          text: `Treino registrado com sucesso no histórico do dia ${formatDate(targetDate)}! 💪`,
           sender: 'bot',
           timestamp: new Date(),
         },
@@ -144,11 +160,13 @@ function App() {
       ]);
     } finally {
       setPendingWorkout(null);
+      setPendingWorkoutDate(null);
     }
   };
 
   const handleCancel = () => {
     setPendingWorkout(null);
+    setPendingWorkoutDate(null);
     setMessages((prev) => [
       ...prev,
       {
@@ -158,6 +176,144 @@ function App() {
         timestamp: new Date(),
       },
     ]);
+  };
+
+  const handleProcessCorrection = async (
+    text: string,
+    type: 'workout' | 'plan',
+    overridePlan?: GeneratedPlan,
+    overrideWorkout?: ParsedWorkout[]
+  ) => {
+    setIsAwaitingCorrection(null);
+
+    const currentWorkout = overrideWorkout || pendingWorkout;
+    const currentPlan = overridePlan || pendingIAPlan;
+
+    const thinkingId = `thinking-correction-${Date.now()}`;
+    setMessages((prev) => [
+      ...prev,
+      {
+        id: thinkingId,
+        text: 'Reprocessando e aplicando correção...',
+        sender: 'bot',
+        timestamp: new Date(),
+      },
+    ]);
+
+    try {
+      const activeModel = model === 'custom' ? customModel : model;
+      const activePlans = await db.plano_ativo.toArray();
+      const planoAtivo = activePlans.length > 0 ? activePlans[0] : undefined;
+
+      const allHistory = await db.historico_treinos.toArray();
+      const sortedHistory = allHistory.sort((a, b) => b.data.localeCompare(a.data));
+      const historicoTreinos = sortedHistory.slice(0, 15);
+
+      const diasSemana = ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'];
+      const contextData = {
+        planoAtivo,
+        historicoTreinos,
+        dataAtual: new Date().toISOString().split('T')[0],
+        diaSemanaAtual: diasSemana[new Date().getDay()],
+        pendingWorkout: currentWorkout || undefined,
+        pendingIAPlan: currentPlan || undefined,
+      };
+
+      const correctionPrompt = `[SOLICITAÇÃO DE CORREÇÃO DO USUÁRIO]: "${text}"`;
+      const result = await parseUserMessage(apiKey, activeModel, correctionPrompt, messages, contextData);
+
+      setMessages((prev) => prev.filter((m) => m.id !== thinkingId));
+
+      if (type === 'workout') {
+        if (result.isWorkout && result.exercicios && result.exercicios.length > 0) {
+          setPendingWorkout(result.exercicios);
+          setPendingWorkoutDate(result.data || null);
+
+          const workoutSummary = result.exercicios
+            .map((e) => `- ${e.nome}: ${e.series} série(s) de ${e.repeticoes} repetição(ões) ${e.observacao ? `(${e.observacao})` : ''}`)
+            .join('\n');
+
+          const dataLabel = result.data ? ` (para o dia ${formatDate(result.data)})` : '';
+          const explainText = result.respostaConversacional ? `${result.respostaConversacional}\n\n` : '';
+
+          setMessages((prev) => [
+            ...prev,
+            {
+              id: `bot-confirm-${Date.now()}`,
+              text: `${explainText}Entendi o seguinte treino${dataLabel}:\n\n${workoutSummary}\n\nConfirma o registro?`,
+              sender: 'bot',
+              timestamp: new Date(),
+            },
+          ]);
+        } else {
+          setMessages((prev) => [
+            ...prev,
+            {
+              id: `bot-err-${Date.now()}`,
+              text: result.respostaConversacional || 'Não foi possível processar a correção do treino. Por favor, tente novamente.',
+              sender: 'bot',
+              timestamp: new Date(),
+            },
+          ]);
+        }
+      } else {
+        // type === 'plan'
+        if (result.planoGeral) {
+          setPendingIAPlan(result.planoGeral);
+          if (result.action) {
+            setPendingPlanAction(result.action);
+          }
+
+          let planDetails = `📋 **Plano Sugerido: ${result.planoGeral.nome}**\n`;
+          planDetails += `💪 Nível: ${result.planoGeral.nivel.toUpperCase()}\n\n`;
+          result.planoGeral.dias.forEach((dia) => {
+            planDetails += `**${dia.dia_semana}**:\n`;
+            dia.exercicios.forEach((ex) => {
+              planDetails += `- ${ex.nome}: ${ex.series}x${ex.repeticoes}\n`;
+            });
+            planDetails += '\n';
+          });
+
+          const actionText = (pendingPlanAction || result.action) === 'edit_plan'
+            ? 'Deseja salvar estas alterações no seu plano ativo?'
+            : 'Deseja salvar este novo plano como seu plano ativo?';
+          const explainText = result.respostaConversacional ? `${result.respostaConversacional}\n\n` : '';
+
+          setMessages((prev) => [
+            ...prev,
+            {
+              id: `bot-plan-confirm-${Date.now()}`,
+              text: explainText + planDetails + actionText,
+              sender: 'bot',
+              timestamp: new Date(),
+            },
+          ]);
+        } else {
+          setMessages((prev) => [
+            ...prev,
+            {
+              id: `bot-err-${Date.now()}`,
+              text: result.respostaConversacional || 'Não foi possível processar a correção do plano. Por favor, tente novamente.',
+              sender: 'bot',
+              timestamp: new Date(),
+            },
+          ]);
+        }
+      }
+    } catch (err: any) {
+      setMessages((prev) => prev.filter((m) => m.id !== thinkingId));
+      console.error('Erro ao processar correção:', err);
+      setMessages((prev) => [
+        ...prev,
+        {
+          id: `bot-err-${Date.now()}`,
+          text: `Erro ao aplicar correção via Gemini API: ${err.message || 'Erro desconhecido'}.`,
+          sender: 'bot',
+          timestamp: new Date(),
+          isError: true,
+        },
+      ]);
+    }
   };
 
   const handleShowPlan = async () => {
@@ -325,10 +481,10 @@ function App() {
 
   const getQuickOptions = () => {
     if (pendingWorkout) {
-      return ['Confirmar', 'Cancelar'];
+      return ['Confirmar', 'Corrigir', 'Cancelar'];
     }
     if (pendingIAPlan) {
-      return ['Confirmar Plano', 'Cancelar'];
+      return ['Confirmar Plano', 'Corrigir', 'Cancelar'];
     }
     if (planFlow.step === 'confirm_replace') {
       return ['Sim, substituir', 'Não'];
@@ -343,7 +499,7 @@ function App() {
       return ['Força', 'Resistência', 'Habilidades'];
     }
     if (planFlow.step === 'confirm_plan') {
-      return ['Confirmar Plano', 'Cancelar'];
+      return ['Confirmar Plano', 'Corrigir', 'Cancelar'];
     }
     return [];
   };
@@ -388,24 +544,35 @@ function App() {
   };
 
   const handleProcessMessage = async (text: string, isRetry = false) => {
+    if (isAwaitingCorrection) {
+      const type = isAwaitingCorrection;
+      setIsAwaitingCorrection(null);
+      await handleProcessCorrection(text, type);
+      return;
+    }
+
     if (pendingWorkout) {
       const isYes = /^(sim|s|yes|y|confirmar|confirma|confirmado|confirmar treino)$/i.test(text.trim());
       const isNo = /^(n[aã]o|nao|n|no|cancelar|cancelado)$/i.test(text.trim());
+      const isCorrect = /^(corrigir|corre[çc][ãa]o|corrigir treino)$/i.test(text.trim());
 
       if (isYes) {
         await handleConfirm();
       } else if (isNo) {
         handleCancel();
-      } else {
+      } else if (isCorrect) {
+        setIsAwaitingCorrection('workout');
         setMessages((prev) => [
           ...prev,
           {
-            id: `bot-retry-${Date.now()}`,
-            text: 'Por favor, confirme respondendo "sim" ou "não" (ou utilize os botões de confirmação rápidos).',
+            id: `bot-ask-correction-${Date.now()}`,
+            text: 'Por favor, digite a correção que deseja fazer (ex: "mude as séries de flexão para 4", "foi ontem", "adicione barra").',
             sender: 'bot',
             timestamp: new Date(),
           },
         ]);
+      } else {
+        await handleProcessCorrection(text, 'workout');
       }
       return;
     }
@@ -413,6 +580,7 @@ function App() {
     if (pendingIAPlan) {
       const isYes = /^(sim|s|yes|y|confirmar|salvar|confirmar plano|salvar plano)$/i.test(text.trim());
       const isNo = /^(n[aã]o|nao|n|no|cancelar)$/i.test(text.trim());
+      const isCorrect = /^(corrigir|corre[çc][ãa]o|corrigir plano)$/i.test(text.trim());
 
       if (isYes) {
         try {
@@ -463,16 +631,19 @@ function App() {
             timestamp: new Date(),
           },
         ]);
-      } else {
+      } else if (isCorrect) {
+        setIsAwaitingCorrection('plan');
         setMessages((prev) => [
           ...prev,
           {
-            id: `bot-confirm-plan-retry-${Date.now()}`,
-            text: 'Por favor, confirme respondendo "sim" ou "não" (ou utilize os botões de confirmação rápidos).',
+            id: `bot-ask-correction-${Date.now()}`,
+            text: 'Por favor, digite a correção que deseja fazer no plano (ex: "mude o treino de segunda", "adicione handstand").',
             sender: 'bot',
             timestamp: new Date(),
           },
         ]);
+      } else {
+        await handleProcessCorrection(text, 'plan');
       }
       return;
     }
@@ -618,6 +789,7 @@ function App() {
       if (planFlow.step === 'confirm_plan') {
         const isConfirm = /^(confirmar|confirmar plano|salvar|sim|s)$/i.test(input);
         const isCancel = /^(cancelar|n[aã]o|nao|n)$/i.test(input);
+        const isCorrect = /^(corrigir|corre[çc][ãa]o|corrigir plano)$/i.test(input);
 
         if (isConfirm && planFlow.planoGerado) {
           try {
@@ -665,15 +837,26 @@ function App() {
             },
           ]);
         } else {
-          setMessages((prev) => [
-            ...prev,
-            {
-              id: `bot-confirm-plan-retry-${Date.now()}`,
-              text: 'Opção inválida. Por favor, clique em "Confirmar Plano" ou "Cancelar".',
-              sender: 'bot',
-              timestamp: new Date(),
-            },
-          ]);
+          // Migra para o fluxo de IA pendente para permitir a correção conversacional!
+          const tempPlan = planFlow.planoGerado;
+          setPendingIAPlan(tempPlan);
+          setPendingPlanAction('create_plan');
+          setPlanFlow({ step: 'none' });
+
+          if (isCorrect) {
+            setIsAwaitingCorrection('plan');
+            setMessages((prev) => [
+              ...prev,
+              {
+                id: `bot-ask-correction-${Date.now()}`,
+                text: 'Por favor, digite a correção que deseja fazer no plano (ex: "mude o treino de segunda", "adicione handstand").',
+                sender: 'bot',
+                timestamp: new Date(),
+              },
+            ]);
+          } else {
+            await handleProcessCorrection(input, 'plan', tempPlan);
+          }
         }
         return;
       }
@@ -784,15 +967,18 @@ function App() {
 
       if (result.isWorkout && result.exercicios && result.exercicios.length > 0) {
         setPendingWorkout(result.exercicios);
+        setPendingWorkoutDate(result.data || null);
         const workoutSummary = result.exercicios
           .map((e) => `- ${e.nome}: ${e.series} série(s) de ${e.repeticoes} repetição(ões) ${e.observacao ? `(${e.observacao})` : ''}`)
           .join('\n');
+
+        const dataLabel = result.data ? ` (para o dia ${formatDate(result.data)})` : '';
 
         setMessages((prev) => [
           ...prev,
           {
             id: `bot-confirm-${Date.now()}`,
-            text: `Entendi o seguinte treino:\n\n${workoutSummary}\n\nConfirma o registro?`,
+            text: `Entendi o seguinte treino${dataLabel}:\n\n${workoutSummary}\n\nConfirma o registro?`,
             sender: 'bot',
             timestamp: new Date(),
           },

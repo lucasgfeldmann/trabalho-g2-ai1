@@ -51,6 +51,7 @@ Praticantes de calistenia precisam registrar seus treinos de forma rápida, gera
 - Exportação e importação do histórico de treinos em formato CSV
 - Visualização simplificada e rápida do plano ativo diário na aba de Plano
 - Modos de visualização alternáveis no Histórico (Tabela tradicional e Cards otimizados para mobile)
+- Fluxo de correção conversacional para operações pendentes de confirmação (treinos e planos) e cálculo automático de datas específicas no registro de exercícios
 - Gráficos de progresso (volume por semana, exercícios mais feitos) — Marco M8
 
 ### Fora do escopo

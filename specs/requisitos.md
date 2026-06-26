@@ -154,11 +154,19 @@
 - **Prioridade:** Média
 - **Feature relacionada:** feat-019
 
+### RF-025 — Opção de Correção Conversacional de Operação Pendente
+
+- **Descrição:** Durante os fluxos de confirmação de registro de treinos ou planos de treino, o sistema deve fornecer uma opção de "Correção". O usuário pode informar a correção a ser feita em linguagem natural (ex: "mude barra para 12" ou "coloque ontem"). O sistema deve enviar essa alteração para a IA reprocessar o treino ou plano atualizado e retornar um novo pedido de confirmação/correção/cancelamento.
+- **Prioridade:** Alta
+- **Feature relacionada:** feat-020
+
+### RF-026 — Reconhecimento e Cálculo de Datas no Registro de Treino
+
+- **Descrição:** Ao registrar um treino via chat, o interpretador da IA deve identificar se o usuário mencionou uma data ou dia específico para o treino (ex: "ontem", "anteontem", "terça-feira passada"). O sistema deve calcular a data correspondente (com base na data atual e dia de hoje) e registrar o treino nessa data específica no banco de dados. Caso nenhuma data ou dia seja mencionado, o treino deve ser registrado com a data do dia atual (hoje).
+- **Prioridade:** Alta
+- **Feature relacionada:** feat-020
+
 ---
-
-
-
-
 
 ## Requisitos Não Funcionais
 

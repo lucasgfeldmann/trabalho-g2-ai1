@@ -151,6 +151,14 @@
       "dependencies": ["feat-018"],
       "status": "completed",
       "evidence": "./init.sh passou: lint 0 erros, typecheck limpo, 40/40 testes no Vitest validando a alternância entre os modos de visualização Tabela e Cards no histórico."
+    },
+    {
+      "id": "feat-020",
+      "name": "Correção Conversacional de Operações e Reconhecimento de Datas no Registro de Treino",
+      "description": "Implementar a opção de correção no fluxo de confirmação/cancelamento de treinos e planos via chat, permitindo que a IA reprocesse a operação corrigida. Habilitar a extração e o cálculo de datas específicas de treino na mensagem do usuário (ex: 'ontem', dias da semana ou datas específicas), assumindo o dia de hoje por padrão.",
+      "dependencies": ["feat-019"],
+      "status": "completed",
+      "evidence": "./init.sh passou: lint 0 erros, typecheck limpo, 42/42 testes no Vitest validando a extração automática de datas relativas, salvamento no dia correto, e correção conversacional interativa com Gemini."
     }
   ]
 }

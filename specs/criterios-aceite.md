@@ -232,6 +232,18 @@
 
 ---
 
+## feat-020 · Correção Conversacional de Operações e Reconhecimento de Datas no Registro de Treino
+
+- [ ] Nos fluxos de confirmação de treino e de plano via chat, o bot oferece opções de "Confirmar", "Corrigir" e "Cancelar" (via botões ou por texto).
+- [ ] Ao escolher "Corrigir" ou enviar uma frase de correção, o bot permite que o usuário digite o que deseja corrigir (seja data, séries, repetições, exercícios ou observações).
+- [ ] O sistema envia a correção solicitada e o objeto original pendente para o Gemini reprocessar, exibindo o treino ou plano atualizado e perguntando novamente pela confirmação/correção/cancelamento.
+- [ ] No registro de treinos, o bot identifica se o usuário especificou datas relativas (ex: "ontem", "anteontem", "terça-feira passada") ou absolutas na mensagem de treino, calculando e registrando o treino na data correspondente no histórico.
+- [ ] Caso nenhuma data ou dia seja mencionado, o treino é registrado com a data do dia atual (hoje).
+- [ ] Testes cobrem o cálculo correto de datas e o fluxo de correção conversacional de treinos.
+- [ ] `./init.sh` passa após a implementação.
+
+---
+
 
 
 
