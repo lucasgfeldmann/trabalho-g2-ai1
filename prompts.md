@@ -32,3 +32,4 @@
 - **2026-06-26T06:18:17-03:00**: vamos criar uma regra de que sempre que te dou uma tarefa que seja um requisito do sistema voce vai atualizar o arquivo de requisitos e revisar se o arquivo de projetos esta condizente e tambem ira criar  criterios de aceite
 - **2026-06-26T06:21:25-03:00**: outra regra, nunca codifique ou desenvolva sem antes escrever features para implementar/desenvolver na feature_list
 - **2026-06-26T06:25:36-03:00**: preciso que a ia tenha e mantenha o contexto da conversa, ou seja, deve se manter a sessão com a ia
+- **2026-06-26T06:36:37-03:00**: a ia tem que ser capaz de consultar as informações salvas como o plano registrado , o historio de exercicios realizado, etc

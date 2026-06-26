@@ -88,7 +88,14 @@
 - **Prioridade:** Alta
 - **Feature relacionada:** feat-011
 
+### RF-014 — Acesso da IA a Dados Locais (Plano e Histórico)
+
+- **Descrição:** O assistente de IA deve ser capaz de responder a perguntas do usuário sobre seu plano de treino ativo e seu histórico de exercícios realizados. O sistema deve recuperar essas informações do banco de dados local e repassá-las no contexto de chamada da API do Gemini.
+- **Prioridade:** Alta
+- **Feature relacionada:** feat-012
+
 ---
+
 
 
 ## Requisitos Não Funcionais

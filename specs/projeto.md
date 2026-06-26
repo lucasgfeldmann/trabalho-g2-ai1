@@ -45,6 +45,7 @@ Praticantes de calistenia precisam registrar seus treinos de forma rápida, gera
 - Banco de dados local (IndexedDB via Dexie.js) — sem backend, sem conta
 - Reconhecimento de exercícios de calistenia mais comuns
 - Manutenção de contexto conversacional (sessão) com a API do Gemini
+- Acesso e consulta da IA sobre plano ativo e histórico local do usuário
 - Gráficos de progresso (volume por semana, exercícios mais feitos) — Marco M8
 
 ### Fora do escopo

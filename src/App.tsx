@@ -674,7 +674,23 @@ function App() {
       }
       const historyForGemini = userMsgIndex !== -1 ? messages.slice(0, userMsgIndex) : messages;
 
-      const result = await parseUserMessage(apiKey, activeModel, text, historyForGemini);
+      // Recupera dados do banco local (IndexedDB) para dar contexto à IA
+      const activePlans = await db.plano_ativo.toArray();
+      const planoAtivo = activePlans.length > 0 ? activePlans[0] : undefined;
+
+      const allHistory = await db.historico_treinos.toArray();
+      const sortedHistory = allHistory.sort((a, b) => b.data.localeCompare(a.data));
+      const historicoTreinos = sortedHistory.slice(0, 15);
+
+      const diasSemana = ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'];
+      const contextData = {
+        planoAtivo,
+        historicoTreinos,
+        dataAtual: new Date().toISOString().split('T')[0],
+        diaSemanaAtual: diasSemana[new Date().getDay()],
+      };
+
+      const result = await parseUserMessage(apiKey, activeModel, text, historyForGemini, contextData);
 
       setMessages((prev) => prev.filter((m) => m.id !== thinkingId));
 

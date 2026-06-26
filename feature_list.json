@@ -87,6 +87,14 @@
       "dependencies": ["feat-010"],
       "status": "completed",
       "evidence": "./init.sh passou: 22/22 testes no Vitest validando a junção de turnos, remoção de erros/mensagens de carregamento e montagem correta de payload para a API do Gemini."
+    },
+    {
+      "id": "feat-012",
+      "name": "Consulta de Dados Locais pela IA",
+      "description": "Recuperar informações de plano ativo e histórico de treinos do IndexedDB local e enviá-las como dados contextuais à API do Gemini, permitindo que a IA responda a consultas e dúvidas sobre o progresso e treinos cadastrados do usuário.",
+      "dependencies": ["feat-011"],
+      "status": "completed",
+      "evidence": "./init.sh passou: 23/23 testes no Vitest validando a injeção do plano e do histórico lidos do IndexedDB na systemInstruction para a API do Gemini."
     }
   ]
 }

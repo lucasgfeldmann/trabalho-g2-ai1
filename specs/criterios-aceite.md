@@ -131,6 +131,18 @@
 
 ---
 
+## feat-012 · Consulta de Dados Locais pela IA
+
+- [ ] A chamada para a API do Gemini recebe dados contextuais atualizados obtidos do IndexedDB (`plano_ativo` e `historico_treinos`).
+- [ ] O contexto enviado contém a data atual e o dia da semana atual do dispositivo do usuário.
+- [ ] A IA responde a perguntas sobre o plano ativo do usuário (exercícios, séries e repetições) usando as informações repassadas.
+- [ ] A IA responde a perguntas sobre o histórico de exercícios realizados (treino de hoje, de ontem, de um dia específico, etc.) de forma precisa.
+- [ ] Testes unitários/integração validam que os dados do IndexedDB são lidos, injetados no prompt e processados corretamente pelo parser da IA.
+- [ ] `./init.sh` passa após a implementação.
+
+---
+
+
 
 ## Template para novas features
 

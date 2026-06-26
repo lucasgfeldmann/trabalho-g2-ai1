@@ -144,5 +144,36 @@ describe('Gemini Service & Context Flow', () => {
         exercicios: [{ nome: 'Flexão', series: 3, repeticoes: 10, observacao: '' }],
       });
     });
+
+    it('should inject contextData into systemInstruction', async () => {
+      generateContentMock.mockResolvedValue({
+        text: '{"isWorkout": false, "isCalisthenics": true, "respostaConversacional": "Você fez 10 flexões ontem."}',
+      });
+
+      const contextData = {
+        planoAtivo: { nome: 'Plano Legal', nivel: 'iniciante', dias: [] },
+        historicoTreinos: [{ data: '2026-06-25', exercicios_realizados: [{ nome: 'Flexão', series: 1, repeticoes: 10 }] }],
+        dataAtual: '2026-06-26',
+        diaSemanaAtual: 'Sexta-feira',
+      };
+
+      await parseUserMessage('dummy-key', 'dummy-model', 'o que treinei ontem?', [], contextData);
+
+      expect(generateContentMock).toHaveBeenCalledWith(
+        expect.objectContaining({
+          config: expect.objectContaining({
+            systemInstruction: expect.stringContaining('ESTADO ATUAL DO USUÁRIO'),
+          }),
+        })
+      );
+
+      expect(generateContentMock).toHaveBeenCalledWith(
+        expect.objectContaining({
+          config: expect.objectContaining({
+            systemInstruction: expect.stringContaining('Plano Legal'),
+          }),
+        })
+      );
+    });
   });
 });

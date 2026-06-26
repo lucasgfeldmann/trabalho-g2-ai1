@@ -20,6 +20,13 @@ export interface ChatMessage {
   isError?: boolean;
 }
 
+export interface UserContextData {
+  planoAtivo?: any;
+  historicoTreinos?: any[];
+  dataAtual: string;
+  diaSemanaAtual: string;
+}
+
 export function buildGeminiContents(
   history: ChatMessage[],
   currentPrompt: string
@@ -64,11 +71,12 @@ export async function parseUserMessage(
   apiKey: string,
   modelName: string,
   text: string,
-  history: ChatMessage[] = []
+  history: ChatMessage[] = [],
+  contextData?: UserContextData
 ): Promise<ParseResult> {
   const ai = new GoogleGenAI({ apiKey });
 
-  const systemInstruction = `
+  let systemInstruction = `
 Você é o interpretador de comandos do CalisBot, um chatbot de calistenia.
 Sua tarefa é analisar a mensagem de treino enviada pelo usuário e extrair os exercícios realizados.
 
@@ -117,6 +125,22 @@ Mapeie os exercícios para os nomes catalogados padronizados:
 Se o número de séries não for mencionado (ex: "fiz 15 flexões"), assuma series = 1 e repeticoes = 15.
 Se for mencionado "3x10 flexões" ou "3 séries de 10 flexões", series = 3 e repeticoes = 10.
 `;
+
+  if (contextData) {
+    systemInstruction += `
+
+ESTADO ATUAL DO USUÁRIO:
+- Data de hoje: ${contextData.dataAtual} (${contextData.diaSemanaAtual})
+
+PLANO DE TREINO ATIVO DO USUÁRIO:
+${contextData.planoAtivo ? JSON.stringify(contextData.planoAtivo, null, 2) : 'Nenhum plano ativo registrado.'}
+
+HISTÓRICO RECENTE DE TREINOS DO USUÁRIO:
+${contextData.historicoTreinos && contextData.historicoTreinos.length > 0 ? JSON.stringify(contextData.historicoTreinos, null, 2) : 'Nenhum treino realizado ainda.'}
+
+Se o usuário perguntar sobre o seu plano de treino, sobre o seu histórico de treinos (ex: o que treinou hoje, o que fez ontem, se bateu a meta, quantos exercícios já fez, etc.), responda à pergunta na chave "respostaConversacional" usando as informações acima de forma amigável, clara e motivadora.
+`;
+  }
 
   try {
     const contents = buildGeminiContents(history, text);
