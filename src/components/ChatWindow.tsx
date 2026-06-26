@@ -22,7 +22,64 @@ export const ChatWindow: React.FC<ChatWindowProps> = ({
   hasApiKey,
 }) => {
   const [inputText, setInputText] = useState('');
+  const [isRecording, setIsRecording] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const recognitionRef = useRef<any>(null);
+
+  // Check Web Speech API support
+  const SpeechRecognition =
+    (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
+  const isSpeechSupported = !!SpeechRecognition;
+
+  useEffect(() => {
+    if (isSpeechSupported) {
+      const rec = new SpeechRecognition();
+      rec.continuous = true;
+      rec.interimResults = true;
+      rec.lang = 'pt-BR';
+
+      rec.onstart = () => {
+        setIsRecording(true);
+      };
+
+      rec.onresult = (event: any) => {
+        let finalTranscript = '';
+        let interimTranscript = '';
+
+        for (let i = event.resultIndex; i < event.results.length; ++i) {
+          if (event.results[i].isFinal) {
+            finalTranscript += event.results[i][0].transcript;
+          } else {
+            interimTranscript += event.results[i][0].transcript;
+          }
+        }
+
+        const transcript = finalTranscript || interimTranscript;
+        setInputText(transcript);
+      };
+
+      rec.onerror = (event: any) => {
+        console.error('Speech recognition error', event.error);
+        setIsRecording(false);
+      };
+
+      rec.onend = () => {
+        setIsRecording(false);
+      };
+
+      recognitionRef.current = rec;
+    }
+
+    return () => {
+      if (recognitionRef.current) {
+        try {
+          recognitionRef.current.abort();
+        } catch {
+          // ignore
+        }
+      }
+    };
+  }, [isSpeechSupported, SpeechRecognition]);
 
   // Auto-scroll to bottom whenever messages update
   const scrollToBottom = () => {
@@ -35,9 +92,35 @@ export const ChatWindow: React.FC<ChatWindowProps> = ({
     scrollToBottom();
   }, [messages]);
 
+  const toggleRecording = () => {
+    if (!isSpeechSupported) return;
+
+    if (isRecording) {
+      recognitionRef.current?.stop();
+    } else {
+      setInputText('');
+      try {
+        recognitionRef.current?.start();
+      } catch (err) {
+        console.error('Failed to start recognition', err);
+      }
+    }
+  };
+
+  const getMicTitle = () => {
+    if (!isSpeechSupported) return 'Reconhecimento de voz não suportado neste navegador.';
+    if (!hasApiKey) return 'Configure a API Key para conversar por voz.';
+    return isRecording ? 'Gravando voz... Clique para parar.' : 'Gravar por voz (Clique único)';
+  };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!inputText.trim()) return;
+
+    // Stop recording if active on send
+    if (isRecording) {
+      recognitionRef.current?.stop();
+    }
 
     onSend(inputText.trim());
     setInputText('');
@@ -129,10 +212,11 @@ export const ChatWindow: React.FC<ChatWindowProps> = ({
         <form onSubmit={handleSubmit} className="input-form">
           <button
             type="button"
-            className="icon-btn mic-btn"
-            title="Gravar por voz (Em breve)"
-            disabled
-            aria-label="Gravar comando por voz"
+            className={`icon-btn mic-btn ${isRecording ? 'recording' : ''}`}
+            title={getMicTitle()}
+            disabled={!hasApiKey || !isSpeechSupported}
+            onClick={toggleRecording}
+            aria-label={isRecording ? 'Parar gravação de voz' : 'Gravar comando por voz'}
           >
             🎤
           </button>

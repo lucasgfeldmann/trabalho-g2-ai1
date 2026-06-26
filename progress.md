@@ -2,7 +2,7 @@
 
 ## Current State
 
-**Last Updated:** 2026-06-26 05:07
+**Last Updated:** 2026-06-26 05:15
 **Active Feature:** — (todas as features concluídas ✅)
 
 ## Status
@@ -17,6 +17,7 @@
 - [x] **specs - Especificações e Requisitos**: Esclarecimento das perguntas de design/IA/voz e atualização de `projeto.md`, `requisitos.md` e `criterios-aceite.md` (incluindo escolha de modelo de IA no painel de configurações e definição do `gemini-3-flash-preview` como padrão).
 - [x] **infra - Instalação do SDK**: Instalada a biblioteca `@google/genai` no projeto para integração futura com a API do Gemini.
 - [x] **feat-006 - Interface de Chat (UI)**: Janela de chat responsiva (320px+), bolhas de mensagens com estilo Neon Calisthenics, scroll automático e painel de configurações para API Key e modelo Gemini (salvos localmente).
+- [x] **feat-007 - Entrada por Áudio (Web Speech API)**: Integração do botão de microfone com a Web Speech API para transcrição em tempo real de voz para o input do chat.
 
 ### What's In Progress
 
@@ -24,7 +25,7 @@
 
 ### What's Next
 
-- **feat-007 - Entrada por Áudio (Web Speech API)**: Integração do botão de microfone com reconhecimento de voz nativo do navegador.
+- **feat-008 - Registro de Exercícios via Chat**: Conectar o chat com o SDK `@google/genai` e configurar o parser de comandos de exercícios, salvando dados no IndexedDB.
 
 ## Blockers / Risks
 

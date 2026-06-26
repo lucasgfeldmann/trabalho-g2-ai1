@@ -1,11 +1,16 @@
 import { render, screen, fireEvent, waitFor } from '@testing-library/react'
-import { describe, it, expect, beforeEach, vi } from 'vitest'
+import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest'
 import App from '../App'
 import { ChatWindow } from '../components/ChatWindow'
 
 describe('CalisBot App & Components', () => {
   beforeEach(() => {
     localStorage.clear()
+  })
+
+  afterEach(() => {
+    delete (window as any).SpeechRecognition;
+    delete (window as any).webkitSpeechRecognition;
   })
 
   it('renders welcome screen when open for the first time without API key', () => {
@@ -108,5 +113,64 @@ describe('CalisBot App & Components', () => {
 
     expect(screen.getByText('Olá')).toBeInTheDocument()
     expect(screen.getByText('Como posso ajudar?')).toBeInTheDocument()
+  })
+
+  it('toggles recording and updates input with voice transcript from mock SpeechRecognition', async () => {
+    localStorage.setItem('gemini_api_key', 'valid-key')
+
+    const startMock = vi.fn();
+    const stopMock = vi.fn();
+
+    class MockSpeechRecognition {
+      continuous = false;
+      interimResults = false;
+      lang = 'pt-BR';
+      onstart = () => {};
+      onresult = (_event: any) => {};
+      onerror = (_event: any) => {};
+      onend = () => {};
+
+      start = startMock.mockImplementation(() => {
+        this.onstart();
+        setTimeout(() => {
+          this.onresult({
+            resultIndex: 0,
+            results: [
+              {
+                isFinal: true,
+                0: { transcript: 'fiz 3 séries de 10 flexões diamante' }
+              }
+            ]
+          });
+          this.stop();
+        }, 50);
+      });
+
+      stop = stopMock.mockImplementation(() => {
+        this.onend();
+      });
+      abort = vi.fn();
+    }
+
+    (window as any).SpeechRecognition = MockSpeechRecognition;
+
+    render(<App />)
+
+    const micBtn = screen.getByLabelText('Gravar comando por voz')
+    expect(micBtn).toBeEnabled()
+
+    // Start recording
+    fireEvent.click(micBtn)
+    expect(startMock).toHaveBeenCalled()
+
+    // Wait for the mock speech transcript to populate input
+    const input = screen.getByPlaceholderText(/Envie uma mensagem ou diga o que treinou.../i) as HTMLInputElement
+    await waitFor(() => {
+      expect(input.value).toBe('fiz 3 séries de 10 flexões diamante')
+    })
+
+    // Click to stop
+    fireEvent.click(micBtn)
+    expect(stopMock).toHaveBeenCalled()
   })
 })
