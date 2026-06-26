@@ -585,3 +585,23 @@ body {
 ::-webkit-scrollbar-thumb:hover {
   background: var(--text-muted);
 }
+
+.confirmation-actions {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 12px;
+  justify-content: center;
+  width: 100%;
+}
+
+.confirm-action-btn,
+.cancel-action-btn {
+  flex: 1;
+  max-width: 150px;
+  font-size: 14px;
+  padding: 8px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}

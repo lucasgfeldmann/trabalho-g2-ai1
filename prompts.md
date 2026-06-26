@@ -26,3 +26,4 @@
 - **2026-06-26T05:11:48-03:00**: sim inicie
 - **2026-06-26T05:20:31-03:00**: adicione em server allowed host * para eu testar no celular
 - **2026-06-26T05:24:31-03:00**: uma coisa que tem que ser adicionada a ia mais para frente quando for implementar é um guardrail para a ia não responder nada que não for relacionado a calistenia
+- **2026-06-26T05:25:40-03:00**: podemos prosseguir

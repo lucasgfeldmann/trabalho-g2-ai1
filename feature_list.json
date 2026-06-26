@@ -61,7 +61,7 @@
       "name": "Registro de Exercícios via Chat",
       "description": "Implementar parser de linguagem natural para interpretar comandos de registro de exercício (ex: 'fiz 3x10 flexões', '15 barras', '3 séries de 8 muscle up'). Bot confirma antes de salvar. Exercício salvo no IndexedDB via Dexie.js. Suportar variações ortográficas dos exercícios de calistenia catalogados em specs/requisitos.md.",
       "dependencies": ["feat-007"],
-      "status": "not-started",
+      "status": "in-progress",
       "evidence": ""
     },
     {

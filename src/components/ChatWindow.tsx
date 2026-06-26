@@ -13,6 +13,9 @@ interface ChatWindowProps {
   onSend: (text: string) => void;
   onOpenSettings: () => void;
   hasApiKey: boolean;
+  pendingConfirmation?: boolean;
+  onConfirm?: () => void;
+  onCancel?: () => void;
 }
 
 export const ChatWindow: React.FC<ChatWindowProps> = ({
@@ -20,6 +23,9 @@ export const ChatWindow: React.FC<ChatWindowProps> = ({
   onSend,
   onOpenSettings,
   hasApiKey,
+  pendingConfirmation = false,
+  onConfirm,
+  onCancel,
 }) => {
   const [inputText, setInputText] = useState('');
   const [isRecording, setIsRecording] = useState(false);
@@ -204,6 +210,16 @@ export const ChatWindow: React.FC<ChatWindowProps> = ({
 
       {/* Input area */}
       <div className="chat-input-bar">
+        {pendingConfirmation && (
+          <div className="confirmation-actions">
+            <button type="button" className="primary-btn confirm-action-btn" onClick={onConfirm}>
+              Confirmar 👍
+            </button>
+            <button type="button" className="secondary-btn cancel-action-btn" onClick={onCancel}>
+              Cancelar 👎
+            </button>
+          </div>
+        )}
         {!hasApiKey && messages.length > 0 && (
           <div className="input-warning-banner">
             A API Key do Gemini está ausente. <button onClick={onOpenSettings}>Configurar Chave</button>
