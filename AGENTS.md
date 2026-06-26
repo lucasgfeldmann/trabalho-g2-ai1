@@ -23,6 +23,7 @@ If baseline verification is failing, repair that first before adding new scope.
 - **Stay in scope**: Don't modify files unrelated to the current feature
 - **Leave clean state**: Next session must be able to run `./init.sh` immediately
 - **Auto-document features**: Immediately after completing a feature, create `docs/feat-XXX.md` using the template in `docs/TEMPLATE.md`. Documentation is mandatory — a feature without its doc file is not done.
+- **Passo a passo de teste**: Sempre que implementar e concluir uma feature, passe um guia passo a passo claro e objetivo contendo instruções manuais para o usuário validar o comportamento visual e funcional da funcionalidade no navegador.
 
 ## Required Artifacts
 

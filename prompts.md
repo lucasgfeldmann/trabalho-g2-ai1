@@ -22,6 +22,6 @@
 - **2026-06-26T05:00:18-03:00**: me diga sempre são criado testes antes de se desenvolver?
 - **2026-06-26T05:02:38-03:00**: utilize a biblioteca     @google/genai para a conexão com a llm se voce precisar de uma key para testar a llm me avise
 - **2026-06-26T05:04:02-03:00**: podemos iniciar
-
+- **2026-06-26T05:09:53-03:00**: sempre que voce implementar uma feature me passe um passo a passo para testar e validar ela
 
 
