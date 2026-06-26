@@ -15,7 +15,7 @@ export const SettingsPanel: React.FC<SettingsPanelProps> = ({
   onClose,
   onSave,
   initialApiKey = '',
-  initialModel = 'gemini-2.5-flash',
+  initialModel = 'gemini-3.1-flash-lite',
   initialCustomModel = '',
 }) => {
   const [apiKey, setApiKey] = useState(initialApiKey);
@@ -39,9 +39,9 @@ export const SettingsPanel: React.FC<SettingsPanelProps> = ({
 
   const handleClear = () => {
     setApiKey('');
-    setModel('gemini-2.5-flash');
+    setModel('gemini-3.1-flash-lite');
     setCustomModel('');
-    onSave('', 'gemini-2.5-flash', '');
+    onSave('', 'gemini-3.1-flash-lite', '');
   };
 
   const handleResetApp = async () => {
@@ -93,11 +93,11 @@ export const SettingsPanel: React.FC<SettingsPanelProps> = ({
               onChange={(e) => setModel(e.target.value)}
               className="select-input"
             >
-              <option value="gemini-2.5-flash">gemini-2.5-flash (Estável / Recomendado)</option>
+              <option value="gemini-3.1-flash-lite">gemini-3.1-flash-lite (Padrão / Recomendado)</option>
+              <option value="gemini-2.5-flash">gemini-2.5-flash (Estável)</option>
               <option value="gemini-2.5-flash-lite">gemini-2.5-flash-lite (Mais rápido)</option>
               <option value="gemini-3-flash-preview">gemini-3-flash-preview (Preview)</option>
               <option value="gemini-3.5-flash">gemini-3.5-flash (Preview)</option>
-              <option value="gemini-3.1-flash-lite">gemini-3.1-flash-lite (Preview)</option>
               <option value="gemini-flash-lite-latest">gemini-flash-lite-latest</option>
               <option value="gemini-1.5-flash">gemini-1.5-flash</option>
               <option value="gemini-1.5-pro">gemini-1.5-pro</option>

@@ -40,6 +40,15 @@ export const ChatWindow: React.FC<ChatWindowProps> = ({
   const [isRecording, setIsRecording] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const recognitionRef = useRef<any>(null);
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
+
+  // Auto-resize textarea conforme o texto cresce
+  useEffect(() => {
+    const el = textareaRef.current;
+    if (!el) return;
+    el.style.height = 'auto';
+    el.style.height = `${Math.min(el.scrollHeight, 160)}px`;
+  }, [inputText]);
 
   // Check Web Speech API support
   const SpeechRecognition =
@@ -265,6 +274,7 @@ export const ChatWindow: React.FC<ChatWindowProps> = ({
                   🎤
                 </button>
                 <textarea
+                  ref={textareaRef}
                   className="chat-input"
                   placeholder={
                     disableTextInput
@@ -280,7 +290,6 @@ export const ChatWindow: React.FC<ChatWindowProps> = ({
                   onKeyDown={(e) => {
                     if (e.key === 'Enter' && !e.shiftKey) {
                       e.preventDefault();
-                      // Simular submit enviando o form
                       const form = e.currentTarget.form;
                       if (form) {
                         form.requestSubmit();
@@ -289,10 +298,9 @@ export const ChatWindow: React.FC<ChatWindowProps> = ({
                   }}
                   style={{
                     resize: 'none',
-                    height: 'auto',
                     minHeight: '44px',
-                    maxHeight: '120px',
-                    lineHeight: '1.4',
+                    maxHeight: '160px',
+                    lineHeight: '1.5',
                     boxSizing: 'border-box',
                     overflowY: 'auto',
                     paddingTop: '10px',
