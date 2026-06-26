@@ -24,6 +24,7 @@ If baseline verification is failing, repair that first before adding new scope.
 - **Leave clean state**: Next session must be able to run `./init.sh` immediately
 - **Auto-document features**: Immediately after completing a feature, create `docs/feat-XXX.md` using the template in `docs/TEMPLATE.md`. Documentation is mandatory — a feature without its doc file is not done.
 - **Passo a passo de teste**: Sempre que implementar e concluir uma feature, passe um guia passo a passo claro e objetivo contendo instruções manuais para o usuário validar o comportamento visual e funcional da funcionalidade no navegador.
+- **Atualização de Documentação de Requisitos**: Sempre que receber uma tarefa que seja um requisito do sistema, o agente deve obrigatoriamente atualizar o arquivo de requisitos (`specs/requisitos.md`), revisar se o arquivo de projetos (`specs/projeto.md`) está condizente e também criar/atualizar os critérios de aceite (`specs/criterios-aceite.md`).
 
 ## Required Artifacts
 
