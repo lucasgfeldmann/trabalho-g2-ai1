@@ -16,6 +16,7 @@
 - [x] **feat-005 - Cleanup and Handoff**: session-handoff.md preenchido, commit final realizado.
 - [x] **specs - Especificações e Requisitos**: Esclarecimento das perguntas de design/IA/voz e atualização de `projeto.md`, `requisitos.md` e `criterios-aceite.md` (incluindo escolha de modelo de IA no painel de configurações e definição do `gemini-3-flash-preview` como padrão).
 - [x] **infra - Instalação do SDK**: Instalada a biblioteca `@google/genai` no projeto para integração futura com a API do Gemini.
+- [x] **infra - Exposição de Rede Local**: Configurado `host: true` e `allowedHosts: true` no `vite.config.ts` para acesso externo (celular).
 - [x] **feat-006 - Interface de Chat (UI)**: Janela de chat responsiva (320px+), bolhas de mensagens com estilo Neon Calisthenics, scroll automático e painel de configurações para API Key e modelo Gemini (salvos localmente).
 - [x] **feat-007 - Entrada por Áudio (Web Speech API)**: Integração do botão de microfone com a Web Speech API para transcrição em tempo real de voz para o input do chat.
 

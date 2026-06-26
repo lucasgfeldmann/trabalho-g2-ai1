@@ -24,4 +24,4 @@
 - **2026-06-26T05:04:02-03:00**: podemos iniciar
 - **2026-06-26T05:09:53-03:00**: sempre que voce implementar uma feature me passe um passo a passo para testar e validar ela
 - **2026-06-26T05:11:48-03:00**: sim inicie
-
+- **2026-06-26T05:20:31-03:00**: adicione em server allowed host * para eu testar no celular
