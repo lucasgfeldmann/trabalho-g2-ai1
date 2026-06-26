@@ -8,7 +8,7 @@ Before writing code:
 
 1. **Confirm working directory** with `pwd`
 2. **Read this file** completely
-3. **Read project docs if present** (`docs/ARCHITECTURE.md`, `docs/PRODUCT.md`, README, or equivalent)
+3. **Read project docs if present** (`specs/projeto.md`, `specs/requisitos.md`, `specs/criterios-aceite.md`, README, or equivalent)
 4. **Run `./init.sh`** to verify environment is healthy
 5. **Read `feature_list.json`** to see current feature state
 6. **Review recent commits** with `git log --oneline -5`

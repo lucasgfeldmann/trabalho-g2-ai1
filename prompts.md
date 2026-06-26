@@ -9,6 +9,14 @@
 - **2026-06-26T03:48:02-03:00**: continue
 - **2026-06-26T03:50:29-03:00**: sim
 - **2026-06-26T03:53:09-03:00**: sim
+- **2026-06-26T04:09:08-03:00**: qual é o uso correto desse aquivo de features?
+- **2026-06-26T04:12:26-03:00**: crei uma pasta na raiz chamada com os arquivos projeto.md requisitos.md e criterios-aceite.md
+- **2026-06-26T04:13:02-03:00**: specs
+- **2026-06-26T04:18:58-03:00**: vamos escrever e detalhar o projeto. o projeto é ser um chatbot que realiza o cadastro de realização de exercicios e tambem criador de plano de exercicio para pessoas que praticam calistenia. sera um app com um banco local onde ele sava informações como o plano de exercicios atual e o usuario consegue via audio ou texto escrever rapidamento o que ele esta executando e o de execicio salvando um historio de exercicios realizados
+
+
+
+
 
 
 

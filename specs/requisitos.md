@@ -1,0 +1,147 @@
+# Requisitos — CalisBot
+
+## Requisitos Funcionais
+
+### RF-001 — Interface de Chat
+
+- **Descrição:** O sistema deve exibir uma interface de conversa (chat) com histórico de mensagens, campo de entrada de texto e botão de envio.
+- **Prioridade:** Alta
+- **Feature relacionada:** feat-006
+
+### RF-002 — Entrada por Texto
+
+- **Descrição:** O sistema deve aceitar mensagens de texto digitadas pelo usuário e processar comandos de registro de exercício e criação de plano.
+- **Prioridade:** Alta
+- **Feature relacionada:** feat-006
+
+### RF-003 — Entrada por Áudio
+
+- **Descrição:** O sistema deve aceitar comandos de voz usando a Web Speech API (SpeechRecognition). O texto transcrito deve ser exibido no campo de entrada antes de ser enviado.
+- **Prioridade:** Alta
+- **Feature relacionada:** feat-007
+
+### RF-004 — Criação de Plano de Exercícios
+
+- **Descrição:** O sistema deve guiar o usuário via chat para criar um plano de calistenia personalizado, perguntando nível (iniciante / intermediário / avançado), dias disponíveis por semana e objetivos (força, resistência, habilidades).
+- **Prioridade:** Alta
+- **Feature relacionada:** feat-009
+
+### RF-005 — Exibição do Plano Ativo
+
+- **Descrição:** O sistema deve exibir o plano de exercícios ativo do dia atual, destacando quais exercícios já foram registrados e quais ainda faltam.
+- **Prioridade:** Alta
+- **Feature relacionada:** feat-009
+
+### RF-006 — Registro Rápido de Exercício
+
+- **Descrição:** O sistema deve interpretar mensagens em linguagem natural para registrar exercícios. Exemplos aceitos:
+  - `"fiz 3x10 flexões"`
+  - `"15 barras"`
+  - `"3 séries de 8 muscle up"`
+  - `"fiz agachamento 4 vezes 12"`
+- **Prioridade:** Alta
+- **Feature relacionada:** feat-008
+
+### RF-007 — Confirmação de Registro
+
+- **Descrição:** Após interpretar um exercício, o chatbot deve confirmar o que foi entendido antes de salvar. Ex: *"Entendi: 3 séries de 10 flexões. Confirma? (sim/não)"*
+- **Prioridade:** Média
+- **Feature relacionada:** feat-008
+
+### RF-008 — Histórico de Treinos
+
+- **Descrição:** O sistema deve exibir uma tela de histórico com todos os treinos realizados, agrupados por data, mostrando os exercícios e séries de cada sessão.
+- **Prioridade:** Alta
+- **Feature relacionada:** feat-010
+
+### RF-009 — Persistência Local
+
+- **Descrição:** O sistema deve salvar todos os dados (plano ativo, histórico de treinos) no dispositivo do usuário usando IndexedDB (via Dexie.js). Os dados devem persistir entre sessões (fechamento e reabertura do app).
+- **Prioridade:** Alta
+- **Feature relacionada:** feat-008 / feat-009
+
+### RF-010 — Edição e Remoção de Plano
+
+- **Descrição:** O usuário deve poder, via chat, substituir o plano ativo por um novo ou editar exercícios do plano existente.
+- **Prioridade:** Média
+- **Feature relacionada:** feat-009
+
+### RF-011 — Biblioteca de Exercícios de Calistenia
+
+- **Descrição:** O sistema deve reconhecer e catalogar os exercícios mais comuns de calistenia, incluindo: flexão, flexão diamante, archer push-up, barra, muscle up, dip, L-sit, handstand, agachamento, pistol squat, lunge, prancha, hollow body.
+- **Prioridade:** Média
+- **Feature relacionada:** feat-008
+
+---
+
+## Requisitos Não Funcionais
+
+### RNF-001 — Mobile-First
+
+- **Descrição:** A interface deve ser projetada prioritariamente para telas de 375px (iPhone SE) e funcionar bem em até 1280px (desktop).
+- **Prioridade:** Alta
+
+### RNF-002 — Velocidade de Registro
+
+- **Descrição:** O registro de um exercício (da fala/digitação até a confirmação salva) deve ocorrer em menos de 3 segundos.
+- **Prioridade:** Alta
+
+### RNF-003 — Offline First
+
+- **Descrição:** O app deve funcionar 100% offline. Nenhuma funcionalidade deve depender de conexão com a internet.
+- **Prioridade:** Alta
+
+### RNF-004 — Usabilidade com as Mãos Livres
+
+- **Descrição:** Deve ser possível registrar um exercício completo apenas com voz, sem precisar tocar na tela após pressionar o botão de microfone.
+- **Prioridade:** Alta
+
+### RNF-005 — Feedback Visual Imediato
+
+- **Descrição:** O chatbot deve responder ao usuário em menos de 500ms após o envio da mensagem (processamento local).
+- **Prioridade:** Média
+
+### RNF-006 — Acessibilidade
+
+- **Descrição:** Botões e campos devem ter labels acessíveis. Contraste mínimo WCAG 2.1 AA. Suporte a navegação por teclado.
+- **Prioridade:** Média
+
+---
+
+## Regras de Negócio
+
+### RN-001 — Um plano ativo por vez
+
+- **Descrição:** O usuário só pode ter um plano de exercícios ativo. Criar um novo plano substitui o anterior (com confirmação).
+- **Impacto:** Simplifica a lógica de exibição e registro.
+
+### RN-002 — Sessão de treino por dia
+
+- **Descrição:** Os exercícios registrados são agrupados por data. Múltiplos registros no mesmo dia pertencem à mesma sessão.
+- **Impacto:** O histórico é organizado por dia de treino.
+
+### RN-003 — Interpretação tolerante a erros
+
+- **Descrição:** O parser de linguagem natural deve aceitar variações ortográficas comuns (ex: "flexao", "fleção", "push up", "pushup") e abreviações (ex: "barra = pull up").
+- **Impacto:** Reduz atrito no registro rápido.
+
+### RN-004 — Confirmação antes de salvar
+
+- **Descrição:** Exercícios registrados via comando de linguagem natural exigem confirmação do usuário antes de serem persistidos no banco.
+- **Impacto:** Evita registros incorretos por erros de transcrição de voz.
+
+---
+
+## Glossário
+
+| Termo | Definição |
+|---|---|
+| Calistenia | Modalidade de exercício físico que usa o peso do próprio corpo como resistência |
+| Plano ativo | O conjunto de exercícios definidos para a semana atual do usuário |
+| Sessão de treino | Conjunto de exercícios realizados em um mesmo dia |
+| Série | Conjunto de repetições de um exercício sem descanso (ex: "3 séries de 10") |
+| Repetição | Uma execução completa de um movimento (ex: uma flexão) |
+| Muscle up | Exercício avançado que combina barra e dip em um único movimento |
+| Dip | Exercício de tríceps/peitoral realizado em barras paralelas |
+| L-sit | Posição isométrica onde o corpo forma um "L" suspenso |
+| Handstand | Parada de mão (posição invertida equilibrada nos punhos) |

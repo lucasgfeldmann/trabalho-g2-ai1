@@ -3,7 +3,7 @@
     {
       "id": "feat-001",
       "name": "Project Setup",
-      "description": "Confirm the project can install dependencies, run verification, and start from a clean checkout",
+      "description": "Configurar harness de agentes e verificar ambiente de desenvolvimento.",
       "dependencies": [],
       "status": "completed",
       "evidence": "Ran ./init.sh successfully executing npm install and npm test"
@@ -39,6 +39,46 @@
       "dependencies": ["feat-004"],
       "status": "completed",
       "evidence": "session-handoff.md preenchido, progress.md atualizado, commit final realizado com todas as features concluídas."
+    },
+    {
+      "id": "feat-006",
+      "name": "Interface de Chat (UI)",
+      "description": "Criar a tela principal de chat do CalisBot. Deve exibir histórico de mensagens com bolhas diferenciadas (usuário à direita, bot à esquerda), campo de texto, botão de envio. Mobile-first (375px). Scroll automático para a última mensagem. Componente ChatWindow com props: messages[], onSend(text).",
+      "dependencies": ["feat-005"],
+      "status": "not-started",
+      "evidence": ""
+    },
+    {
+      "id": "feat-007",
+      "name": "Entrada por Áudio (Web Speech API)",
+      "description": "Adicionar botão de microfone na interface de chat. Ao pressionar, inicia gravação via Web Speech API (SpeechRecognition). O texto transcrito preenche o campo de entrada. Indicador visual durante gravação. Graceful degradation em browsers sem suporte.",
+      "dependencies": ["feat-006"],
+      "status": "not-started",
+      "evidence": ""
+    },
+    {
+      "id": "feat-008",
+      "name": "Registro de Exercícios via Chat",
+      "description": "Implementar parser de linguagem natural para interpretar comandos de registro de exercício (ex: 'fiz 3x10 flexões', '15 barras', '3 séries de 8 muscle up'). Bot confirma antes de salvar. Exercício salvo no IndexedDB via Dexie.js. Suportar variações ortográficas dos exercícios de calistenia catalogados em specs/requisitos.md.",
+      "dependencies": ["feat-007"],
+      "status": "not-started",
+      "evidence": ""
+    },
+    {
+      "id": "feat-009",
+      "name": "Criação e Gestão do Plano de Exercícios",
+      "description": "Fluxo conversacional para criar plano de calistenia: bot pergunta nível (iniciante/intermediário/avançado), dias/semana e objetivos (força/resistência/habilidades). Gera plano e salva no IndexedDB. Exibe plano ativo via comando 'ver meu plano'. Confirmação antes de substituir plano existente.",
+      "dependencies": ["feat-008"],
+      "status": "not-started",
+      "evidence": ""
+    },
+    {
+      "id": "feat-010",
+      "name": "Histórico de Treinos",
+      "description": "Criar tela/seção de histórico acessível via chat ou navegação. Exibir treinos agrupados por data (mais recente primeiro). Cada sessão mostra: data, exercícios e séries realizadas. Dados persistem entre sessões via IndexedDB.",
+      "dependencies": ["feat-009"],
+      "status": "not-started",
+      "evidence": ""
     }
   ]
 }
