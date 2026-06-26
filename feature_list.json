@@ -95,6 +95,14 @@
       "dependencies": ["feat-011"],
       "status": "completed",
       "evidence": "./init.sh passou: 23/23 testes no Vitest validando a injeção do plano e do histórico lidos do IndexedDB na systemInstruction para a API do Gemini."
+    },
+    {
+      "id": "feat-013",
+      "name": "Formatador de Respostas em Markdown",
+      "description": "Implementar um componente renderizador de Markdown seguro e sem dependências externas para formatar as respostas do bot no chat, incluindo títulos, listas ordenadas/não ordenadas, textos em negrito/itálico e blocos de código inline com estilos neon.",
+      "dependencies": ["feat-012"],
+      "status": "completed",
+      "evidence": "./init.sh passou: 29/29 testes no Vitest validando a transformação de elementos markdown (negrito, itálico, listas, títulos, código) para tags JSX corretas."
     }
   ]
 }

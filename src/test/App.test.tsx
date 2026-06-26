@@ -122,7 +122,7 @@ describe('CalisBot App & Components', () => {
     // Wait for Gemini mock results to trigger the confirmation bubble and buttons
     await waitFor(() => {
       expect(screen.getByText(/Entendi o seguinte treino:/i)).toBeInTheDocument()
-      expect(screen.getByText(/- Flexão: 3 série\(s\) de 10 repetição\(ões\) \(Archer\)/i)).toBeInTheDocument()
+      expect(screen.getByText(/Flexão: 3 série\(s\) de 10 repetição\(ões\) \(Archer\)/i)).toBeInTheDocument()
     })
 
     // Click Confirm quick action button
@@ -435,7 +435,7 @@ describe('CalisBot App & Components', () => {
     await waitFor(() => {
       expect(screen.getByText(/Seu Plano Ativo: Meu Plano de Teste/i)).toBeInTheDocument()
       expect(screen.getByText(/Quarta/i)).toBeInTheDocument()
-      expect(screen.getByText(/- Muscle Up: 4x6/i)).toBeInTheDocument()
+      expect(screen.getByText(/Muscle Up: 4x6/i)).toBeInTheDocument()
     })
   })
 
@@ -590,7 +590,7 @@ describe('CalisBot App & Components', () => {
     // Verify it succeeded on retry and shows confirmation options
     await waitFor(() => {
       expect(screen.getByText(/Entendi o seguinte treino:/i)).toBeInTheDocument()
-      expect(screen.getByText(/- Flexão: 3 série\(s\) de 10 repetição\(ões\)/i)).toBeInTheDocument()
+      expect(screen.getByText(/Flexão: 3 série\(s\) de 10 repetição\(ões\)/i)).toBeInTheDocument()
       // Old error message should be removed
       expect(screen.queryByText(/Erro ao se comunicar com a API do Gemini/i)).not.toBeInTheDocument()
     })

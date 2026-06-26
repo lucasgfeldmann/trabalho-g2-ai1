@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
+import { MarkdownRenderer } from './MarkdownRenderer';
 
 export interface Message {
   id: string;
@@ -206,7 +207,11 @@ export const ChatWindow: React.FC<ChatWindowProps> = ({
                     msg.sender === 'user' ? 'user-bubble' : 'bot-bubble'
                   } ${msg.isError ? 'error-bubble' : ''}`}
                 >
-                  <p>{msg.text}</p>
+                  {msg.sender === 'bot' && !msg.isError ? (
+                    <MarkdownRenderer text={msg.text} />
+                  ) : (
+                    <p>{msg.text}</p>
+                  )}
                   {msg.isError && onRetry && (
                     <button
                       type="button"

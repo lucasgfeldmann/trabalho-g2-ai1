@@ -2,7 +2,7 @@
 
 ## Current State
 
-**Last Updated:** 2026-06-26 06:38
+**Last Updated:** 2026-06-26 06:48
 **Active Feature:** Nenhuma (Todas as features concluídas! 🎉)
 
 ## Status
@@ -14,7 +14,7 @@
 - [x] **feat-003 - Verification Coverage**: Vitest + @testing-library/react + jest-dom. 4 testes. Pipeline: lint → typecheck → test.
 - [x] **feat-004 - Documentation Update**: README.md completo com stack, estrutura, comandos e harness.
 - [x] **feat-005 - Cleanup and Handoff**: session-handoff.md preenchido, commit final realizado.
-- [x] **specs - Especificações e Requisitos**: Esclarecimento das perguntas de design/IA/voz e atualização de `projeto.md`, `requisitos.md` (incluindo o guardrail de escopo de calistenia `RN-005` e o contexto conversacional `RF-013`) e `criterios-aceite.md` (incluindo escolha de modelo de IA no painel de configurações, definição do `gemini-3-flash-preview` como padrão, critérios do contexto `feat-011` e critérios de consulta local `feat-012`).
+- [x] **specs - Especificações e Requisitos**: Esclarecimento das perguntas de design/IA/voz e atualização de `projeto.md`, `requisitos.md` (incluindo o guardrail de escopo de calistenia `RN-005` e o contexto conversacional `RF-013`) e `criterios-aceite.md` (incluindo escolha de modelo de IA no painel de configurações, definição do `gemini-3-flash-preview` como padrão, critérios do contexto `feat-011`, critérios de consulta local `feat-012` e critérios de formatação de markdown `feat-013`).
 - [x] **infra - Instalação do SDK**: Instalada a biblioteca `@google/genai` no projeto para integração futura com a API do Gemini.
 - [x] **infra - Exposição de Rede Local**: Configurado `host: true` e `allowedHosts: true` no `vite.config.ts` para acesso externo (celular).
 - [x] **feat-006 - Interface de Chat (UI)**: Janela de chat responsiva (320px+), bolhas de mensagens com estilo Neon Calisthenics, scroll automático e painel de configurações para API Key e modelo Gemini (salvos localmente).
@@ -24,6 +24,7 @@
 - [x] **feat-010 - Histórico de Treinos**: Criar tela/seção de histórico acessível via chat ou navegação. Exibir treinos agrupados por data. Dados persistem via IndexedDB.
 - [x] **feat-011 - Contexto da Conversa (Sessão)**: Enviar histórico de turnos estruturado de forma alternada (user/model) e robusta, permitindo que a IA entenda referências e pronomes no chat.
 - [x] **feat-012 - Consulta de Dados Locais pela IA**: Enviar dados do IndexedDB (plano ativo, histórico recente de treinos, data/dia atual) para a IA responder a consultas e perguntas sobre o progresso e treinos realizados do usuário.
+- [x] **feat-013 - Formatador de Respostas em Markdown**: Implementar um componente renderizador de Markdown seguro e sem dependências externas para formatar as respostas do bot no chat, incluindo títulos, listas, negrito, itálico e tags de código inline com estilos neon.
 
 ### What's In Progress
 
@@ -45,15 +46,17 @@
 - **vite.config.ts**: `defineConfig` importado de `vitest/config`.
 - **Mapeamento de Contexto**: Histórico do Gemini é composto a partir do estado `messages` do React, filtrando erros/carregadores e agrupando múltiplos turnos seguidos de mesma role.
 - **Consulta de Dados Locais pela IA (RAG Local)**: Antes da chamada da API do Gemini, o app lê os dados de `db.plano_ativo` e as últimas 15 sessões de `db.historico_treinos`, concatenando esses dados em formato JSON estruturado na `systemInstruction`.
+- **Renderização Segura de Markdown**: Um analisador regex personalizado foi criado para dividir o texto em linhas e partes inline, evitando o uso de `dangerouslySetInnerHTML` para garantir imunidade a XSS e total compatibilidade com React 19.
 
 ## Files Modified This Session
 
 - `feature_list.json`, `progress.md`, `prompts.md`, `specs/requisitos.md`, `specs/projeto.md`, `specs/criterios-aceite.md`
-- `src/services/gemini.ts`, `src/App.tsx`, `src/test/gemini.test.ts`, `docs/feat-011.md`, `docs/feat-012.md`
+- `src/services/gemini.ts`, `src/App.tsx`, `src/components/ChatWindow.tsx`, `src/components/MarkdownRenderer.tsx`, `src/index.css`
+- `src/test/gemini.test.ts`, `src/test/MarkdownRenderer.test.tsx`, `src/test/App.test.tsx`, `docs/feat-011.md`, `docs/feat-012.md`, `docs/feat-013.md`
 
 ## Evidence of Completion
 
-- [x] `./init.sh` limpo com todos os 23 testes passando:
+- [x] `./init.sh` limpo com todos os 29 testes passando:
 ```
 === npm run lint ===
 Found 0 warnings and 0 errors.
@@ -62,12 +65,13 @@ Found 0 warnings and 0 errors.
 (sem erros)
 
 === npm test ===
-✓ src/test/gemini.test.ts (6 tests) 7ms
-✓ src/test/App.test.tsx (17 tests) 638ms
-Test Files  2 passed (2) | Tests  23 passed (23)
+✓ src/test/gemini.test.ts (6 tests) 6ms
+✓ src/test/MarkdownRenderer.test.tsx (6 tests) 108ms
+✓ src/test/App.test.tsx (17 tests) 664ms
+Test Files  3 passed (3) | Tests  29 passed (29)
 === Verification Complete ===
 ```
 
 ## Notes for Next Session
 
-Todas as features planejadas de sessão, contexto e persistência estão implementadas, testadas e integradas. O repositório está limpo e totalmente funcional.
+Todas as features planejadas estão implementadas, testadas e integradas. O repositório está limpo e totalmente funcional.

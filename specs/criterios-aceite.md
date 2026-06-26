@@ -142,6 +142,20 @@
 
 ---
 
+## feat-013 · Formatador de Respostas em Markdown
+
+- [ ] Mensagens do bot contendo negrito (`**texto**`) são renderizadas usando a tag `<strong>`.
+- [ ] Mensagens do bot contendo itálico (`*texto*`) são renderizadas usando a tag `<em>`.
+- [ ] Mensagens do bot contendo listas (`- item` ou `* item`) são renderizadas em uma estrutura de `<ul>` e `<li>`.
+- [ ] Mensagens do bot contendo títulos (`#`, `##`, `###`) são renderizadas em `<h2>`, `<h3>` ou `<h4>`.
+- [ ] Mensagens do bot contendo código inline (`` `código` ``) são renderizadas usando a tag `<code>`.
+- [ ] Estilização em `src/index.css` define cores neon para as tags `<code>` e marcadores de listas customizados (`::before`).
+- [ ] Testes automatizados verificam que o componente `MarkdownRenderer` transforma as strings de markdown nas tags JSX correspondentes de forma correta.
+- [ ] `./init.sh` passa após a implementação.
+
+---
+
+
 
 
 ## Template para novas features

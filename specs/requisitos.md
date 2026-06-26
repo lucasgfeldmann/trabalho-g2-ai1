@@ -94,7 +94,14 @@
 - **Prioridade:** Alta
 - **Feature relacionada:** feat-012
 
+### RF-015 — Renderização de Markdown no Chat
+
+- **Descrição:** As respostas do bot enviadas no chat devem ser apresentadas com formatação Markdown apropriada (negrito, itálico, listas, títulos e códigos inline) renderizada como HTML/JSX amigável no lugar de texto puro.
+- **Prioridade:** Média
+- **Feature relacionada:** feat-013
+
 ---
+
 
 
 

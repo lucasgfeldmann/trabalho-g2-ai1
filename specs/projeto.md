@@ -46,6 +46,7 @@ Praticantes de calistenia precisam registrar seus treinos de forma rápida, gera
 - Reconhecimento de exercícios de calistenia mais comuns
 - Manutenção de contexto conversacional (sessão) com a API do Gemini
 - Acesso e consulta da IA sobre plano ativo e histórico local do usuário
+- Renderização e formatação de Markdown em tempo de execução nas bolhas do chat
 - Gráficos de progresso (volume por semana, exercícios mais feitos) — Marco M8
 
 ### Fora do escopo
