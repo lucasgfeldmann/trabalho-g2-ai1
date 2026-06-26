@@ -112,6 +112,48 @@
 - **Prioridade:** Alta
 - **Feature relacionada:** feat-015
 
+### RF-018 — Navegação por Abas Inferiores (Bottom Tabs)
+
+- **Descrição:** O sistema deve fornecer uma barra de navegação inferior (bottom tabs) visível em todas as telas (abaixo do conteúdo principal), com as opções: Chat/Home, Histórico de Exercícios e Plano de Exercícios, permitindo alternar rapidamente entre estas visões.
+- **Prioridade:** Alta
+- **Feature relacionada:** feat-017
+
+### RF-019 — Registro de Horário Individual por Exercício
+
+- **Descrição:** Cada exercício registrado no histórico deve possuir seu horário de realização específico (HH:MM) salvo de forma simples no banco de dados local. Isso permite que o usuário registre diferentes exercícios em diferentes momentos do mesmo dia.
+- **Prioridade:** Alta
+- **Feature relacionada:** feat-017
+
+### RF-020 — Filtro Diário no Histórico de Exercícios
+
+- **Descrição:** A tela de histórico de exercícios deve exibir por padrão apenas os exercícios realizados no dia atual (hoje). O usuário deve ser capaz de selecionar uma data específica por meio de um seletor para consultar e filtrar o histórico daquele dia.
+- **Prioridade:** Alta
+- **Feature relacionada:** feat-017
+
+### RF-021 — Exportação e Importação de Dados em CSV
+
+- **Descrição:** Na tela de histórico, deve haver um botão de exportação que gera e baixa um arquivo no formato CSV contendo todos os treinos registrados (Data, Hora, Exercício, Séries, Repetições, Observações). Também deve existir a opção de importar dados do histórico a partir de um arquivo CSV nesse mesmo formato.
+- **Prioridade:** Média
+- **Feature relacionada:** feat-017
+
+### RF-022 — Visualização do Plano do Dia Atual
+
+- **Descrição:** A aba de Plano deve exibir a lista de exercícios programados para o dia de hoje, facilitando a consulta rápida pelo usuário durante o treino diário.
+- **Prioridade:** Alta
+- **Feature relacionada:** feat-017
+
+### RF-023 — Alternância de Visualização Completa do Plano
+
+- **Descrição:** Na aba de Plano, por padrão exibe-se apenas o treino correspondente ao dia de hoje. O sistema deve fornecer um botão de alternância que permita ao usuário visualizar o plano semanal completo (todos os dias cadastrados).
+- **Prioridade:** Média
+- **Feature relacionada:** feat-018
+
+### RF-024 — Modos de Visualização do Histórico (Tabela/Cards)
+
+- **Descrição:** Na aba de Histórico, deve haver controles visuais para alternar o modo de visualização entre Tabela (modo tabular corrido tradicional) e Cards (listagem estruturada em cartões otimizada para melhor legibilidade em dispositivos móveis).
+- **Prioridade:** Média
+- **Feature relacionada:** feat-019
+
 ---
 
 

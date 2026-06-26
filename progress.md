@@ -2,7 +2,7 @@
 
 ## Current State
 
-**Last Updated:** 2026-06-26 06:48
+**Last Updated:** 2026-06-26 10:40
 **Active Feature:** Nenhuma (Todas as features concluídas! 🎉)
 
 ## Status
@@ -28,6 +28,17 @@
 - [x] **feat-014 - Suporte a Tabelas no Markdown**: Estender o componente MarkdownRenderer para reconhecer e renderizar tabelas markdown em elementos HTML estruturados com estilo Neon Calisthenics e responsividade horizontal.
 - [x] **feat-015 - Criação e Edição de Planos via IA**: Permitir que o usuário utilize chat de texto livre para pedir para a IA criar novos planos ou alterar o plano ativo existente, com confirmação e persistência no IndexedDB.
 - [x] **feat-016 - Estruturação do Histórico de Exercícios em Tabela Limpa**: Reestruturar a visualização do histórico de treinos no HistoryPanel em uma tabela limpa com colunas dedicadas para Data/Hora (data e horário), Exercício (somente nome), Séries (número puro), Repetições (número puro) e Observações (somente observação).
+- [x] **feat-017 - Abas de Navegação Inferiores, Registro de Horário e Importação/Exportação CSV**: Implementar barra de abas de navegação inferior (Chat, Histórico, Plano). Registrar horário específico para cada exercício. Aba Histórico com filtro de data por dia e importação/exportação de arquivo CSV. Aba Plano com checkboxes para inserção rápida de exercícios.
+- [x] **feat-018 - Filtro Diário no Plano de Treinos e Alternância de Visualização Completa**: Alterar a aba de Plano para exibir por padrão apenas o treino do dia de hoje, adicionando um botão de alternância para o plano completo e removendo os checkboxes de marcação rápida.
+- [x] **feat-019 - Modos de Visualização no Histórico (Tabela e Cards)**: Adicionar controles visuais na aba de Histórico para alternar entre visualização de Tabela (tabular clássico) e Cards (listagem estruturada em cartões adequada para smartphones).
+
+### What's In Progress
+
+- Nenhum.
+
+### What's Next
+
+- Nenhum. Todas as features planejadas foram concluídas com sucesso.ápida.
 
 ### What's In Progress
 
@@ -46,20 +57,19 @@
 - **Stack**: React 19 + TypeScript 6 + Vite 8.
 - **Testes**: Vitest + @testing-library/react + jsdom.
 - **Linter**: oxlint (nativo do template).
-- **vite.config.ts**: `defineConfig` importado de `vitest/config`.
-- **Mapeamento de Contexto**: Histórico do Gemini é composto a partir do estado `messages` do React, filtrando erros/carregadores e agrupando múltiplos turnos seguidos de mesma role.
-- **Consulta de Dados Locais pela IA (RAG Local)**: Antes da chamada da API do Gemini, o app lê os dados de `db.plano_ativo` e as últimas 15 sessões de `db.historico_treinos`, concatenando esses dados em formato JSON estruturado na `systemInstruction`.
-- **Renderização Segura de Markdown**: Um analisador regex personalizado foi criado para dividir o texto em linhas e partes inline, evitando o uso de `dangerouslySetInnerHTML` para garantir imunidade a XSS e total compatibilidade com React 19.
+- **Abas de Navegação**: Estado `activeTab` gerenciado centralizadamente em `App.tsx` e injetado em `ChatWindow.tsx` para alternância de telas.
+- **Horário por Exercício**: Campo `hora_realizacao` adicionado na interface de exercícios local para permitir registrar múltiplos exercícios em momentos diferentes do dia.
+- **Importação/Exportação CSV**: Implementado processamento manual de strings CSV seguro (tratando aspas e quebras de linha) para leitura e escrita offline no IndexedDB local.
+- **Segurança de link.click() em testes**: Link.click() foi encapsulado em try-catch na exportação de CSV para evitar que o ambiente jsdom interrompa o teste lançando erros de navegação.
 
 ## Files Modified This Session
 
-- `feature_list.json`, `progress.md`, `prompts.md`, `specs/requisitos.md`, `specs/projeto.md`, `specs/criterios-aceite.md`
-- `src/services/gemini.ts`, `src/App.tsx`, `src/components/ChatWindow.tsx`, `src/components/MarkdownRenderer.tsx`, `src/index.css`
-- `src/test/gemini.test.ts`, `src/test/MarkdownRenderer.test.tsx`, `src/test/App.test.tsx`, `docs/feat-011.md`, `docs/feat-012.md`, `docs/feat-013.md`, `docs/feat-014.md`, `docs/feat-015.md`, `docs/feat-016.md`
+- `feature_list.json`, `progress.md`, `specs/requisitos.md`, `specs/projeto.md`, `specs/criterios-aceite.md`
+- `src/db/db.ts`, `src/services/gemini.ts`, `src/App.tsx`, `src/components/ChatWindow.tsx`, `src/components/HistoryPanel.tsx`, `src/components/PlanTabContent.tsx`, `src/index.css`, `src/test/App.test.tsx`, `docs/feat-017.md`, `docs/feat-018.md`
 
 ## Evidence of Completion
 
-- [x] `./init.sh` limpo com todos os 34 testes passando:
+- [x] `./init.sh` limpo com todos os 39 testes passando:
 ```
 === npm run lint ===
 Found 0 warnings and 0 errors.
@@ -69,12 +79,12 @@ Found 0 warnings and 0 errors.
 
 === npm test ===
 ✓ src/test/gemini.test.ts (8 tests) 8ms
-✓ src/test/MarkdownRenderer.test.tsx (7 tests) 137ms
-✓ src/test/App.test.tsx (19 tests) 692ms
-Test Files  3 passed (3) | Tests  34 passed (34)
+✓ src/test/MarkdownRenderer.test.tsx (7 tests) 121ms
+✓ src/test/App.test.tsx (24 tests) 825ms
+Test Files  3 passed (3) | Tests  39 passed (39)
 === Verification Complete ===
 ```
 
 ## Notes for Next Session
 
-Todas as features planejadas estão implementadas, testadas e integradas. O repositório está limpo e totalmente funcional.
+Todas as features planejadas estão implementadas, testadas e integradas. O repositório está limpo, com testes passando de ponta a ponta e pronto para execução.

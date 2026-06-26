@@ -47,12 +47,16 @@ Praticantes de calistenia precisam registrar seus treinos de forma rápida, gera
 - Manutenção de contexto conversacional (sessão) com a API do Gemini
 - Acesso e consulta da IA sobre plano ativo e histórico local do usuário
 - Renderização e formatação de Markdown em tempo de execução nas bolhas do chat (incluindo tabelas)
+- Barra de navegação inferior por abas (Chat, Histórico de Exercícios, Plano)
+- Exportação e importação do histórico de treinos em formato CSV
+- Visualização simplificada e rápida do plano ativo diário na aba de Plano
+- Modos de visualização alternáveis no Histórico (Tabela tradicional e Cards otimizados para mobile)
 - Gráficos de progresso (volume por semana, exercícios mais feitos) — Marco M8
 
 ### Fora do escopo
 
 - Sincronização com nuvem ou conta de usuário
-- Exportação de dados (JSON, PDF)
+- Exportação de dados em formatos complexos (JSON estruturado completo, PDF formatado)
 - Integração com wearables (smartwatch, monitor cardíaco)
 - Cálculo de calorias ou métricas nutricionais
 - Social features (compartilhar treinos, ranking)

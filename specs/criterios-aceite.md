@@ -194,6 +194,44 @@
 
 ---
 
+## feat-017 · Abas de Navegação Inferiores, Registro de Horário e Importação/Exportação CSV
+
+- [ ] A interface exibe uma barra de navegação por abas inferiores no rodapé contendo os botões "Chat", "Histórico" e "Plano".
+- [ ] Alternar entre as abas carrega as respectivas seções: a tela do Chat assistente, a tela do Histórico de Exercícios e a tela do Plano Ativo.
+- [ ] A aba "Histórico" exibe por padrão apenas os treinos realizados na data de hoje.
+- [ ] A aba "Histórico" possui um seletor de data que permite filtrar os treinos por uma data específica. Há uma opção/botão de limpar filtro ("Ver Todos") para listar todo o histórico.
+- [ ] A aba "Histórico" exibe cada exercício com sua hora de realização específica (`hora_realizacao`), permitindo visualizar múltiplos treinos divididos durante o dia.
+- [ ] A aba "Histórico" contém um botão "Exportar CSV" que gera e faz download de um arquivo contendo todas as sessões de exercícios no formato CSV (`Data,Hora,Exercício,Séries,Repetições,Observações`).
+- [ ] A aba "Histórico" contém um input de arquivo para "Importar CSV" que lê o mesmo formato de arquivo CSV, agrupa os exercícios por data e mescla ou insere no IndexedDB.
+- [ ] A aba "Plano" exibe o plano ativo estruturado. Se não houver plano ativo, apresenta uma mensagem convidando a criar um plano.
+- [ ] Cada exercício listado na aba "Plano" exibe seu nome, séries e repetições de forma simplificada e legível.
+- [ ] Testes de unidade/integração validam a lógica de filtragem, importação/exportação CSV e a reatividade das abas e renderização do plano.
+- [ ] `./init.sh` passa após a implementação.
+
+---
+
+## feat-018 · Filtro Diário no Plano de Treinos e Alternância de Visualização Completa
+
+- [ ] Por padrão, a aba de Plano exibe apenas o treino correspondente ao dia de hoje.
+- [ ] Se o plano não possuir treinos cadastrados para o dia da semana de hoje, exibe uma mensagem de dia de descanso: "Hoje é seu dia de descanso! 🧘".
+- [ ] A aba de Plano possui um botão ou controle de alternância para ver o plano completo.
+- [ ] Ao ativar o modo completo, o app exibe a lista com todos os dias do plano semanal cadastrado.
+- [ ] Testes cobrem o comportamento de filtragem padrão por dia e a alternância para visualização completa.
+- [ ] `./init.sh` passa após a implementação.
+
+---
+
+## feat-019 · Modos de Visualização no Histórico (Tabela e Cards)
+
+- [ ] A aba de Histórico exibe botões de alternância para selecionar entre o modo de visualização "Tabela" e "Cards".
+- [ ] O modo "Tabela" exibe a tabela HTML tradicional de treinos com colunas dedicadas.
+- [ ] O modo "Cards" exibe cada exercício realizado em um cartão individual com estilo premium, adequado para smartphones.
+- [ ] Cada cartão exibe o nome do exercício em destaque, data/hora, séries, repetições e observações.
+- [ ] Testes de integração validam a alternância de modos e a renderização do formato de cards.
+- [ ] `./init.sh` passa após a implementação.
+
+---
+
 
 
 

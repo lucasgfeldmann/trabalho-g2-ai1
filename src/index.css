@@ -896,4 +896,358 @@ body {
   background-color: rgba(30, 41, 59, 0.35);
 }
 
+/* Tab Layout Wrappers */
+.tab-content-wrapper {
+  flex: 1;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  background: var(--bg-main);
+}
+
+/* Bottom Tabs Navigation */
+.bottom-tabs {
+  display: flex;
+  background: var(--bg-card);
+  border-top: 1px solid var(--border-color);
+  padding: 8px 0;
+  flex-shrink: 0;
+  z-index: 10;
+  box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.tab-btn {
+  flex: 1;
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  font-size: 11px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  padding: 4px 0;
+}
+
+.tab-btn:hover {
+  color: var(--text-main);
+}
+
+.tab-btn.active {
+  color: var(--accent-color);
+  text-shadow: 0 0 10px rgba(16, 185, 129, 0.4);
+}
+
+.tab-icon {
+  font-size: 20px;
+  transition: transform 0.2s ease;
+}
+
+.tab-btn.active .tab-icon {
+  transform: translateY(-2px);
+}
+
+.tab-label {
+  font-weight: 600;
+  letter-spacing: 0.03em;
+}
+
+/* Plan Tab View */
+.plan-tab-container {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.plan-tab-header {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 12px;
+}
+
+.plan-tab-header h2 {
+  margin: 0;
+  font-size: 22px;
+  color: var(--text-title);
+}
+
+.plan-meta-badges {
+  display: flex;
+  gap: 8px;
+}
+
+.badge-level, .badge-date {
+  background: rgba(16, 185, 129, 0.1);
+  border: 1px solid rgba(16, 185, 129, 0.25);
+  color: var(--accent-color);
+  padding: 3px 8px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.plan-days-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.plan-day-card {
+  background: rgba(30, 41, 59, 0.4);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 16px;
+  transition: all 0.25s ease;
+}
+
+.plan-day-card.today-highlight {
+  border-color: var(--accent-color);
+  box-shadow: 0 0 12px rgba(16, 185, 129, 0.12);
+  background: rgba(16, 185, 129, 0.02);
+}
+
+.plan-day-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.plan-day-card-header h4 {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text-title);
+}
+
+.today-badge {
+  background: var(--accent-color);
+  color: var(--bg-main);
+  font-size: 9px;
+  font-weight: 800;
+  text-transform: uppercase;
+  padding: 2px 6px;
+  border-radius: 4px;
+  box-shadow: 0 0 8px rgba(16, 185, 129, 0.4);
+}
+
+.plan-exercise-checklist {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.plan-exercise-item {
+  display: flex;
+  align-items: center;
+}
+
+/* Custom Checkbox styles */
+.checkbox-container {
+  display: flex;
+  align-items: center;
+  position: relative;
+  padding-left: 28px;
+  cursor: pointer;
+  user-select: none;
+  width: 100%;
+}
+
+.checkbox-container input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+}
+
+.checkmark {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  transform: translateY(-50%);
+  height: 18px;
+  width: 18px;
+  background-color: rgba(15, 23, 42, 0.6);
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  transition: all 0.2s ease;
+}
+
+.checkbox-container:hover input ~ .checkmark {
+  border-color: var(--accent-color);
+}
+
+.checkbox-container input:checked ~ .checkmark {
+  background-color: var(--accent-color);
+  border-color: var(--accent-color);
+  box-shadow: 0 0 6px var(--accent-color);
+}
+
+.checkmark:after {
+  content: "";
+  position: absolute;
+  display: none;
+}
+
+.checkbox-container input:checked ~ .checkmark:after {
+  display: block;
+}
+
+.checkbox-container .checkmark:after {
+  left: 6px;
+  top: 2px;
+  width: 4px;
+  height: 9px;
+  border: solid var(--bg-main);
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+
+.exercise-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding-left: 4px;
+}
+
+.exercise-name {
+  font-size: 14px;
+  color: var(--text-title);
+  font-weight: 500;
+  transition: color 0.2s ease;
+}
+
+.exercise-name.completed-text {
+  color: var(--text-muted);
+  text-decoration: line-through;
+}
+
+.exercise-sets-reps {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.empty-plan-tab {
+  padding: 40px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+
+.empty-hint-card {
+  text-align: center;
+  background: rgba(30, 41, 59, 0.4);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 30px 24px;
+  max-width: 400px;
+  width: 100%;
+}
+
+.empty-hint-card h3 {
+  margin: 0 0 8px 0;
+  color: var(--text-title);
+}
+
+.empty-hint-card p {
+  margin: 0;
+  font-size: 14px;
+  color: var(--text-muted);
+}
+
+/* History Tab Controls styling */
+.history-tab-container {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.history-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 4px;
+}
+
+.date-filter-group {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.date-picker-input {
+  background: var(--bg-input);
+  border: 1px solid var(--border-color);
+  color: var(--text-main);
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-family: inherit;
+  font-size: 14px;
+  cursor: pointer;
+  flex: 1;
+  transition: border-color 0.2s ease;
+}
+
+.date-picker-input:focus {
+  outline: none;
+  border-color: var(--accent-color);
+}
+
+.clear-filter-btn {
+  font-size: 13px;
+  padding: 8px 12px;
+}
+
+.csv-actions-group {
+  display: flex;
+  gap: 8px;
+}
+
+.export-csv-btn, .import-csv-label {
+  flex: 1;
+  font-size: 12px;
+  padding: 8px 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  text-align: center;
+}
+
+.import-status-banner {
+  background: rgba(16, 185, 129, 0.1);
+  border: 1px solid rgba(16, 185, 129, 0.3);
+  color: var(--accent-color);
+  padding: 10px 14px;
+  border-radius: 6px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.close-banner-btn {
+  background: none;
+  border: none;
+  color: var(--accent-color);
+  font-size: 16px;
+  cursor: pointer;
+  padding: 0 4px;
+}
+
+
 

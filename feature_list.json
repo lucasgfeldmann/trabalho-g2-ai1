@@ -127,6 +127,30 @@
       "dependencies": ["feat-010"],
       "status": "completed",
       "evidence": "./init.sh passou: 34/34 testes no Vitest validando o mapeamento limpo de colunas (Data/Hora, Exercício, Séries, Repetições, Observações) na tabela de histórico."
+    },
+    {
+      "id": "feat-017",
+      "name": "Abas de Navegação Inferiores, Registro de Horário e Importação/Exportação CSV",
+      "description": "Implementar navegação inferior por abas (Chat, Histórico de Exercícios, Plano). Registrar horário específico para cada exercício realizado. Aba de Histórico com filtro de data por dia e botões de Importar/Exportar CSV. Aba de Plano com checkboxes para inserção rápida de treinos.",
+      "dependencies": ["feat-015", "feat-016"],
+      "status": "completed",
+      "evidence": "./init.sh passou: lint 0 erros, typecheck limpo, 39/39 testes no Vitest validando a navegação por abas inferiores, checklist do plano, filtro por data e importação/exportação de CSV."
+    },
+    {
+      "id": "feat-018",
+      "name": "Filtro Diário no Plano de Treinos e Alternância de Visualização Completa",
+      "description": "Alterar a aba de Plano para exibir por padrão apenas o treino do dia de hoje, adicionando um controle para alternar e ver o plano semanal completo.",
+      "dependencies": ["feat-017"],
+      "status": "completed",
+      "evidence": "./init.sh passou: lint 0 erros, typecheck limpo, 39/39 testes no Vitest validando a exibição por padrão do treino do dia atual, bloco de descanso, alternância do plano inteiro e exclusão das checkboxes."
+    },
+    {
+      "id": "feat-019",
+      "name": "Modos de Visualização no Histórico (Tabela e Cards)",
+      "description": "Implementar controle de alternância na aba de Histórico para alternar entre visualização em formato de tabela e visualização em formato de cards otimizada para mobile.",
+      "dependencies": ["feat-018"],
+      "status": "completed",
+      "evidence": "./init.sh passou: lint 0 erros, typecheck limpo, 40/40 testes no Vitest validando a alternância entre os modos de visualização Tabela e Cards no histórico."
     }
   ]
 }

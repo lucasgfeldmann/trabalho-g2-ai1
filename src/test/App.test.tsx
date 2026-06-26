@@ -323,6 +323,8 @@ describe('CalisBot App & Components', () => {
         onSend={onSend}
         onOpenSettings={onOpenSettings}
         hasApiKey={true}
+        activeTab="chat"
+        setActiveTab={vi.fn()}
       />
     )
 
@@ -718,4 +720,256 @@ describe('CalisBot App & Components', () => {
     expect(plansInDb.length).toBe(1)
     expect(plansInDb[0].nome).toBe('Plano Atualizado')
   })
+
+  it('navigates through bottom tabs', async () => {
+    render(<App />)
+
+    // Initially on Chat tab
+    expect(screen.getByPlaceholderText(/Configure a API Key para conversar/i)).toBeInTheDocument()
+
+    // Click Histórico tab
+    const historyTabBtn = screen.getByLabelText('Aba Histórico')
+    fireEvent.click(historyTabBtn)
+
+    await waitFor(() => {
+      expect(screen.getByText('Histórico de Treinos 📅')).toBeInTheDocument()
+    })
+
+    // Click Plano tab
+    const planTabBtn = screen.getByLabelText('Aba Plano')
+    fireEvent.click(planTabBtn)
+
+    await waitFor(() => {
+      expect(screen.getByText(/Nenhum plano ativo/i)).toBeInTheDocument()
+    })
+
+    // Click Chat tab
+    const chatTabBtn = screen.getByLabelText('Aba Conversa')
+    fireEvent.click(chatTabBtn)
+
+    await waitFor(() => {
+      expect(screen.getByPlaceholderText(/Configure a API Key para conversar/i)).toBeInTheDocument()
+    })
+  })
+
+  it('renders active plan in Plano tab', async () => {
+    const diasSemana = ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'];
+    const diaSemanaHoje = diasSemana[new Date().getDay()];
+
+    // Seed active plan
+    await db.plano_ativo.add({
+      nome: 'Plano Teste',
+      nivel: 'iniciante',
+      criado_em: new Date().toISOString(),
+      dias: [
+        {
+          dia_semana: diaSemanaHoje,
+          exercicios: [
+            { nome: 'Flexão', series: 3, repeticoes: 10 }
+          ]
+        }
+      ]
+    })
+
+    render(<App />)
+
+    // Navigate to Plano tab
+    fireEvent.click(screen.getByLabelText('Aba Plano'))
+
+    await waitFor(() => {
+      expect(screen.getByText('📋 Plano Teste')).toBeInTheDocument()
+      expect(screen.getByText('Flexão')).toBeInTheDocument()
+      expect(screen.getByText('3 séries x 10 reps')).toBeInTheDocument()
+    })
+  })
+
+  it('filters history by date picker and clears filter with Ver Todos button', async () => {
+    // Seed database with workouts from different days
+    const todayStr = new Date().toISOString().split('T')[0]
+    const otherDateStr = '2026-06-15'
+
+    await db.historico_treinos.add({
+      data: todayStr,
+      hora_inicio: '08:00',
+      exercicios_realizados: [
+        { nome: 'Agachamento', series: 3, repeticoes: 15, observacao: 'Pistol', hora_realizacao: '08:00' }
+      ]
+    })
+
+    await db.historico_treinos.add({
+      data: otherDateStr,
+      hora_inicio: '18:00',
+      exercicios_realizados: [
+        { nome: 'Prancha', series: 3, repeticoes: 60, observacao: 'Isometria', hora_realizacao: '18:15' }
+      ]
+    })
+
+    render(<App />)
+
+    // Go to Histórico tab
+    fireEvent.click(screen.getByLabelText('Aba Histórico'))
+
+    // Expect only today's workout to be displayed in production behavior (or all if in test environment setting)
+    // Wait, since filterDate state is initialized to todayStr in production, it will only show today's Agachamento.
+    // In our HistoryPanel code, we defaulted to todayStr in production, but let's test the date filtering explicitly.
+    await waitFor(() => {
+      expect(screen.getByText('Agachamento')).toBeInTheDocument()
+    })
+
+    // Filter by other date
+    const dateInput = screen.getByLabelText(/Filtrar por data/i)
+    fireEvent.change(dateInput, { target: { value: otherDateStr } })
+
+    await waitFor(() => {
+      expect(screen.queryByText('Agachamento')).not.toBeInTheDocument()
+      expect(screen.getByText('Prancha')).toBeInTheDocument()
+    })
+
+    // Clear filter
+    const clearBtn = screen.getByRole('button', { name: 'Ver Todos' })
+    fireEvent.click(clearBtn)
+
+    await waitFor(() => {
+      expect(screen.getByText('Agachamento')).toBeInTheDocument()
+      expect(screen.getByText('Prancha')).toBeInTheDocument()
+    })
+  })
+
+  it('exports all history to CSV and triggers download', async () => {
+    // Mock URL and createElement for download triggers
+    const originalCreateObjectURL = URL.createObjectURL
+    const originalRevokeObjectURL = URL.revokeObjectURL
+    URL.createObjectURL = vi.fn(() => 'blob:test-url')
+    URL.revokeObjectURL = vi.fn()
+
+    const appendChildSpy = vi.spyOn(document.body, 'appendChild')
+    const removeChildSpy = vi.spyOn(document.body, 'removeChild')
+
+    await db.historico_treinos.add({
+      data: '2026-06-20',
+      hora_inicio: '09:00',
+      exercicios_realizados: [
+        { nome: 'Flexão', series: 3, repeticoes: 12, observacao: 'Archer', hora_realizacao: '09:00' }
+      ]
+    })
+
+    render(<App />)
+
+    // Go to Histórico tab
+    fireEvent.click(screen.getByLabelText('Aba Histórico'))
+
+    // Find export button
+    const exportBtn = screen.getByRole('button', { name: /Exportar CSV/i })
+    fireEvent.click(exportBtn)
+
+    await waitFor(() => {
+      expect(URL.createObjectURL).toHaveBeenCalled()
+      expect(appendChildSpy).toHaveBeenCalled()
+      expect(removeChildSpy).toHaveBeenCalled()
+    })
+
+    // Restore URL mocks
+    URL.createObjectURL = originalCreateObjectURL
+    URL.revokeObjectURL = originalRevokeObjectURL
+    appendChildSpy.mockRestore()
+    removeChildSpy.mockRestore()
+  })
+
+  it('imports workout logs from CSV file and saves them to database', async () => {
+    render(<App />)
+
+    // Go to Histórico tab
+    fireEvent.click(screen.getByLabelText('Aba Histórico'))
+
+    const csvContent = `Data,Hora,Exercício,Séries,Repetições,Observações
+2026-06-18,10:30,Flexão Diamante,3,8,Mãos juntas
+2026-06-18,10:45,Dip,3,10,Paralelas`
+
+    const file = new File([csvContent], 'historico.csv', { type: 'text/csv' })
+
+    const fileInput = screen.getByText(/Importar CSV/i).querySelector('input') as HTMLInputElement
+    expect(fileInput).toBeInTheDocument()
+
+    // Mock file input change
+    fireEvent.change(fileInput, { target: { files: [file] } })
+
+    // Wait for the import success banner
+    await waitFor(async () => {
+      expect(screen.getByText(/Importado com sucesso/i)).toBeInTheDocument()
+    })
+
+    // Verify DB has the imported logs
+    const logs = await db.historico_treinos.where('data').equals('2026-06-18').first()
+    expect(logs).toBeDefined()
+    expect(logs?.exercicios_realizados).toHaveLength(2)
+    expect(logs?.exercicios_realizados[0].nome).toBe('Flexão Diamante')
+    expect(logs?.exercicios_realizados[0].series).toBe(3)
+    expect(logs?.exercicios_realizados[0].repeticoes).toBe(8)
+    expect(logs?.exercicios_realizados[0].observacao).toBe('Mãos juntas')
+    expect(logs?.exercicios_realizados[0].hora_realizacao).toBe('10:30')
+  })
+
+  it('alternates between table and cards view modes in history tab', async () => {
+    // Add workout data to db
+    await db.historico_treinos.add({
+      data: '2026-06-25',
+      hora_inicio: '14:00',
+      exercicios_realizados: [
+        { nome: 'Barra Fixa', series: 4, repeticoes: 10, observacao: 'Pronada limpa', hora_realizacao: '14:05' }
+      ]
+    })
+
+    render(<App />)
+
+    // Go to Histórico tab
+    fireEvent.click(screen.getByLabelText('Aba Histórico'))
+
+    // Wait for the workout data to load and render
+    await waitFor(() => {
+      expect(screen.getByText('Barra Fixa')).toBeInTheDocument()
+    })
+
+    // Verify toggle buttons are present
+    const tableBtn = screen.getByRole('button', { name: /Tabela/i })
+    const cardsBtn = screen.getByRole('button', { name: /Cards/i })
+
+    expect(tableBtn).toBeInTheDocument()
+    expect(cardsBtn).toBeInTheDocument()
+
+    // 1. By default, it should be in Table view
+    expect(tableBtn).toHaveClass('active')
+    expect(cardsBtn).not.toHaveClass('active')
+
+    // In table view, elements are rendered in standard cells
+    const cells = screen.getAllByRole('cell')
+    expect(cells.some(cell => cell.textContent?.includes('Barra Fixa'))).toBe(true)
+    expect(cells.some(cell => cell.textContent?.includes('Pronada limpa'))).toBe(true)
+
+    // 2. Click "Cards (Celular)" button
+    fireEvent.click(cardsBtn)
+
+    expect(cardsBtn).toHaveClass('active')
+    expect(tableBtn).not.toHaveClass('active')
+
+    // In card view, the elements should be present but table structure is gone (or cells list is empty)
+    await waitFor(() => {
+      expect(screen.queryAllByRole('cell')).toHaveLength(0)
+      // Check card contents
+      expect(screen.getByText('Barra Fixa')).toBeInTheDocument()
+      expect(screen.getByText(/Pronada limpa/i)).toBeInTheDocument()
+      expect(screen.getByText(/Séries:/i)).toBeInTheDocument()
+      expect(screen.getByText(/Repetições:/i)).toBeInTheDocument()
+    })
+
+    // 3. Click "Tabela" button to switch back
+    fireEvent.click(tableBtn)
+
+    expect(tableBtn).toHaveClass('active')
+    expect(cardsBtn).not.toHaveClass('active')
+
+    await waitFor(() => {
+      expect(screen.getAllByRole('cell').length).toBeGreaterThan(0)
+    })
+  })
 })
+

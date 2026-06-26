@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 import { ChatWindow } from './components/ChatWindow';
 import type { Message } from './components/ChatWindow';
 import { SettingsPanel } from './components/SettingsPanel';
-import { HistoryPanel } from './components/HistoryPanel';
 import { db } from './db/db';
 import { parseUserMessage, generateCalisthenicsPlan } from './services/gemini';
 import type { ParsedWorkout, GeneratedPlan } from './services/gemini';
@@ -18,7 +17,7 @@ interface PlanFlow {
 function App() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
-  const [isHistoryOpen, setIsHistoryOpen] = useState(false);
+  const [activeTab, setActiveTab] = useState<'chat' | 'history' | 'plan'>('chat');
   const [apiKey, setApiKey] = useState('');
   const [model, setModel] = useState('gemini-3-flash-preview');
   const [customModel, setCustomModel] = useState('');
@@ -102,19 +101,23 @@ function App() {
 
     const today = new Date().toISOString().split('T')[0];
     const time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    const mappedWorkout = pendingWorkout.map((ex) => ({
+      ...ex,
+      hora_realizacao: ex.hora_realizacao || time,
+    }));
 
     try {
       // RN-002: Multiple workouts in the same day belong to the same session
       const existingSession = await db.historico_treinos.where('data').equals(today).first();
 
       if (existingSession) {
-        existingSession.exercicios_realizados.push(...pendingWorkout);
+        existingSession.exercicios_realizados.push(...mappedWorkout);
         await db.historico_treinos.put(existingSession);
       } else {
         await db.historico_treinos.add({
           data: today,
           hora_inicio: time,
-          exercicios_realizados: pendingWorkout,
+          exercicios_realizados: mappedWorkout,
         });
       }
 
@@ -692,7 +695,7 @@ function App() {
 
     const isHistoryCommand = /^(ver hist[oó]rico|hist[oó]rico|ver historico|historico)$/i.test(normalizedInput);
     if (isHistoryCommand) {
-      setIsHistoryOpen(true);
+      setActiveTab('history');
       setMessages((prev) => [
         ...prev,
         {
@@ -858,10 +861,12 @@ function App() {
         messages={messages}
         onSend={handleSendMessage}
         onOpenSettings={() => setIsSettingsOpen(true)}
-        onOpenHistory={() => setIsHistoryOpen(true)}
+        onOpenHistory={() => setActiveTab('history')}
         onRetry={handleRetry}
         hasApiKey={!!apiKey}
         quickOptions={getQuickOptions()}
+        activeTab={activeTab}
+        setActiveTab={setActiveTab}
       />
       <SettingsPanel
         isOpen={isSettingsOpen}
@@ -870,10 +875,6 @@ function App() {
         initialApiKey={apiKey}
         initialModel={model}
         initialCustomModel={customModel}
-      />
-      <HistoryPanel
-        isOpen={isHistoryOpen}
-        onClose={() => setIsHistoryOpen(false)}
       />
     </>
   );

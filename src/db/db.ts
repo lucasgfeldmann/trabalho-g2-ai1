@@ -5,6 +5,7 @@ export interface ExerciciosRealizados {
   series: number;
   repeticoes: number;
   observacao: string;
+  hora_realizacao?: string; // Horário de realização (HH:MM)
 }
 
 export interface Treino {

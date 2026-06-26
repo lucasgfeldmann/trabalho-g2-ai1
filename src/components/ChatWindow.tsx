@@ -1,5 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { MarkdownRenderer } from './MarkdownRenderer';
+import { HistoryPanel } from './HistoryPanel';
+import { PlanTabContent } from './PlanTabContent';
 
 export interface Message {
   id: string;
@@ -17,6 +19,8 @@ interface ChatWindowProps {
   onRetry?: () => void;
   hasApiKey: boolean;
   quickOptions?: string[];
+  activeTab: 'chat' | 'history' | 'plan';
+  setActiveTab: (tab: 'chat' | 'history' | 'plan') => void;
 }
 
 export const ChatWindow: React.FC<ChatWindowProps> = ({
@@ -27,6 +31,8 @@ export const ChatWindow: React.FC<ChatWindowProps> = ({
   onRetry,
   hasApiKey,
   quickOptions = [],
+  activeTab,
+  setActiveTab,
 }) => {
   const [inputText, setInputText] = useState('');
   const [isRecording, setIsRecording] = useState(false);
@@ -96,8 +102,10 @@ export const ChatWindow: React.FC<ChatWindowProps> = ({
   };
 
   useEffect(() => {
-    scrollToBottom();
-  }, [messages]);
+    if (activeTab === 'chat') {
+      scrollToBottom();
+    }
+  }, [messages, activeTab]);
 
   const toggleRecording = () => {
     if (!isSpeechSupported) return;
@@ -131,6 +139,154 @@ export const ChatWindow: React.FC<ChatWindowProps> = ({
 
     onSend(inputText.trim());
     setInputText('');
+  };
+
+  const renderActiveTabContent = () => {
+    switch (activeTab) {
+      case 'history':
+        return (
+          <HistoryPanel
+            isInline={true}
+            onClose={() => setActiveTab('chat')}
+          />
+        );
+      case 'plan':
+        return (
+          <PlanTabContent
+            onSendCommand={(cmd) => {
+              setActiveTab('chat');
+              onSend(cmd);
+            }}
+          />
+        );
+      case 'chat':
+      default:
+        return (
+          <>
+            {/* Message Area */}
+            <div className="messages-area">
+              {messages.length === 0 ? (
+                <div className="welcome-container">
+                  <div className="welcome-card">
+                    <h2>Bem-vindo ao CalisBot! 💪</h2>
+                    <p>
+                      Eu sou seu assistente de Calistenia. Posso te ajudar a gerenciar seus planos de treino e registrar seus exercícios realizados por voz ou texto.
+                    </p>
+                    {!hasApiKey && (
+                      <div className="warning-banner">
+                        <p>⚠️ <strong>Chave de API não configurada!</strong></p>
+                        <p>Para interagir com o bot, você precisa fornecer uma chave de API do Gemini nas configurações.</p>
+                        <button type="button" className="primary-btn mt-2" onClick={onOpenSettings}>
+                          Configurar Agora
+                        </button>
+                      </div>
+                    )}
+                    {hasApiKey && (
+                      <p className="hint-text mt-4">
+                        Digite ou fale algo como: <em>"fiz 3x10 flexões"</em> or <em>"me ajude a criar um plano"</em> para começarmos!
+                      </p>
+                    )}
+                  </div>
+                </div>
+              ) : (
+                <div className="messages-list">
+                  {messages.map((msg) => (
+                    <div
+                      key={msg.id}
+                      className={`message-bubble-wrapper ${
+                        msg.sender === 'user' ? 'user-wrapper' : 'bot-wrapper'
+                      }`}
+                    >
+                      <div
+                        className={`message-bubble ${
+                          msg.sender === 'user' ? 'user-bubble' : 'bot-bubble'
+                        } ${msg.isError ? 'error-bubble' : ''}`}
+                      >
+                        {msg.sender === 'bot' && !msg.isError ? (
+                          <MarkdownRenderer text={msg.text} />
+                        ) : (
+                          <p>{msg.text}</p>
+                        )}
+                        {msg.isError && onRetry && (
+                          <button
+                            type="button"
+                            className="retry-btn"
+                            onClick={onRetry}
+                          >
+                            🔄 Tentar Novamente
+                          </button>
+                        )}
+                        <span className="message-time">
+                          {msg.timestamp.toLocaleTimeString([], {
+                            hour: '2-digit',
+                            minute: '2-digit',
+                          })}
+                        </span>
+                      </div>
+                    </div>
+                  ))}
+                  <div ref={messagesEndRef} />
+                </div>
+              )}
+            </div>
+
+            {/* Input area */}
+            <div className="chat-input-bar">
+              {quickOptions && quickOptions.length > 0 && (
+                <div className="quick-options-container">
+                  {quickOptions.map((option) => (
+                    <button
+                      key={option}
+                      type="button"
+                      className="quick-option-btn"
+                      onClick={() => onSend(option)}
+                    >
+                      {option}
+                    </button>
+                  ))}
+                </div>
+              )}
+              {!hasApiKey && messages.length > 0 && (
+                <div className="input-warning-banner">
+                  A API Key do Gemini está ausente. <button onClick={onOpenSettings}>Configurar Chave</button>
+                </div>
+              )}
+              <form onSubmit={handleSubmit} className="input-form">
+                <button
+                  type="button"
+                  className={`icon-btn mic-btn ${isRecording ? 'recording' : ''}`}
+                  title={getMicTitle()}
+                  disabled={!hasApiKey || !isSpeechSupported}
+                  onClick={toggleRecording}
+                  aria-label={isRecording ? 'Parar gravação de voz' : 'Gravar comando por voz'}
+                >
+                  🎤
+                </button>
+                <input
+                  type="text"
+                  className="chat-input"
+                  placeholder={
+                    hasApiKey
+                      ? "Envie uma mensagem ou diga o que treinou..."
+                      : "Configure a API Key para conversar..."
+                  }
+                  value={inputText}
+                  onChange={(e) => setInputText(e.target.value)}
+                  disabled={!hasApiKey}
+                />
+                <button
+                  type="submit"
+                  className="send-btn"
+                  disabled={!hasApiKey || !inputText.trim()}
+                  aria-label="Enviar mensagem"
+                >
+                  Enviar
+                </button>
+              </form>
+            </div>
+          </>
+        );
+    }
   };
 
   return (
@@ -168,127 +324,41 @@ export const ChatWindow: React.FC<ChatWindowProps> = ({
         </div>
       </header>
 
-      {/* Message Area */}
-      <div className="messages-area">
-        {messages.length === 0 ? (
-          <div className="welcome-container">
-            <div className="welcome-card">
-              <h2>Bem-vindo ao CalisBot! 💪</h2>
-              <p>
-                Eu sou seu assistente de Calistenia. Posso te ajudar a gerenciar seus planos de treino e registrar seus exercícios realizados por voz ou texto.
-              </p>
-              {!hasApiKey && (
-                <div className="warning-banner">
-                  <p>⚠️ <strong>Chave de API não configurada!</strong></p>
-                  <p>Para interagir com o bot, você precisa fornecer uma chave de API do Gemini nas configurações.</p>
-                  <button type="button" className="primary-btn mt-2" onClick={onOpenSettings}>
-                    Configurar Agora
-                  </button>
-                </div>
-              )}
-              {hasApiKey && (
-                <p className="hint-text mt-4">
-                  Digite ou fale algo como: <em>"fiz 3x10 flexões"</em> ou <em>"me ajude a criar um plano"</em> para começarmos!
-                </p>
-              )}
-            </div>
-          </div>
-        ) : (
-          <div className="messages-list">
-            {messages.map((msg) => (
-              <div
-                key={msg.id}
-                className={`message-bubble-wrapper ${
-                  msg.sender === 'user' ? 'user-wrapper' : 'bot-wrapper'
-                }`}
-              >
-                <div
-                  className={`message-bubble ${
-                    msg.sender === 'user' ? 'user-bubble' : 'bot-bubble'
-                  } ${msg.isError ? 'error-bubble' : ''}`}
-                >
-                  {msg.sender === 'bot' && !msg.isError ? (
-                    <MarkdownRenderer text={msg.text} />
-                  ) : (
-                    <p>{msg.text}</p>
-                  )}
-                  {msg.isError && onRetry && (
-                    <button
-                      type="button"
-                      className="retry-btn"
-                      onClick={onRetry}
-                    >
-                      🔄 Tentar Novamente
-                    </button>
-                  )}
-                  <span className="message-time">
-                    {msg.timestamp.toLocaleTimeString([], {
-                      hour: '2-digit',
-                      minute: '2-digit',
-                    })}
-                  </span>
-                </div>
-              </div>
-            ))}
-            <div ref={messagesEndRef} />
-          </div>
-        )}
+      {/* Main Tab Content */}
+      <div className="tab-content-wrapper">
+        {renderActiveTabContent()}
       </div>
 
-      {/* Input area */}
-      <div className="chat-input-bar">
-        {quickOptions && quickOptions.length > 0 && (
-          <div className="quick-options-container">
-            {quickOptions.map((option) => (
-              <button
-                key={option}
-                type="button"
-                className="quick-option-btn"
-                onClick={() => onSend(option)}
-              >
-                {option}
-              </button>
-            ))}
-          </div>
-        )}
-        {!hasApiKey && messages.length > 0 && (
-          <div className="input-warning-banner">
-            A API Key do Gemini está ausente. <button onClick={onOpenSettings}>Configurar Chave</button>
-          </div>
-        )}
-        <form onSubmit={handleSubmit} className="input-form">
-          <button
-            type="button"
-            className={`icon-btn mic-btn ${isRecording ? 'recording' : ''}`}
-            title={getMicTitle()}
-            disabled={!hasApiKey || !isSpeechSupported}
-            onClick={toggleRecording}
-            aria-label={isRecording ? 'Parar gravação de voz' : 'Gravar comando por voz'}
-          >
-            🎤
-          </button>
-          <input
-            type="text"
-            className="chat-input"
-            placeholder={
-              hasApiKey
-                ? "Envie uma mensagem ou diga o que treinou..."
-                : "Configure a API Key para conversar..."
-            }
-            value={inputText}
-            onChange={(e) => setInputText(e.target.value)}
-            disabled={!hasApiKey}
-          />
-          <button
-            type="submit"
-            className="send-btn"
-            disabled={!hasApiKey || !inputText.trim()}
-            aria-label="Enviar mensagem"
-          >
-            Enviar
-          </button>
-        </form>
-      </div>
+      {/* Bottom Navigation Tabs */}
+      <nav className="bottom-tabs">
+        <button
+          type="button"
+          className={`tab-btn ${activeTab === 'chat' ? 'active' : ''}`}
+          onClick={() => setActiveTab('chat')}
+          aria-label="Aba Conversa"
+        >
+          <span className="tab-icon">💬</span>
+          <span className="tab-label">Chat</span>
+        </button>
+        <button
+          type="button"
+          className={`tab-btn ${activeTab === 'history' ? 'active' : ''}`}
+          onClick={() => setActiveTab('history')}
+          aria-label="Aba Histórico"
+        >
+          <span className="tab-icon">📅</span>
+          <span className="tab-label">Histórico</span>
+        </button>
+        <button
+          type="button"
+          className={`tab-btn ${activeTab === 'plan' ? 'active' : ''}`}
+          onClick={() => setActiveTab('plan')}
+          aria-label="Aba Plano"
+        >
+          <span className="tab-icon">📋</span>
+          <span className="tab-label">Plano</span>
+        </button>
+      </nav>
     </div>
   );
 };

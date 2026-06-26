@@ -5,6 +5,7 @@ export interface ParsedWorkout {
   series: number;
   repeticoes: number;
   observacao: string;
+  hora_realizacao?: string;
 }
 
 export interface ParseResult {
