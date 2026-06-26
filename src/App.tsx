@@ -1,122 +1,81 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import heroImg from './assets/hero.png'
-import './App.css'
+import { useState, useEffect } from 'react';
+import { ChatWindow } from './components/ChatWindow';
+import type { Message } from './components/ChatWindow';
+import { SettingsPanel } from './components/SettingsPanel';
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [messages, setMessages] = useState<Message[]>([]);
+  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
+  const [apiKey, setApiKey] = useState('');
+  const [model, setModel] = useState('gemini-3-flash-preview');
+  const [customModel, setCustomModel] = useState('');
+
+  // Load settings from localStorage on mount
+  useEffect(() => {
+    const savedKey = localStorage.getItem('gemini_api_key') || '';
+    const savedModel = localStorage.getItem('gemini_model') || 'gemini-3-flash-preview';
+    const savedCustom = localStorage.getItem('gemini_custom_model') || '';
+
+    setApiKey(savedKey);
+    setModel(savedModel);
+    setCustomModel(savedCustom);
+  }, []);
+
+  const handleSaveSettings = (newKey: string, newModel: string, newCustom: string) => {
+    if (newKey) {
+      localStorage.setItem('gemini_api_key', newKey);
+    } else {
+      localStorage.removeItem('gemini_api_key');
+    }
+    localStorage.setItem('gemini_model', newModel);
+    localStorage.setItem('gemini_custom_model', newCustom);
+
+    setApiKey(newKey);
+    setModel(newModel);
+    setCustomModel(newCustom);
+  };
+
+  const handleSendMessage = (text: string) => {
+    const userMsg: Message = {
+      id: `user-${Date.now()}`,
+      text,
+      sender: 'user',
+      timestamp: new Date(),
+    };
+
+    setMessages((prev) => [...prev, userMsg]);
+
+    // Simple bot reply mock for UI testing
+    setTimeout(() => {
+      const activeModel = model === 'custom' ? customModel : model;
+      const botMsg: Message = {
+        id: `bot-${Date.now()}`,
+        text: `Entendido! Você disse: "${text}". [Simulado usando o modelo ${activeModel}]`,
+        sender: 'bot',
+        timestamp: new Date(),
+      };
+      setMessages((prev) => [...prev, botMsg]);
+    }, 600);
+  };
 
   return (
     <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
-        </div>
-        <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.tsx</code> and save to test <code>HMR</code>
-          </p>
-        </div>
-        <button
-          type="button"
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          Count is {count}
-        </button>
-      </section>
-
-      <div className="ticks"></div>
-
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-          </ul>
-        </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
-        </div>
-      </section>
-
-      <div className="ticks"></div>
-      <section id="spacer"></section>
+      <ChatWindow
+        messages={messages}
+        onSend={handleSendMessage}
+        onOpenSettings={() => setIsSettingsOpen(true)}
+        hasApiKey={!!apiKey}
+      />
+      <SettingsPanel
+        isOpen={isSettingsOpen}
+        onClose={() => setIsSettingsOpen(false)}
+        onSave={handleSaveSettings}
+        initialApiKey={apiKey}
+        initialModel={model}
+        initialCustomModel={customModel}
+      />
     </>
-  )
+  );
 }
 
-export default App
+export default App;

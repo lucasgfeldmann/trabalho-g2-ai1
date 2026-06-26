@@ -45,8 +45,8 @@
       "name": "Interface de Chat (UI)",
       "description": "Criar a tela principal de chat do CalisBot. Deve exibir histórico de mensagens com bolhas diferenciadas (usuário à direita, bot à esquerda), campo de texto, botão de envio. Mobile-first (375px). Scroll automático para a última mensagem. Componente ChatWindow com props: messages[], onSend(text).",
       "dependencies": ["feat-005"],
-      "status": "not-started",
-      "evidence": ""
+      "status": "completed",
+      "evidence": "./init.sh passou: lint 0 erros, typecheck limpo, 5/5 testes no Vitest validando render, settings (localStorage) e chat de simulação."
     },
     {
       "id": "feat-007",
