@@ -2,59 +2,61 @@
 
 ## Current State
 
-**Last Updated:** 2026-06-26 03:17
-**Active Feature:** [feat-002 - First User-Facing Feature]
+**Last Updated:** 2026-06-26 03:53
+**Active Feature:** — (todas as features concluídas ✅)
 
 ## Status
 
 ### What's Done
 
-- [x] **Project Setup (feat-001)**: Configured the development harness (AGENTS.md, feature_list.json, progress.md, session-handoff.md, init.sh) and initialized `package.json`. Verified that `./init.sh` runs successfully.
+- [x] **feat-001 - Project Setup**: Harness configurado (AGENTS.md, feature_list.json, progress.md, session-handoff.md, init.sh).
+- [x] **feat-002 - Configurar Vite React TypeScript**: Projeto scaffolded, dependências instaladas, verificação limpa.
+- [x] **feat-003 - Verification Coverage**: Vitest + @testing-library/react + jest-dom. 4 testes. Pipeline: lint → typecheck → test.
+- [x] **feat-004 - Documentation Update**: README.md completo com stack, estrutura, comandos e harness.
+- [x] **feat-005 - Cleanup and Handoff**: session-handoff.md preenchido, commit final realizado.
 
 ### What's In Progress
 
-- [ ] **First User-Facing Feature (feat-002)**: Waiting for user definition and requirements.
-  - Details: Replace placeholder with first concrete task.
-  - Blockers: None.
+- Nenhum.
 
 ### What's Next
 
-1. Define the target requirements and update `feat-002` in `feature_list.json`.
-2. Implement feature logic and add tests.
-3. Verify the implementation via `./init.sh`.
+- Iniciar construção da interface da aplicação em nova sessão.
 
 ## Blockers / Risks
 
-- [ ] Requirements Definition: Project is currently empty. Need the first set of functional requirements to proceed.
+- Nenhum.
 
 ## Decisions Made
 
-- **Agent Instruction Name**: Selected `AGENTS.md` to guide future coding agents.
-- **Stack & Package Manager**: Initialized a Node.js project using `npm`.
-- **Default Verification**: Configured `init.sh` to run `npm install` followed by `npm test`.
+- **Stack**: React 19 + TypeScript 6 + Vite 8.
+- **Testes**: Vitest + @testing-library/react + jsdom.
+- **Linter**: oxlint (nativo do template).
+- **vite.config.ts**: `defineConfig` importado de `vitest/config`.
 
 ## Files Modified This Session
 
-- `package.json` - Initialized project configuration.
-- `AGENTS.md` - Defined the agent guidelines, rules, and definition of done.
-- `feature_list.json` - Outlined project roadmap.
-- `progress.md` - Tracked startup session progress.
-- `session-handoff.md` - Handoff template for subsequent session recovery.
-- `init.sh` - Automated environment and build verification script.
+- `AGENTS.md`, `feature_list.json`, `progress.md`, `session-handoff.md`, `init.sh`
+- `prompts.md`, `README.md`, `package.json`, `vite.config.ts`
+- `tsconfig.node.json`, `src/test/setup.ts`, `src/test/App.test.tsx`
 
 ## Evidence of Completion
 
-- [x] Initial setup verification runs cleanly:
-```bash
-$ ./init.sh
-=== Harness Initialization ===
-=== npm install ===
-up to date, audited 1 package in 114ms
+- [x] `./init.sh` limpo com todas as 5 features concluídas:
+```
+=== npm run lint ===
+Found 0 warnings and 0 errors.
+
+=== npm run typecheck ===
+(sem erros)
+
 === npm test ===
-No tests specified yet
+✓ src/test/App.test.tsx (4 tests) 109ms
+Test Files  1 passed (1) | Tests  4 passed (4)
+
 === Verification Complete ===
 ```
 
 ## Notes for Next Session
 
-The workspace is fully prepared for an autonomous agent to begin development. Once you define the next feature requirements, replace the `feat-002` placeholder in `feature_list.json` and start coding!
+Todos os 5 milestones do roadmap inicial foram concluídos. O repositório está limpo, verificável e documentado. Para continuar: execute `./init.sh`, adicione novas features ao `feature_list.json` e implemente uma por vez.

@@ -6,6 +6,12 @@ echo "=== Harness Initialization ==="
 echo "=== npm install ==="
 npm install
 
+echo "=== npm run lint ==="
+npm run lint
+
+echo "=== npm run typecheck ==="
+npm run typecheck
+
 echo "=== npm test ==="
 npm test
 

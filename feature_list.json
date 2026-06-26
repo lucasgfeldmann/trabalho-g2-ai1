@@ -10,35 +10,35 @@
     },
     {
       "id": "feat-002",
-      "name": "First User-Facing Feature",
-      "description": "Replace this placeholder with the first concrete behavior the agent should implement",
+      "name": "Configurar Vite React TypeScript",
+      "description": "Instalar e configurar um ambiente Vite React com TypeScript.",
       "dependencies": ["feat-001"],
-      "status": "not-started",
-      "evidence": ""
+      "status": "completed",
+      "evidence": "Scaffolded Vite project with react-ts template, merged package.json dependencies, and successfully ran verification with ./init.sh."
     },
     {
       "id": "feat-003",
       "name": "Verification Coverage",
-      "description": "Add or confirm tests, type checks, linting, or manual verification for the active feature",
+      "description": "Configurar Vitest com @testing-library/react, jest-dom e jsdom. Criar testes para o componente App. Adicionar lint (oxlint) e typecheck (tsc) ao init.sh.",
       "dependencies": ["feat-002"],
-      "status": "not-started",
-      "evidence": ""
+      "status": "completed",
+      "evidence": "./init.sh passou: lint 0 erros, typecheck limpo, 4/4 testes vitest passando (renders heading, counter at 0, increment, sections)."
     },
     {
       "id": "feat-004",
       "name": "Documentation Update",
-      "description": "Update README, architecture notes, or product docs affected by the implemented feature",
+      "description": "Atualizar README.md com stack, estrutura do projeto, comandos disponíveis, instruções de teste e referências ao harness de agentes.",
       "dependencies": ["feat-003"],
-      "status": "not-started",
-      "evidence": ""
+      "status": "completed",
+      "evidence": "README.md reescrito com stack, estrutura, comandos, seção de testes e harness. ./init.sh passou: lint 0 erros, typecheck limpo, 4/4 testes."
     },
     {
       "id": "feat-005",
       "name": "Cleanup and Handoff",
-      "description": "Record verification evidence, update progress.md, and leave a clear next-session path",
+      "description": "Commit final, session-handoff.md preenchido, feature_list.json fechado e repositório pronto para reinicialização.",
       "dependencies": ["feat-004"],
-      "status": "not-started",
-      "evidence": ""
+      "status": "completed",
+      "evidence": "session-handoff.md preenchido, progress.md atualizado, commit final realizado com todas as features concluídas."
     }
   ]
 }
