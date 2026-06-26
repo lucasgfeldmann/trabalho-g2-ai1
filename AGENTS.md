@@ -22,6 +22,7 @@ If baseline verification is failing, repair that first before adding new scope.
 - **Update artifacts**: Before ending session, update `progress.md` and `feature_list.json`
 - **Stay in scope**: Don't modify files unrelated to the current feature
 - **Leave clean state**: Next session must be able to run `./init.sh` immediately
+- **Auto-document features**: Immediately after completing a feature, create `docs/feat-XXX.md` using the template in `docs/TEMPLATE.md`. Documentation is mandatory — a feature without its doc file is not done.
 
 ## Required Artifacts
 
@@ -29,6 +30,8 @@ If baseline verification is failing, repair that first before adding new scope.
 - `progress.md` — Session continuity log
 - `init.sh` — Standard startup and verification path
 - `session-handoff.md` — Optional, for larger sessions
+- `docs/feat-XXX.md` — Feature documentation (one file per completed feature)
+- `docs/TEMPLATE.md` — Template used to generate feature docs
 
 ## Definition of Done
 
@@ -37,6 +40,7 @@ A feature is done only when ALL of the following are true:
 - [ ] Target behavior is implemented
 - [ ] Required verification actually ran (tests / lint / type-check)
 - [ ] Evidence recorded in `feature_list.json` or `progress.md`
+- [ ] `docs/feat-XXX.md` created using `docs/TEMPLATE.md`
 - [ ] Repository remains restartable from standard startup path
 
 ## End of Session
@@ -45,9 +49,10 @@ Before ending a session:
 
 1. Update `progress.md` with current state
 2. Update `feature_list.json` with new feature status
-3. Record any unresolved risks or blockers
-4. Commit with descriptive message once work is in safe state
-5. Leave repo clean enough for next session to run `./init.sh` immediately
+3. **Create `docs/feat-XXX.md`** for every feature completed this session
+4. Record any unresolved risks or blockers
+5. Commit with descriptive message once work is in safe state
+6. Leave repo clean enough for next session to run `./init.sh` immediately
 
 ## Verification Commands
 

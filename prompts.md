@@ -13,6 +13,8 @@
 - **2026-06-26T04:12:26-03:00**: crei uma pasta na raiz chamada com os arquivos projeto.md requisitos.md e criterios-aceite.md
 - **2026-06-26T04:13:02-03:00**: specs
 - **2026-06-26T04:18:58-03:00**: vamos escrever e detalhar o projeto. o projeto é ser um chatbot que realiza o cadastro de realização de exercicios e tambem criador de plano de exercicio para pessoas que praticam calistenia. sera um app com um banco local onde ele sava informações como o plano de exercicios atual e o usuario consegue via audio ou texto escrever rapidamento o que ele esta executando e o de execicio salvando um historio de exercicios realizados
+- **2026-06-26T04:29:15-03:00**: adicione uma regra de documentar toda feature implementada dentro do diretorio docs. a documentação deve ser realizada automaticamente assim que terminar de realizar a feature
+
 
 
 
