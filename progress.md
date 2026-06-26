@@ -27,6 +27,7 @@
 - [x] **feat-013 - Formatador de Respostas em Markdown**: Implementar um componente renderizador de Markdown seguro e sem dependências externas para formatar as respostas do bot no chat, incluindo títulos, listas, negrito, itálico e tags de código inline com estilos neon.
 - [x] **feat-014 - Suporte a Tabelas no Markdown**: Estender o componente MarkdownRenderer para reconhecer e renderizar tabelas markdown em elementos HTML estruturados com estilo Neon Calisthenics e responsividade horizontal.
 - [x] **feat-015 - Criação e Edição de Planos via IA**: Permitir que o usuário utilize chat de texto livre para pedir para a IA criar novos planos ou alterar o plano ativo existente, com confirmação e persistência no IndexedDB.
+- [x] **feat-016 - Exibição de Data nos Exercícios do Histórico**: Adicionar a data de realização de cada exercício diretamente nos itens da lista do histórico no componente HistoryPanel com estilo visual atenuado.
 
 ### What's In Progress
 
@@ -54,7 +55,7 @@
 
 - `feature_list.json`, `progress.md`, `prompts.md`, `specs/requisitos.md`, `specs/projeto.md`, `specs/criterios-aceite.md`
 - `src/services/gemini.ts`, `src/App.tsx`, `src/components/ChatWindow.tsx`, `src/components/MarkdownRenderer.tsx`, `src/index.css`
-- `src/test/gemini.test.ts`, `src/test/MarkdownRenderer.test.tsx`, `src/test/App.test.tsx`, `docs/feat-011.md`, `docs/feat-012.md`, `docs/feat-013.md`, `docs/feat-014.md`, `docs/feat-015.md`
+- `src/test/gemini.test.ts`, `src/test/MarkdownRenderer.test.tsx`, `src/test/App.test.tsx`, `docs/feat-011.md`, `docs/feat-012.md`, `docs/feat-013.md`, `docs/feat-014.md`, `docs/feat-015.md`, `docs/feat-016.md`
 
 ## Evidence of Completion
 
@@ -69,7 +70,7 @@ Found 0 warnings and 0 errors.
 === npm test ===
 ✓ src/test/gemini.test.ts (8 tests) 8ms
 ✓ src/test/MarkdownRenderer.test.tsx (7 tests) 137ms
-✓ src/test/App.test.tsx (19 tests) 700ms
+✓ src/test/App.test.tsx (19 tests) 692ms
 Test Files  3 passed (3) | Tests  34 passed (34)
 === Verification Complete ===
 ```

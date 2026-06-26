@@ -67,6 +67,7 @@ export const HistoryPanel: React.FC<HistoryPanelProps> = ({ isOpen, onClose }) =
                       <li key={index} className="history-exercicio-item">
                         <span>💪 {ex.nome}</span>: {ex.series} {ex.series > 1 ? 'séries' : 'série'} de {ex.repeticoes} reps
                         {ex.observacao ? <span className="ex-obs"> ({ex.observacao})</span> : ''}
+                        <span className="ex-date"> ({formatDate(treino.data)})</span>
                       </li>
                     ))}
                   </ul>

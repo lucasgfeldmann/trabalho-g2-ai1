@@ -119,6 +119,14 @@
       "dependencies": ["feat-014"],
       "status": "completed",
       "evidence": "./init.sh passou: 34/34 testes no Vitest incluindo testes unitários de parse de plano no gemini.test.ts e testes de integração de confirmação/salvamento do fluxo de IA no App.test.tsx."
+    },
+    {
+      "id": "feat-016",
+      "name": "Exibição de Data nos Exercícios do Histórico",
+      "description": "Adicionar a data de realização de cada exercício diretamente nos itens da lista do histórico no componente HistoryPanel e estilizar com classe CSS dedicada.",
+      "dependencies": ["feat-010"],
+      "status": "completed",
+      "evidence": "./init.sh passou: 34/34 testes no Vitest incluindo a validação de exibição da data formatada dos exercícios na modal de histórico."
     }
   ]
 }

@@ -532,6 +532,12 @@ describe('CalisBot App & Components', () => {
       ]
     })
 
+    const today = new Date()
+    const day = String(today.getDate()).padStart(2, '0')
+    const month = String(today.getMonth() + 1).padStart(2, '0')
+    const year = today.getFullYear()
+    const formattedToday = `${day}/${month}/${year}`
+
     render(<App />)
 
     const input = screen.getByPlaceholderText(/Envie uma mensagem ou diga o que treinou.../i)
@@ -550,6 +556,7 @@ describe('CalisBot App & Components', () => {
       expect(screen.getByText(/Dip/i)).toBeInTheDocument()
       expect(screen.getByText(/3 séries de 12 reps/i)).toBeInTheDocument()
       expect(screen.getByText(/\(Paralelas\)/i)).toBeInTheDocument()
+      expect(screen.getByText(new RegExp(`\\(${formattedToday}\\)`, 'i'))).toBeInTheDocument()
     })
   })
 

@@ -723,6 +723,12 @@ body {
   font-size: 13px;
 }
 
+.ex-date {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-left: 6px;
+}
+
 .empty-history {
   text-align: center;
   padding: 40px 20px;
