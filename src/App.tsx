@@ -1041,6 +1041,8 @@ function App() {
     }
   };
 
+  const isTextInputDisabled = ['level', 'days', 'goal', 'confirm_replace'].includes(planFlow.step);
+
   return (
     <>
       <ChatWindow
@@ -1053,6 +1055,7 @@ function App() {
         quickOptions={getQuickOptions()}
         activeTab={activeTab}
         setActiveTab={setActiveTab}
+        disableTextInput={isTextInputDisabled}
       />
       <SettingsPanel
         isOpen={isSettingsOpen}

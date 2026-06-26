@@ -175,6 +175,14 @@
       "dependencies": ["feat-021"],
       "status": "completed",
       "evidence": "./init.sh passou: lint 0 erros, typecheck limpo, 44/44 testes no Vitest validando o foco em calistenia sem equipamentos no fluxo e no prompt do Gemini."
+    },
+    {
+      "id": "feat-023",
+      "name": "Bloqueio de Texto e Voz na Seleção do Plano Guiado",
+      "description": "Desabilitar a inserção de texto e captação de voz (microfone) no chat durante as etapas obrigatórias de seleção guiada de plano (nível, dias, objetivo e substituição de plano), forçando o usuário a selecionar as opções predefinidas (quick options).",
+      "dependencies": ["feat-022"],
+      "status": "in_progress",
+      "evidence": ""
     }
   ]
 }

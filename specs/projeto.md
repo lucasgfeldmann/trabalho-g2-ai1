@@ -54,6 +54,7 @@ Praticantes de calistenia precisam registrar seus treinos de forma rápida, gera
 - Fluxo de correção conversacional para operações pendentes de confirmação (treinos e planos) e cálculo automático de datas específicas no registro de exercícios
 - Novos modelos oficiais do Gemini nas configurações da aplicação e botão de reset completo de todos os dados do navegador
 - Foco em exercícios sem equipamentos e com o peso do corpo na criação e geração de planos de calistenia
+- Bloqueio de entrada de texto e voz no chat durante as etapas obrigatórias de seleção do plano guiado
 - Gráficos de progresso (volume por semana, exercícios mais feitos) — Marco M8
 
 ### Fora do escopo

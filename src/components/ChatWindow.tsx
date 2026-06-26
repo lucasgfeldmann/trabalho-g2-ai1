@@ -21,6 +21,7 @@ interface ChatWindowProps {
   quickOptions?: string[];
   activeTab: 'chat' | 'history' | 'plan';
   setActiveTab: (tab: 'chat' | 'history' | 'plan') => void;
+  disableTextInput?: boolean;
 }
 
 export const ChatWindow: React.FC<ChatWindowProps> = ({
@@ -33,6 +34,7 @@ export const ChatWindow: React.FC<ChatWindowProps> = ({
   quickOptions = [],
   activeTab,
   setActiveTab,
+  disableTextInput = false,
 }) => {
   const [inputText, setInputText] = useState('');
   const [isRecording, setIsRecording] = useState(false);
@@ -255,8 +257,8 @@ export const ChatWindow: React.FC<ChatWindowProps> = ({
                 <button
                   type="button"
                   className={`icon-btn mic-btn ${isRecording ? 'recording' : ''}`}
-                  title={getMicTitle()}
-                  disabled={!hasApiKey || !isSpeechSupported}
+                  title={disableTextInput ? "Escolha uma das opções predefinidas..." : getMicTitle()}
+                  disabled={!hasApiKey || !isSpeechSupported || disableTextInput}
                   onClick={toggleRecording}
                   aria-label={isRecording ? 'Parar gravação de voz' : 'Gravar comando por voz'}
                 >
@@ -266,18 +268,20 @@ export const ChatWindow: React.FC<ChatWindowProps> = ({
                   type="text"
                   className="chat-input"
                   placeholder={
-                    hasApiKey
+                    disableTextInput
+                      ? "Selecione uma das opções acima para prosseguir..."
+                      : hasApiKey
                       ? "Envie uma mensagem ou diga o que treinou..."
                       : "Configure a API Key para conversar..."
                   }
                   value={inputText}
                   onChange={(e) => setInputText(e.target.value)}
-                  disabled={!hasApiKey}
+                  disabled={!hasApiKey || disableTextInput}
                 />
                 <button
                   type="submit"
                   className="send-btn"
-                  disabled={!hasApiKey || !inputText.trim()}
+                  disabled={!hasApiKey || !inputText.trim() || disableTextInput}
                   aria-label="Enviar mensagem"
                 >
                   Enviar

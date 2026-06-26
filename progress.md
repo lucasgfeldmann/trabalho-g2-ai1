@@ -2,7 +2,7 @@
 
 ## Current State
 
-**Last Updated:** 2026-06-26 11:18
+**Last Updated:** 2026-06-26 11:26
 **Active Feature:** Nenhuma (Todas as features concluídas! 🎉)
 
 ## Status
@@ -34,6 +34,7 @@
 - [x] **feat-020 - Correção Conversacional de Operações e Reconhecimento de Datas no Registro de Treino**: Adicionar botão e controle de fluxo conversacional de correção para treinos e planos pendentes de confirmação. Permitir a extração e o cálculo automático de datas absolutas e relativas (ex: "ontem") no registro de exercícios.
 - [x] **feat-021 - Novos Modelos Gemini e Botão de Reset Completo**: Adicionar os novos modelos oficiais do Gemini nas opções de configuração e botão de Reset Completo de dados no painel para re-inicializar a aplicação de forma limpa.
 - [x] **feat-022 - Foco em Exercícios sem Equipamentos na Criação de Planos**: Ajustar as mensagens iniciais e de substituição de plano, bem como a systemInstruction e o prompt do Gemini em `generateCalisthenicsPlan` e `parseUserMessage` para que todos os planos sejam criados focando em calistenia sem equipamentos (peso corporal).
+- [x] **feat-023 - Bloqueio de Texto e Voz na Seleção do Plano Guiado**: Desabilitar a inserção de texto e captação de voz (microfone) no chat durante as etapas obrigatórias de seleção guiada de plano (nível, dias, objetivo e substituição de plano), forçando o usuário a selecionar as opções predefinidas (quick options).
 
 ### What's In Progress
 
@@ -60,11 +61,11 @@
 ## Files Modified This Session
 
 - `feature_list.json`, `progress.md`, `specs/requisitos.md`, `specs/projeto.md`, `specs/criterios-aceite.md`
-- `src/db/db.ts`, `src/services/gemini.ts`, `src/App.tsx`, `src/components/ChatWindow.tsx`, `src/components/HistoryPanel.tsx`, `src/components/PlanTabContent.tsx`, `src/index.css`, `src/test/App.test.tsx`, `docs/feat-017.md`, `docs/feat-018.md`, `docs/feat-022.md`
+- `src/db/db.ts`, `src/services/gemini.ts`, `src/App.tsx`, `src/components/ChatWindow.tsx`, `src/components/HistoryPanel.tsx`, `src/components/PlanTabContent.tsx`, `src/index.css`, `src/test/App.test.tsx`, `docs/feat-017.md`, `docs/feat-018.md`, `docs/feat-022.md`, `docs/feat-023.md`
 
 ## Evidence of Completion
 
-- [x] `./init.sh` limpo com todos os 44 testes passando:
+- [x] `./init.sh` limpo com todos os 45 testes passando:
 ```
 === npm run lint ===
 Found 0 warnings and 0 errors.
@@ -75,8 +76,8 @@ Found 0 warnings and 0 errors.
 === npm test ===
 ✓ src/test/gemini.test.ts (8 tests)
 ✓ src/test/MarkdownRenderer.test.tsx (7 tests)
-✓ src/test/App.test.tsx (29 tests)
-Test Files  3 passed (3) | Tests  44 passed (44)
+✓ src/test/App.test.tsx (30 tests)
+Test Files  3 passed (3) | Tests  45 passed (45)
 === Verification Complete ===
 ```
 

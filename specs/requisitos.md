@@ -184,6 +184,12 @@
 - **Prioridade:** Alta
 - **Feature relacionada:** feat-022
 
+### RF-030 — Bloqueio de Entrada de Texto e Voz na Escolha de Opções do Plano Guiado
+
+- **Descrição:** Durante as etapas em que a seleção de uma das opções predefinidas do plano guiado é obrigatória (especificação do nível, quantidade de dias por semana, objetivo principal e a confirmação de substituição de plano existente), os campos de inserção de texto e de gravação por voz devem ser bloqueados (desabilitados). O placeholder do campo de texto deve ser alterado para orientar o usuário a escolher uma das opções nos botões de clique rápido (quick options).
+- **Prioridade:** Alta
+- **Feature relacionada:** feat-023
+
 ---
 
 ## Requisitos Não Funcionais

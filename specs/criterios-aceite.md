@@ -264,6 +264,17 @@
 
 ---
 
+## feat-023 · Bloqueio de Texto e Voz na Seleção do Plano Guiado
+
+- [ ] Durante as etapas de seleção de nível, seleção de dias, seleção de objetivo principal e confirmação de substituição de plano existente, o input de texto do chat fica desabilitado (`disabled`).
+- [ ] O placeholder do input de texto é alterado para instruir o usuário a selecionar uma das opções rápidas fornecidas (ex: "Selecione uma das opções acima para prosseguir...").
+- [ ] O botão de gravação por voz (microfone) fica desabilitado (`disabled`) durante essas etapas obrigatórias.
+- [ ] O botão de envio fica desabilitado (`disabled`) durante essas etapas.
+- [ ] Testes validam que o input de texto e o botão de voz são desabilitados nessas etapas específicas.
+- [ ] `./init.sh` passa após a implementação.
+
+---
+
 
 
 

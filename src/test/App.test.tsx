@@ -1209,5 +1209,82 @@ describe('CalisBot App & Components', () => {
     expect(callConfig.config.systemInstruction).toContain('peso corporal')
     expect(callConfig.contents).toContain('sem equipamentos, usando apenas o peso corporal')
   })
+
+  it('disables text input and mic during guided plan creation steps, and reenables on completion/confirmation step', async () => {
+    localStorage.setItem('gemini_api_key', 'valid-key')
+
+    class MockSpeechRecognition {
+      continuous = false
+      interimResults = false
+      lang = 'pt-BR'
+      onstart = () => {}
+      onresult = () => {}
+      onerror = () => {}
+      onend = () => {}
+      start = vi.fn()
+      stop = vi.fn()
+      abort = vi.fn()
+    }
+    ;(window as any).SpeechRecognition = MockSpeechRecognition
+
+    generateContentMock.mockResolvedValue({
+      text: JSON.stringify({
+        nome: 'Treino Calistenia Teste',
+        nivel: 'iniciante',
+        dias: []
+      })
+    })
+
+    render(<App />)
+
+    // Wait for guided flow to start and inputs to become disabled
+    await waitFor(() => {
+      expect(screen.getByText(/Vejo que você ainda não possui um plano de treino ativo/i)).toBeInTheDocument()
+    })
+
+    const chatInput = screen.getByPlaceholderText(/Selecione uma das opções acima para prosseguir\.\.\./i)
+    const micBtn = screen.getByLabelText(/Gravar comando por voz/i)
+    const sendBtn = screen.getByLabelText(/Enviar mensagem/i)
+
+    // 1. Inputs must be disabled during 'level' selection step
+    expect(chatInput).toBeDisabled()
+    expect(micBtn).toBeDisabled()
+    expect(sendBtn).toBeDisabled()
+
+    // Click Iniciante to go to 'days' step
+    fireEvent.click(screen.getByRole('button', { name: /^Iniciante$/i }))
+
+    await waitFor(() => {
+      expect(screen.getByText(/Quantos dias por semana você deseja treinar\?/i)).toBeInTheDocument()
+    })
+
+    // 2. Inputs must still be disabled during 'days' selection step
+    expect(chatInput).toBeDisabled()
+    expect(micBtn).toBeDisabled()
+
+    // Click 3 dias to go to 'goal' step
+    fireEvent.click(screen.getByRole('button', { name: /^3 dias$/i }))
+
+    await waitFor(() => {
+      expect(screen.getByText(/Qual é o seu principal objetivo\?/i)).toBeInTheDocument()
+    })
+
+    // 3. Inputs must still be disabled during 'goal' selection step
+    expect(chatInput).toBeDisabled()
+    expect(micBtn).toBeDisabled()
+
+    // Click Força to finish and trigger generation
+    fireEvent.click(screen.getByRole('button', { name: /^Força$/i }))
+
+    // 4. On plan confirmation step, input and mic should be re-enabled to allow user text corrections or confirmations
+    await waitFor(() => {
+      expect(screen.getByText(/Deseja salvar este plano como seu plano ativo\?/i)).toBeInTheDocument()
+    })
+
+    // The placeholder should revert to default and input should be enabled
+    const activeChatInput = screen.getByPlaceholderText(/Envie uma mensagem ou diga o que treinou\.\.\./i)
+    expect(activeChatInput).toBeEnabled()
+    expect(micBtn).toBeEnabled()
+  })
 })
 
