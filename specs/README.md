@@ -117,38 +117,38 @@ Esta seção documenta as ferramentas escolhidas, sua finalidade e configuraçã
 O agente e o desenvolvedor humano devem responder estas perguntas antes de escrever código. As respostas devem estar documentadas em `projeto.md` ou `requisitos.md`.
 
 ### Sobre o produto
-- [ ] Qual é o problema real que o usuário resolve com esta feature?
-- [ ] Quem é o usuário? Qual é seu nível técnico e contexto de uso?
-- [ ] Como o usuário descobre essa funcionalidade?
-- [ ] O que acontece se a funcionalidade falhar? O usuário perde dados?
+- [x] Qual é o problema real que o usuário resolve com esta feature? **Resposta: Registrar treinos de calistenia rapidamente com as mãos suadas/pressa durante o treino.**
+- [x] Quem é o usuário? Qual é seu nível técnico e contexto de uso? **Resposta: Praticantes de calistenia que querem facilidade no registro sem planilhas complexas.**
+- [x] Como o usuário descobre essa funcionalidade? **Resposta: Interface de chat do PWA na página inicial.**
+- [x] O que acontece se a funcionalidade falhar? O usuário perde dados? **Resposta: Sem perda de dados locais; é exibida uma notificação de erro específica.**
 
 ### Sobre a conectividade e dados
-- [x] O app funciona offline? **Resposta: requer conexão (LLM via API)**
-- [x] Os dados ficam locais? **Resposta: sim, IndexedDB — sem sync com nuvem**
-- [x] Os dados precisam ser exportáveis? **Resposta: não por enquanto**
+- [x] O app funciona offline? **Resposta: Requer conexão para reconhecimento de voz e para a LLM (Gemini API).**
+- [x] Os dados ficam locais? **Resposta: Sim, IndexedDB (Dexie.js) sem sincronização.**
+- [x] Os dados precisam ser exportáveis? **Resposta: Não por enquanto.**
 
 ### Sobre a interface
-- [x] Qual é a plataforma alvo? **Resposta: web responsivo — mobile e desktop**
-- [x] Qual o tema visual? **Resposta: dark mode como padrão**
-- [ ] Existe um design system ou paleta de cores definida?
-- [ ] Qual é o tamanho mínimo de tela suportado?
+- [x] Qual é a plataforma alvo? **Resposta: Web responsivo (PWA) — mobile e desktop.**
+- [x] Qual o tema visual? **Resposta: Dark mode por padrão.**
+- [x] Existe um design system ou paleta de cores definida? **Resposta: Tema 'Neon Calisthenics': Fundo chumbo (#0f172a), detalhes/botões em verde-esmeralda/neon (#10b981) e fonte moderna Inter.**
+- [x] Qual é o tamanho mínimo de tela suportado? **Resposta: A partir de 320px (iPhone SE antigo).**
 
 ### Sobre a IA
-- [x] O bot usa LLM real ou parser por regras? **Resposta: LLM via API (Gemini ou OpenAI)**
-- [ ] Qual LLM será usado? Gemini ou OpenAI?
-- [ ] A API key virá de variável de ambiente (`.env`)? Quem gerencia?
-- [ ] Existe limite de tokens/custo que precisa ser controlado?
-- [ ] O que o bot deve fazer quando a API estiver indisponível?
+- [x] O bot usa LLM real ou parser por regras? **Resposta: LLM via API.**
+- [x] Qual LLM será usado? Gemini ou OpenAI? **Resposta: Google Gemini API.**
+- [x] A API key virá de variável de ambiente (`.env`)? Quem gerencia? **Resposta: Painel de configurações no PWA onde o próprio usuário insere sua chave e ela fica salva localmente no navegador (localStorage).**
+- [x] Existe limite de tokens/custo que precisa ser controlado? **Resposta: Como cada usuário usa sua própria chave, o controle de custos/tokens fica sob o plano da chave do usuário.**
+- [x] O que o bot deve fazer quando a API estiver indisponível? **Resposta: Exibir feedbacks visuais específicos esclarecendo se é falha de internet do usuário ou erro na API/Chave do Gemini.**
 
 ### Sobre a voz
-- [x] Qual API de voz? **Resposta: Web Speech API nativa**
-- [ ] O usuário precisa pressionar um botão ou a escuta é contínua?
-- [ ] A transcrição de voz precisa ser editável antes do envio?
+- [x] Qual API de voz? **Resposta: Web Speech API nativa.**
+- [x] O usuário precisa pressionar um botão ou a escuta é contínua? **Resposta: Clique único no botão de microfone para iniciar e parar.**
+- [x] A transcrição de voz precisa ser editável antes do envio? **Resposta: Sim, o áudio transcreve para o input do chat para que o usuário possa revisar e editar antes de clicar em Enviar.**
 
 ### Sobre o futuro
-- [x] Quais features extras são desejáveis? **Resposta: gráficos de progresso**
-- [ ] Existe previsão de versão mobile nativa (React Native)?
-- [ ] O app precisará de autenticação de usuário no futuro?
+- [x] Quais features extras são desejáveis? **Resposta: Gráficos de progresso (volume semanal, exercícios frequentes) via Recharts.**
+- [x] Existe previsão de versão mobile nativa (React Native)? **Resposta: Não.**
+- [x] O app precisará de autenticação de usuário no futuro? **Resposta: Não, o escopo permanece local-only.**
 
 ---
 

@@ -2,8 +2,8 @@
 
 ## Current State
 
-**Last Updated:** 2026-06-26 03:53
-**Active Feature:** — (todas as features concluídas ✅)
+**Last Updated:** 2026-06-26 04:55
+**Active Feature:** — (Refinamento das especificações concluído ✅)
 
 ## Status
 
@@ -14,6 +14,7 @@
 - [x] **feat-003 - Verification Coverage**: Vitest + @testing-library/react + jest-dom. 4 testes. Pipeline: lint → typecheck → test.
 - [x] **feat-004 - Documentation Update**: README.md completo com stack, estrutura, comandos e harness.
 - [x] **feat-005 - Cleanup and Handoff**: session-handoff.md preenchido, commit final realizado.
+- [x] **specs - Especificações e Requisitos**: Esclarecimento das perguntas de design/IA/voz e atualização de `projeto.md`, `requisitos.md` e `criterios-aceite.md`.
 
 ### What's In Progress
 

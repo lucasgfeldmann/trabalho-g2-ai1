@@ -47,11 +47,14 @@
 
 - [ ] Tela de chat renderiza com histórico de mensagens visível
 - [ ] Campo de texto e botão "Enviar" presentes e funcionais
-- [ ] Mensagens do usuário aparecem alinhadas à direita (bolha azul/escura)
-- [ ] Mensagens do bot aparecem alinhadas à esquerda (bolha clara)
-- [ ] Interface é usável em tela de 375px (mobile) sem scroll horizontal
+- [ ] Mensagens do usuário aparecem alinhadas à direita (bolha chumbo escuro com borda/accent verde-neon)
+- [ ] Mensagens do bot aparecem alinhadas à esquerda (bolha escura contrastante)
+- [ ] Interface é usável em tela de 320px (mobile antigo) sem scroll horizontal
 - [ ] Ao enviar uma mensagem, o scroll desce automaticamente para a última mensagem
+- [ ] Existe um botão/ícone de configurações na interface para abrir a gestão de API Key
+- [ ] Painel de configurações abre como modal ou aba lateral e permite salvar/deletar a API Key do Gemini no localStorage
 - [ ] Teste: componente `ChatWindow` renderiza e exibe mensagens corretamente
+- [ ] Teste: painel de configurações salva e apaga a chave com sucesso
 - [ ] `./init.sh` passa após a implementação
 
 ---
@@ -59,9 +62,10 @@
 ## feat-007 · Entrada por Áudio (Web Speech API)
 
 - [ ] Botão de microfone visível na interface de chat
-- [ ] Ao pressionar o botão, a gravação de voz inicia (indicador visual ativo)
-- [ ] O texto transcrito aparece no campo de entrada após o reconhecimento
-- [ ] Ao parar de falar (silêncio) ou pressionar novamente, a gravação para
+- [ ] Ao pressionar o botão (clique único), a gravação de voz inicia (indicador visual de gravação ativo)
+- [ ] O texto transcrito aparece no campo de entrada do chat após o reconhecimento
+- [ ] O usuário pode editar o texto transcrito no input antes de pressionar "Enviar" manualmente
+- [ ] Ao pressionar novamente ou identificar silêncio prolongado, a gravação para
 - [ ] Em browser sem suporte a SpeechRecognition, o botão fica desabilitado com tooltip explicativo
 - [ ] Teste: mock da Web Speech API retorna transcrição e ela aparece no input
 - [ ] `./init.sh` passa após a implementação
@@ -70,16 +74,19 @@
 
 ## feat-008 · Registro de Exercícios via Chat
 
+- [ ] Caso a API Key do Gemini não esteja configurada, o bot instrui o usuário a configurá-la no painel e impede o envio
+- [ ] Em caso de falha de conexão/rede, o bot exibe mensagem explicando que o usuário está offline
+- [ ] Em caso de erro na chamada do Gemini (ex: chave inválida), exibe erro avisando problema com a chave ou cota
 - [ ] Mensagem `"fiz 3x10 flexões"` é interpretada como: exercício=Flexão, séries=3, repetições=10
 - [ ] Mensagem `"15 barras"` é interpretada como: exercício=Barra, séries=1, repetições=15
 - [ ] Mensagem `"3 séries de 8 muscle up"` é interpretada corretamente
 - [ ] Variações ortográficas são aceitas: "flexao", "flexão", "push up", "pushup"
 - [ ] Bot confirma o que entendeu antes de salvar: *"Entendi: 3x10 Flexão. Confirma?"*
-- [ ] Ao confirmar, o exercício é salvo no banco local (IndexedDB)
-- [ ] Ao negar, o bot pede para o usuário repetir o comando
+- [ ] Ao confirmar (sim/botão de confirmar), o exercício é salvo no banco local (IndexedDB)
+- [ ] Ao negar (não/botão de cancelar), o bot pede para o usuário repetir o comando
 - [ ] Exercício salvo aparece no histórico do dia atual
 - [ ] Teste unitário: parser reconhece os formatos listados acima
-- [ ] Teste: exercício confirmado aparece salvo no banco mockado
+- [ ] Teste: fluxo de tratamento de erro de rede e API Key vazia funciona
 - [ ] `./init.sh` passa após a implementação
 
 ---

@@ -16,7 +16,7 @@
 
 ### RF-003 — Entrada por Áudio
 
-- **Descrição:** O sistema deve aceitar comandos de voz usando a Web Speech API (SpeechRecognition). O texto transcrito deve ser exibido no campo de entrada antes de ser enviado.
+- **Descrição:** O sistema deve aceitar comandos de voz usando a Web Speech API (SpeechRecognition) com acionamento por clique único (iniciar/parar). O texto transcrito deve preencher o campo de entrada do chat, permitindo revisão e edição manual pelo usuário antes do envio.
 - **Prioridade:** Alta
 - **Feature relacionada:** feat-007
 
@@ -72,13 +72,19 @@
 - **Prioridade:** Média
 - **Feature relacionada:** feat-008
 
+### RF-012 — Painel de Configurações da API Key
+
+- **Descrição:** O sistema deve fornecer uma interface de configurações (como um modal ou aba lateral) acessível a partir da tela principal, onde o usuário possa inserir, salvar localmente (via localStorage) e testar sua API Key do Google Gemini.
+- **Prioridade:** Alta
+- **Feature relacionada:** feat-006 / feat-008
+
 ---
 
 ## Requisitos Não Funcionais
 
 ### RNF-001 — Mobile-First
 
-- **Descrição:** A interface deve ser projetada prioritariamente para telas de 375px (iPhone SE) e funcionar bem em até 1280px (desktop).
+- **Descrição:** A interface deve ser projetada prioritariamente para telas a partir de 320px (iPhone SE antigo/pequenos displays) e funcionar perfeitamente em até 1280px (desktop).
 - **Prioridade:** Alta
 
 ### RNF-002 — Velocidade de Registro
@@ -86,9 +92,9 @@
 - **Descrição:** O registro de um exercício (da fala/digitação até a confirmação salva) deve ocorrer em menos de 3 segundos.
 - **Prioridade:** Alta
 
-### RNF-003 — Offline First
+### RNF-003 — Tolerância a Falhas e Conectividade
 
-- **Descrição:** O app deve funcionar 100% offline. Nenhuma funcionalidade deve depender de conexão com a internet.
+- **Descrição:** A interface do PWA, o banco de dados local (IndexedDB) e a exibição de históricos/planos devem funcionar sem conexão de rede. Caso o usuário tente registrar um treino ou criar um plano via chat e ocorra falha de rede ou com a API do Gemini, o sistema deve exibir uma notificação visual clara detalhando o erro (ex: 'Sem conexão com a internet' ou 'Erro ao se comunicar com a API do Gemini').
 - **Prioridade:** Alta
 
 ### RNF-004 — Usabilidade com as Mãos Livres
