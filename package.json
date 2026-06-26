@@ -1,0 +1,20 @@
+{
+  "name": "trabalho-g2-ai1",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"No tests specified yet\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lucasgfeldmann/trabalho-g2-ai1.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/lucasgfeldmann/trabalho-g2-ai1/issues"
+  },
+  "homepage": "https://github.com/lucasgfeldmann/trabalho-g2-ai1#readme"
+}
