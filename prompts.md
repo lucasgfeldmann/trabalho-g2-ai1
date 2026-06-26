@@ -30,3 +30,4 @@
 - **2026-06-26T05:41:39-03:00**: podemos prosseguir
 - **2026-06-26T06:05:14-03:00**: vamos ter que ajustar o layout para ele ter o header e o footer fixos e não rolarem apenas deixando o conteudo do chart scroll. todos esses detalhes a mais voce vai adicionando na especificação
 - **2026-06-26T06:18:17-03:00**: vamos criar uma regra de que sempre que te dou uma tarefa que seja um requisito do sistema voce vai atualizar o arquivo de requisitos e revisar se o arquivo de projetos esta condizente e tambem ira criar  criterios de aceite
+- **2026-06-26T06:21:25-03:00**: outra regra, nunca codifique ou desenvolva sem antes escrever features para implementar/desenvolver na feature_list
