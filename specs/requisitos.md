@@ -140,6 +140,11 @@
 - **Descrição:** Exercícios registrados via comando de linguagem natural exigem confirmação do usuário antes de serem persistidos no banco.
 - **Impacto:** Evita registros incorretos por erros de transcrição de voz.
 
+### RN-005 — Guardrail de Domínio (Foco em Calistenia)
+
+- **Descrição:** O chatbot não deve responder a perguntas ou processar comandos que sejam completamente fora do escopo de calistenia, treinos funcionais ou saúde relacionada à prática de atividades físicas. Caso o usuário envie mensagens sobre outros assuntos (ex: política, culinária comum, piadas gerais, etc.), o chatbot deve responder com uma mensagem padrão, educada, reforçando que seu propósito exclusivo é ajudar com treinos de calistenia.
+- **Impacto:** Evita desperdício de tokens, mantém o foco do produto e impede o uso indevido do assistente de IA.
+
 ---
 
 ## Glossário
