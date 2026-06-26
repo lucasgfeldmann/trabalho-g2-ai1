@@ -61,16 +61,16 @@
       "name": "Registro de Exercícios via Chat",
       "description": "Implementar parser de linguagem natural para interpretar comandos de registro de exercício (ex: 'fiz 3x10 flexões', '15 barras', '3 séries de 8 muscle up'). Bot confirma antes de salvar. Exercício salvo no IndexedDB via Dexie.js. Suportar variações ortográficas dos exercícios de calistenia catalogados em specs/requisitos.md.",
       "dependencies": ["feat-007"],
-      "status": "in-progress",
-      "evidence": ""
+      "status": "completed",
+      "evidence": "Implementado parser de exercícios usando SDK @google/genai, IndexedDB Dexie.js integrado para sessões diárias (RN-002), guardrail de calistenia (RN-005) e tratamento de erros offline/API key. Testes integrados com Vitest e fake-indexeddb passando."
     },
     {
       "id": "feat-009",
       "name": "Criação e Gestão do Plano de Exercícios",
       "description": "Fluxo conversacional para criar plano de calistenia: bot pergunta nível (iniciante/intermediário/avançado), dias/semana e objetivos (força/resistência/habilidades). Gera plano e salva no IndexedDB. Exibe plano ativo via comando 'ver meu plano'. Confirmação antes de substituir plano existente.",
       "dependencies": ["feat-008"],
-      "status": "not-started",
-      "evidence": ""
+      "status": "completed",
+      "evidence": "Fluxo guiado por estados com quickOptions implementado. Integração de generateCalisthenicsPlan com Gemini API para planos estruturados em Dexie DB (plano_ativo), com comandos 'ver meu plano', 'criar plano' e testes de integração de fluxo completo passando."
     },
     {
       "id": "feat-010",

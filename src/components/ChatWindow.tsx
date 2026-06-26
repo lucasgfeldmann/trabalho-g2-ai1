@@ -13,9 +13,7 @@ interface ChatWindowProps {
   onSend: (text: string) => void;
   onOpenSettings: () => void;
   hasApiKey: boolean;
-  pendingConfirmation?: boolean;
-  onConfirm?: () => void;
-  onCancel?: () => void;
+  quickOptions?: string[];
 }
 
 export const ChatWindow: React.FC<ChatWindowProps> = ({
@@ -23,9 +21,7 @@ export const ChatWindow: React.FC<ChatWindowProps> = ({
   onSend,
   onOpenSettings,
   hasApiKey,
-  pendingConfirmation = false,
-  onConfirm,
-  onCancel,
+  quickOptions = [],
 }) => {
   const [inputText, setInputText] = useState('');
   const [isRecording, setIsRecording] = useState(false);
@@ -210,14 +206,18 @@ export const ChatWindow: React.FC<ChatWindowProps> = ({
 
       {/* Input area */}
       <div className="chat-input-bar">
-        {pendingConfirmation && (
-          <div className="confirmation-actions">
-            <button type="button" className="primary-btn confirm-action-btn" onClick={onConfirm}>
-              Confirmar 👍
-            </button>
-            <button type="button" className="secondary-btn cancel-action-btn" onClick={onCancel}>
-              Cancelar 👎
-            </button>
+        {quickOptions && quickOptions.length > 0 && (
+          <div className="quick-options-container">
+            {quickOptions.map((option) => (
+              <button
+                key={option}
+                type="button"
+                className="quick-option-btn"
+                onClick={() => onSend(option)}
+              >
+                {option}
+              </button>
+            ))}
           </div>
         )}
         {!hasApiKey && messages.length > 0 && (

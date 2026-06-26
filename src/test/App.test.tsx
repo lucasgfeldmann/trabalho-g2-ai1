@@ -25,6 +25,7 @@ describe('CalisBot App & Components', () => {
   beforeEach(async () => {
     localStorage.clear()
     await db.historico_treinos.clear()
+    await db.plano_ativo.clear()
     generateContentMock.mockReset()
   })
 
@@ -125,7 +126,7 @@ describe('CalisBot App & Components', () => {
     })
 
     // Click Confirm quick action button
-    const confirmBtn = screen.getByRole('button', { name: /Confirmar 👍/i })
+    const confirmBtn = screen.getByRole('button', { name: /^Confirmar$/i })
     fireEvent.click(confirmBtn)
 
     // Wait for success message
@@ -167,7 +168,7 @@ describe('CalisBot App & Components', () => {
     })
 
     // Click Cancel quick action button
-    const cancelBtn = screen.getByRole('button', { name: /Cancelar 👎/i })
+    const cancelBtn = screen.getByRole('button', { name: /^Cancelar$/i })
     fireEvent.click(cancelBtn)
 
     await waitFor(() => {
@@ -327,5 +328,146 @@ describe('CalisBot App & Components', () => {
 
     expect(screen.getByText('Olá')).toBeInTheDocument()
     expect(screen.getByText('Como posso ajudar?')).toBeInTheDocument()
+  })
+
+  it('starts guided plan creation by asking for level if no active plan exists on mount', async () => {
+    localStorage.setItem('gemini_api_key', 'valid-key')
+    render(<App />)
+
+    await waitFor(() => {
+      expect(screen.getByText(/Vejo que você ainda não possui um plano de treino active/i)).toBeInTheDocument()
+      expect(screen.getByRole('button', { name: /^Iniciante$/i })).toBeInTheDocument()
+      expect(screen.getByRole('button', { name: /^Intermediário$/i })).toBeInTheDocument()
+      expect(screen.getByRole('button', { name: /^Avançado$/i })).toBeInTheDocument()
+    })
+  })
+
+  it('completes guided plan creation flow and saves to IndexedDB', async () => {
+    localStorage.setItem('gemini_api_key', 'valid-key')
+
+    generateContentMock.mockResolvedValue({
+      text: JSON.stringify({
+        nome: 'Treino de Força Iniciante',
+        nivel: 'iniciante',
+        dias: [
+          {
+            dia_semana: 'Segunda',
+            exercicios: [
+              { nome: 'Flexão', series: 3, repeticoes: 10 },
+              { nome: 'Barra', series: 3, repeticoes: 5 }
+            ]
+          }
+        ]
+      })
+    })
+
+    render(<App />)
+
+    // Wait for level select step
+    await waitFor(() => {
+      expect(screen.getByRole('button', { name: /^Iniciante$/i })).toBeInTheDocument()
+    })
+
+    // Click Iniciante
+    fireEvent.click(screen.getByRole('button', { name: /^Iniciante$/i }))
+
+    // Wait for days step
+    await waitFor(() => {
+      expect(screen.getByRole('button', { name: /^3 dias$/i })).toBeInTheDocument()
+    })
+
+    // Click 3 dias
+    fireEvent.click(screen.getByRole('button', { name: /^3 dias$/i }))
+
+    // Wait for goal step
+    await waitFor(() => {
+      expect(screen.getByRole('button', { name: /^Força$/i })).toBeInTheDocument()
+    })
+
+    // Click Força
+    fireEvent.click(screen.getByRole('button', { name: /^Força$/i }))
+
+    // Wait for Gemini mock plan generated and confirmation step
+    await waitFor(() => {
+      expect(screen.getByText(/Sugestão de Plano: Treino de Força Iniciante/i)).toBeInTheDocument()
+      expect(screen.getByRole('button', { name: /^Confirmar Plano$/i })).toBeInTheDocument()
+    })
+
+    // Confirm
+    fireEvent.click(screen.getByRole('button', { name: /^Confirmar Plano$/i }))
+
+    // Verify success message and database save
+    await waitFor(() => {
+      expect(screen.getByText(/Plano salvo com sucesso!/i)).toBeInTheDocument()
+    })
+
+    const planos = await db.plano_ativo.toArray()
+    expect(planos).toHaveLength(1)
+    expect(planos[0].nome).toBe('Treino de Força Iniciante')
+    expect(planos[0].nivel).toBe('iniciante')
+    expect(planos[0].dias).toHaveLength(1)
+    expect(planos[0].dias[0].dia_semana).toBe('Segunda')
+    expect(planos[0].dias[0].exercicios[0].nome).toBe('Flexão')
+  })
+
+  it('displays active plan when command ver meu plano is sent', async () => {
+    localStorage.setItem('gemini_api_key', 'valid-key')
+
+    // Seed db with plan
+    await db.plano_ativo.add({
+      nome: 'Meu Plano de Teste',
+      nivel: 'avancado',
+      criado_em: new Date().toISOString(),
+      dias: [
+        {
+          dia_semana: 'Quarta',
+          exercicios: [{ nome: 'Muscle Up', series: 4, repeticoes: 6 }]
+        }
+      ]
+    })
+
+    render(<App />)
+
+    const input = screen.getByPlaceholderText(/Envie uma mensagem ou diga o que treinou.../i)
+    fireEvent.change(input, { target: { value: 'ver meu plano' } })
+    fireEvent.click(screen.getByLabelText('Enviar mensagem'))
+
+    await waitFor(() => {
+      expect(screen.getByText(/Seu Plano Ativo: Meu Plano de Teste/i)).toBeInTheDocument()
+      expect(screen.getByText(/Quarta/i)).toBeInTheDocument()
+      expect(screen.getByText(/- Muscle Up: 4x6/i)).toBeInTheDocument()
+    })
+  })
+
+  it('confirms plan replacement when creating a new plan over an active one', async () => {
+    localStorage.setItem('gemini_api_key', 'valid-key')
+
+    // Seed initial plan
+    await db.plano_ativo.add({
+      nome: 'Plano Antigo',
+      nivel: 'iniciante',
+      criado_em: new Date().toISOString(),
+      dias: []
+    })
+
+    render(<App />)
+
+    const input = screen.getByPlaceholderText(/Envie uma mensagem ou diga o que treinou.../i)
+    fireEvent.change(input, { target: { value: 'criar plano' } })
+    fireEvent.click(screen.getByLabelText('Enviar mensagem'))
+
+    await waitFor(() => {
+      expect(screen.getByText(/Você já possui um plano ativo. Deseja substituí-lo por um novo\?/i)).toBeInTheDocument()
+      expect(screen.getByRole('button', { name: /^Sim, substituir$/i })).toBeInTheDocument()
+      expect(screen.getByRole('button', { name: /^Não$/i })).toBeInTheDocument()
+    })
+
+    // Click Sim, substituir
+    fireEvent.click(screen.getByRole('button', { name: /^Sim, substituir$/i }))
+
+    await waitFor(() => {
+      expect(screen.getByText(/Escolha o seu nível de experiência na calistenia:/i)).toBeInTheDocument()
+      expect(screen.getByRole('button', { name: /^Iniciante$/i })).toBeInTheDocument()
+    })
   })
 })

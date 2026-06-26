@@ -98,3 +98,84 @@ Se for mencionado "3x10 flexões" ou "3 séries de 10 flexões", series = 3 e re
     throw error;
   }
 }
+
+export interface GeneratedPlan {
+  nome: string;
+  nivel: string;
+  dias: {
+    dia_semana: string;
+    exercicios: {
+      nome: string;
+      series: number;
+      repeticoes: number;
+    }[];
+  }[];
+}
+
+export async function generateCalisthenicsPlan(
+  apiKey: string,
+  modelName: string,
+  nivel: string,
+  diasPorSemana: number,
+  objetivo: string
+): Promise<GeneratedPlan> {
+  const ai = new GoogleGenAI({ apiKey });
+
+  const systemInstruction = `
+Você é o criador de planos de calistenia do CalisBot.
+Sua tarefa é gerar um plano de treino semanal de calistenia estruturado em formato JSON.
+
+Você deve responder APENAS com um objeto JSON estruturado (sem markdown blocks), que obedeça exatamente ao seguinte schema:
+{
+  "nome": string,
+  "nivel": string ("iniciante" | "intermediario" | "avancado"),
+  "dias": [
+    {
+      "dia_semana": string ("Segunda" | "Terça" | "Quarta" | "Quinta" | "Sexta" | "Sábado" | "Domingo"),
+      "exercicios": [
+        {
+          "nome": string ("Flexão" | "Barra" | "Muscle Up" | "Dip" | "Agachamento" | "Archer Push-Up" | "Flexão Diamante" | "L-Sit" | "Handstand" | "Pistol Squat" | "Lunge" | "Prancha" | "Hollow Body"),
+          "series": number,
+          "repeticoes": number
+        }
+      ]
+    }
+  ]
+}
+
+Gere exatamente ${diasPorSemana} dias de treino por semana com base nos parâmetros:
+- Nível: ${nivel}
+- Objetivo: ${objetivo}
+
+Mantenha a coerência nos treinos:
+- Iniciantes devem ter exercícios básicos (Flexão, Barra com auxílio, Agachamento, Prancha) com volumes menores (ex: 3 séries de 8 a 10).
+- Intermediários e Avançados podem ter exercícios mais difíceis (Muscle Up, Pistol Squat, L-Sit, Dips) com volumes maiores.
+`;
+
+  try {
+    const response = await ai.models.generateContent({
+      model: modelName,
+      contents: `Gere um plano para nível ${nivel}, com ${diasPorSemana} dias de treino semanal, focado em ${objetivo}.`,
+      config: {
+        systemInstruction: systemInstruction,
+        responseMimeType: 'application/json',
+      }
+    });
+
+    const responseText = response.text?.trim() || '';
+    if (!responseText) {
+      throw new Error('Resposta vazia da API do Gemini.');
+    }
+
+    let cleanedText = responseText;
+    if (cleanedText.startsWith('```')) {
+      cleanedText = cleanedText.replace(/^```json\s*/, '').replace(/```\s*$/, '').trim();
+    }
+
+    const parsed: GeneratedPlan = JSON.parse(cleanedText);
+    return parsed;
+  } catch (error) {
+    console.error('Error generating plan with Gemini:', error);
+    throw error;
+  }
+}
