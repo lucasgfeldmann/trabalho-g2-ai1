@@ -162,6 +162,7 @@
 - [ ] A primeira linha da tabela é renderizada como cabeçalho (`<thead>` e `<th>`).
 - [ ] As linhas seguintes da tabela são renderizadas como corpo (`<tbody>`, `<tr>` e `<td>`).
 - [ ] Estilos em `src/index.css` fornecem um layout de tabela premium: bordas finas neon, linhas alternadas (zebra striping) e espaçamento elegante.
+- [ ] Cabeçalhos de tabela (`<th>`) e células (`<td>`) não sofrem quebra de linha inadequada ou sobreposição de caracteres em telas estreitas ou bolhas de chat (usando `white-space: nowrap` e `word-break: normal`).
 - [ ] Testes unitários validam a renderização de tabelas com diferentes colunas e conteúdo de texto.
 - [ ] `./init.sh` passa após a implementação.
 

@@ -110,7 +110,7 @@
       "description": "Estender o componente MarkdownRenderer para reconhecer e renderizar tabelas markdown (| coluna 1 | coluna 2 |) em elementos HTML <table> com linhas tr/td/th estruturadas e estilo Neon Calisthenics.",
       "dependencies": ["feat-013"],
       "status": "completed",
-      "evidence": "./init.sh passou: 30/30 testes no Vitest validando a renderização estruturada de tabelas markdown com cabeçalhos e células formatadas, e linter/compilação limpos."
+      "evidence": "./init.sh passou: 30/30 testes no Vitest validando a renderização estruturada de tabelas markdown com cabeçalhos e células formatadas, correções de cores neon e correção de wrapping/nowrap em th/td."
     }
   ]
 }

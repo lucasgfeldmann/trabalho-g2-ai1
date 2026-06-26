@@ -18,6 +18,7 @@ Habilitar o reconhecimento, processamento e renderização elegante de tabelas f
 - **Renderização Segura e Modular**: Integração da lógica de renderização com a função de processamento inline (`parseInlineMarkdown`), garantindo suporte a decorações como negrito, itálico e códigos embutidos dentro das células e cabeçalhos da tabela.
 - **Estilização Neon Premium**: Acréscimo de regras CSS em [index.css](file:///home/lucas/github/trabalho-g2-ai1/src/index.css) para envolver tabelas em um contêiner com rolagem horizontal automática (`.markdown-table-wrapper`), estilizar cabeçalhos com bordas neon e preenchimento verde, e implementar faixas alternadas em cinza-escuro (zebra striping).
 - **Correção de Variáveis de Cor CSS**: Ajustadas 4 ocorrências no CSS onde a variável `--accent` era referenciada de forma incorreta para `--accent-color`, restaurando o brilho verde-neon padrão nos títulos, marcadores de lista e cabeçalhos de tabela.
+- **Tratamento de Wrapping e Quebra de Linha em Células**: Adicionados estilos `word-break: normal` na tabela e `white-space: nowrap` nos cabeçalhos (`<th>`) e células (`<td>`) no CSS, garantindo que o texto não sofra quebras inadequadas de letras sobrepostas em bolhas estreitas ou telas mobile, ativando corretamente a rolagem horizontal do contêiner.
 - **Cobertura de Testes**: Inclusão do teste unitário `should render tables correctly` no arquivo [MarkdownRenderer.test.tsx](file:///home/lucas/github/trabalho-g2-ai1/src/test/MarkdownRenderer.test.tsx), cobrindo a detecção de estruturas tabulares, cabeçalhos, divisores e dados.
 
 ---
@@ -41,7 +42,7 @@ Habilitar o reconhecimento, processamento e renderização elegante de tabelas f
 ## Decisões técnicas
 
 - **Isolamento e Desempenho**: A leitura em loop sequencial e o fatiamento (`split('|')`) permitem que a detecção de tabelas ocorra em complexidade linear O(N) com relação ao número de linhas do texto, mantendo a performance de renderização instantânea do chat.
-- **Rolagem Responsiva**: Envolver as tabelas no contêiner `.markdown-table-wrapper` com a propriedade `overflow-x: auto` previne que tabelas muito largas quebrem o layout das bolhas de mensagens do chat, principalmente em dispositivos móveis, adaptando-se perfeitamente aos limites da tela.
+- **Rolagem Responsiva e Sem Quebras**: Envolver as tabelas no contêiner `.markdown-table-wrapper` com a propriedade `overflow-x: auto` e aplicar regras de `white-space: nowrap` e `word-break: normal` nas células e cabeçalhos previne que tabelas quebrem o layout ou sofram sobreposição de caracteres em telas pequenas/mobile, forçando a rolagem horizontal suave.
 - **Alinhamento e Estética**: O uso de bordas arredondadas, sombras discretas e a linha de cabeçalho na cor verde neon (`--accent-color`) preserva a identidade visual futurista e esportiva do aplicativo CalisBot.
 
 ---
