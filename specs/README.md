@@ -136,7 +136,7 @@ O agente e o desenvolvedor humano devem responder estas perguntas antes de escre
 ### Sobre a IA
 - [x] O bot usa LLM real ou parser por regras? **Resposta: LLM via API.**
 - [x] Qual LLM será usado? Gemini ou OpenAI? **Resposta: Google Gemini API.**
-- [x] A API key virá de variável de ambiente (`.env`)? Quem gerencia? **Resposta: Painel de configurações no PWA onde o próprio usuário insere sua chave e seleciona o modelo de LLM (gemini-1.5-flash, gemini-1.5-pro ou customizado), sendo salvos localmente no navegador (localStorage).**
+- [x] A API key virá de variável de ambiente (`.env`)? Quem gerencia? **Resposta: Painel de configurações no PWA onde o próprio usuário insere sua chave e seleciona o modelo de LLM (gemini-3-flash-preview, gemini-1.5-flash, gemini-1.5-pro ou customizado), sendo salvos localmente no navegador (localStorage).**
 - [x] Existe limite de tokens/custo que precisa ser controlado? **Resposta: Como cada usuário usa sua própria chave, o controle de custos/tokens fica sob o plano da chave do usuário.**
 - [x] O que o bot deve fazer quando a API estiver indisponível? **Resposta: Exibir feedbacks visuais específicos esclarecendo se é falha de internet do usuário ou erro na API/Chave do Gemini.**
 

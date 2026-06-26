@@ -18,7 +18,7 @@
 - **2026-06-26T04:48:21-03:00**: me ajude com as specs
 - **2026-06-26T04:55:24-03:00**: seria interessante o usuario adicionar o modelo que ele quer utilizar junto a api?
 - **2026-06-26T04:56:24-03:00**: sim atualize
-
+- **2026-06-26T04:58:44-03:00**: quero utilizar o modelo gemini-3-flash-preview
 
 
 

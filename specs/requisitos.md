@@ -76,7 +76,7 @@
 
 - **Descrição:** O sistema deve fornecer uma interface de configurações (como um modal ou aba lateral) acessível a partir da tela principal, permitindo ao usuário:
   - Inserir, salvar localmente (via localStorage) e testar sua API Key do Google Gemini.
-  - Selecionar o modelo de LLM do Gemini a ser utilizado através de um dropdown (com opções padrão: `gemini-1.5-flash` e `gemini-1.5-pro`).
+  - Selecionar o modelo de LLM do Gemini a ser utilizado através de um dropdown (com opções padrão: `gemini-3-flash-preview`, `gemini-1.5-flash` e `gemini-1.5-pro`, sendo `gemini-3-flash-preview` o padrão).
   - Digitar um ID de modelo customizado caso escolha a opção "Outro/Customizado".
   - Salvar ambas as configurações no armazenamento local para serem utilizadas nas chamadas da API.
 - **Prioridade:** Alta

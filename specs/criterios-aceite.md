@@ -52,7 +52,7 @@
 - [ ] Interface é usável em tela de 320px (mobile antigo) sem scroll horizontal
 - [ ] Ao enviar uma mensagem, o scroll desce automaticamente para a última mensagem
 - [ ] Existe um botão/ícone de configurações na interface para abrir a gestão de API Key e Modelo
-- [ ] Painel de configurações abre como modal ou aba lateral, contendo campo para API Key e um seletor de Modelo (dropdown com gemini-1.5-flash, gemini-1.5-pro e campo de texto para modelo customizado)
+- [ ] Painel de configurações abre como modal ou aba lateral, contendo campo para API Key e um seletor de Modelo (dropdown com gemini-3-flash-preview, gemini-1.5-flash, gemini-1.5-pro e campo de texto para modelo customizado)
 - [ ] O painel permite salvar e deletar as configurações (API Key e Modelo) no localStorage
 - [ ] Teste: componente `ChatWindow` renderiza e exibe mensagens corretamente
 - [ ] Teste: painel de configurações salva e apaga a chave e o modelo com sucesso
