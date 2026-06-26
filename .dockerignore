@@ -1,0 +1,27 @@
+# Dependências e build local
+node_modules
+dist
+dist-ssr
+
+# Arquivos de desenvolvimento/teste
+.git
+.gitignore
+*.log
+*.local
+
+# Configs de editor
+.vscode
+.idea
+.DS_Store
+
+# Arquivos de agente/docs (não precisam ir para o container)
+.agents
+docs
+specs
+harness-assessment.html
+prompts.md
+progress.md
+session-handoff.md
+feature_list.json
+AGENTS.md
+README.md
