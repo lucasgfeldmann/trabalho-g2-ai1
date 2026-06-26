@@ -181,12 +181,15 @@
 
 ---
 
-## feat-016 · Estruturação do Histórico de Exercícios em Tabela
+## feat-016 · Estruturação do Histórico de Exercícios em Tabela Limpa
 
-- [ ] A tela de histórico (`HistoryPanel.tsx`) exibe os treinos em uma tabela geral corrida contendo as colunas: Data, Exercício, Séries e Repetições.
-- [ ] A coluna Data exibe a data no padrão brasileiro (`DD/MM/AAAA`).
-- [ ] A tabela utiliza estilos visuais premium equivalentes às tabelas neon do aplicativo (como bordas neon finas, zebra striping e sem quebras de linha indesejadas).
-- [ ] Os testes de renderização do `HistoryPanel` em `App.test.tsx` verificam se as colunas e células de dados da tabela (Data, nome do exercício, número de séries e número de repetições) são exibidas de forma correta.
+- [ ] A tela de histórico (`HistoryPanel.tsx`) exibe os treinos em uma tabela geral corrida contendo as colunas: Data/Hora, Exercício, Séries, Repetições e Observações.
+- [ ] A coluna Data/Hora exibe a data formatada (`DD/MM/AAAA`) seguida do horário de início (`HH:MM`) (ex: `25/06/2026 às 18:00`).
+- [ ] A coluna Exercício exibe somente o nome do exercício (sem o emoji 💪 e sem a observação).
+- [ ] As colunas Séries e Repetições exibem apenas os números puros correspondentes.
+- [ ] A coluna Observações exibe somente a observação do exercício (ou `-` se não houver).
+- [ ] A tabela utiliza os estilos visuais premium equivalentes às tabelas neon do aplicativo (como bordas neon finas, zebra striping e sem quebras de linha indesejadas).
+- [ ] Os testes de renderização do `HistoryPanel` em `App.test.tsx` são adaptados para validar essa nova estrutura de colunas e dados.
 - [ ] `./init.sh` passa após a implementação.
 
 ---

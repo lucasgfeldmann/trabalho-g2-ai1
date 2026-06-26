@@ -35,6 +35,7 @@ export const HistoryPanel: React.FC<HistoryPanelProps> = ({ isOpen, onClose }) =
         t.exercicios_realizados.map((ex) => ({
           idTreino: t.id,
           data: t.data,
+          horaInicio: t.hora_inicio,
           nome: ex.nome,
           series: ex.series,
           repeticoes: ex.repeticoes,
@@ -72,22 +73,21 @@ export const HistoryPanel: React.FC<HistoryPanelProps> = ({ isOpen, onClose }) =
               <table className="markdown-table">
                 <thead>
                   <tr>
-                    <th>Data</th>
+                    <th>Data/Hora</th>
                     <th>Exercício</th>
                     <th>Séries</th>
                     <th>Repetições</th>
+                    <th>Observações</th>
                   </tr>
                 </thead>
                 <tbody>
                   {exerciciosFlat.map((ex, index) => (
                     <tr key={`${ex.idTreino}-${index}`}>
-                      <td>{formatDate(ex.data)}</td>
-                      <td>
-                        <span>💪 {ex.nome}</span>
-                        {ex.observacao ? <span className="ex-obs"> ({ex.observacao})</span> : ''}
-                      </td>
+                      <td>{formatDate(ex.data)} às {ex.horaInicio}</td>
+                      <td>{ex.nome}</td>
                       <td>{ex.series}</td>
                       <td>{ex.repeticoes}</td>
+                      <td>{ex.observacao || '-'}</td>
                     </tr>
                   ))}
                 </tbody>

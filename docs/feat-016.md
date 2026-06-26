@@ -1,4 +1,4 @@
-# feat-016 — Estruturação do Histórico de Exercícios em Tabela
+# feat-016 — Estruturação do Histórico de Exercícios em Tabela Limpa
 
 **Status:** completed
 **Concluída em:** 2026-06-26
@@ -8,16 +8,20 @@
 
 ## Objetivo
 
-Reestruturar a visualização do histórico de treinos no modal `HistoryPanel.tsx` de uma lista baseada em cartões diários para uma tabela unificada e organizada contendo as colunas: **Data**, **Exercício**, **Séries** e **Repetições**, ordenados de forma cronológica decrescente.
+Reestruturar a visualização do histórico de treinos no modal `HistoryPanel.tsx` em uma tabela de dados limpa com colunas dedicadas para cada informação principal: **Data/Hora**, **Exercício**, **Séries**, **Repetições** e **Observações**, eliminando elementos secundários (como emojis e marcadores redundantes) e apresentando números puros nas colunas quantitativas para facilitar a análise de progressão física.
 
 ---
 
 ## O que foi implementado
 
-- **Visualização Tabular no `HistoryPanel`**: Reescrita da renderização em [HistoryPanel.tsx](file:///home/lucas/github/trabalho-g2-ai1/src/components/HistoryPanel.tsx). A lista de treinos original é achatada em um array plano de exercícios individuais (`exerciciosFlat`) contendo a data do treino associada a cada exercício.
-- **Estruturação de Colunas**: Renderização de uma tabela HTML com cabeçalhos (`<thead>`/`<th>`) específicos de **Data**, **Exercício**, **Séries** e **Repetições**, e linhas corporais (`<tbody>`/`<tr>`/`<td>`) contendo as respectivas informações de cada exercício realizado.
-- **Aproveitamento de Estilos Premium**: Aplicação da classe `.markdown-table` e `.markdown-table-wrapper` na tabela do histórico para reutilizar o design futurista, bordas verde-neon e zebra-striping já desenvolvidos para o renderizador de Markdown.
-- **Adaptação de Testes de Integração**: Atualização de asserções em [App.test.tsx](file:///home/lucas/github/trabalho-g2-ai1/src/test/App.test.tsx) para buscar os valores de repetições, séries, nome do exercício e data nas respectivas células HTML da tabela de histórico.
+- **Estruturação de Colunas Limpas no `HistoryPanel`**: Atualizada a visualização em [HistoryPanel.tsx](file:///home/lucas/github/trabalho-g2-ai1/src/components/HistoryPanel.tsx) para renderizar uma tabela com as 5 colunas dedicadas solicitadas pelo usuário:
+  - **Data/Hora**: Combina a data formatada no padrão brasileiro (`DD/MM/AAAA`) com a hora de início do treino (ex: `25/06/2026 às 18:00`).
+  - **Exercício**: Exibe unicamente o nome limpo do exercício (sem emojis como 💪 e sem incluir a observação inline).
+  - **Séries**: Exibe apenas o número inteiro de séries realizadas.
+  - **Repetições**: Exibe apenas o número inteiro de repetições realizadas.
+  - **Observações**: Nova coluna dedicada para exibir a observação cadastrada no exercício (ex: `Diamante`, `Paralelas`) ou um traço (`-`) caso não possua observações.
+- **Aproveitamento de Estilos de Tabela Neon**: Uso das classes CSS `.markdown-table` e `.markdown-table-wrapper` para herdar o visual futurista com linhas slate alternadas e bordas verde-neon sem redundância de código.
+- **Testes de Integração Adaptados**: Atualização das asserções no arquivo [App.test.tsx](file:///home/lucas/github/trabalho-g2-ai1/src/test/App.test.tsx) para buscar os números puros de séries/reps e a data e hora combinadas nas respectivas colunas da tabela de histórico.
 
 ---
 
@@ -25,9 +29,9 @@ Reestruturar a visualização do histórico de treinos no modal `HistoryPanel.ts
 
 | Arquivo | Tipo | Descrição |
 |---|---|---|
-| `src/components/HistoryPanel.tsx` | modificado | Restruturado para achatar o histórico de IndexedDB e renderizar em uma tabela |
-| `src/test/App.test.tsx` | modificado | Ajuste de asserções nos testes de histórico para refletir o novo layout tabular |
-| `specs/requisitos.md` | modificado | Atualização do requisito funcional `RF-008` definindo a estrutura de tabela |
+| `src/components/HistoryPanel.tsx` | modificado | Restruturado para achatar o histórico de IndexedDB e renderizar em uma tabela com colunas limpas |
+| `src/test/App.test.tsx` | modificado | Ajuste de asserções nos testes de histórico para refletir o novo layout tabular de colunas puras |
+| `specs/requisitos.md` | modificado | Atualização do requisito funcional `RF-008` definindo a estrutura de tabela limpa |
 | `specs/criterios-aceite.md` | modificado | Atualização dos critérios de aceitação para o formato de tabela da `feat-016` |
 | `feature_list.json` | modificado | Atualização da `feat-016` para o status `completed` |
 | `progress.md` | modificado | Registro de progresso da sessão atualizado |
@@ -37,8 +41,8 @@ Reestruturar a visualização do histórico de treinos no modal `HistoryPanel.ts
 
 ## Decisões técnicas
 
-- **Achatamento de Dados (`flatMap`)**: A conversão de sessões de treino com múltiplos exercícios para uma lista corrida de linhas de tabela facilita o rastreamento individual do que foi treinado. O array é ordenado cronologicamente a partir do método Dexie `orderBy('data').reverse()`.
-- **Reuso de Componentes Visuais**: Ao aplicar as classes `.markdown-table-wrapper` e `.markdown-table`, evitamos código CSS redundante e garantimos que a rolagem responsiva da tabela e as cores neon permaneçam idênticas em toda a aplicação.
+- **Isolamento de Dados em Colunas Puras**: Separar observações, emojis e metadados de texto (como "séries", "reps") em colunas específicas facilita a escaneabilidade dos dados pelo usuário e pavimenta o caminho para a futura plotagem de gráficos e análise de volume de treino a partir de dados numéricos puros.
+- **Combinação de Data e Horário**: Agrupar a data e o horário em uma única coluna ("Data/Hora") economiza espaço útil na tela mobile (320px+), garantindo a perfeita responsividade e legibilidade do painel.
 
 ---
 
@@ -58,9 +62,9 @@ Reestruturar a visualização do histórico de treinos no modal `HistoryPanel.ts
 (sem erros)
 
 === npm test ===
-✓ src/test/gemini.test.ts (8 tests) 12ms
-✓ src/test/MarkdownRenderer.test.tsx (7 tests) 127ms
-✓ src/test/App.test.tsx (19 tests) 700ms
+✓ src/test/gemini.test.ts (8 tests) 7ms
+✓ src/test/MarkdownRenderer.test.tsx (7 tests) 126ms
+✓ src/test/App.test.tsx (19 tests) 692ms
 
 Test Files  3 passed (3) | Tests  34 passed (34)
 ```

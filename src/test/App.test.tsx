@@ -498,13 +498,13 @@ describe('CalisBot App & Components', () => {
 
     await waitFor(() => {
       expect(screen.getByText('Histórico de Treinos 📅')).toBeInTheDocument()
-      expect(screen.getByText('25/06/2026')).toBeInTheDocument()
+      expect(screen.getByText(/25\/06\/2026 às 18:00/i)).toBeInTheDocument()
       expect(screen.getByText(/Flexão/i)).toBeInTheDocument()
       expect(screen.getByText('3')).toBeInTheDocument()
       expect(screen.getByText('10')).toBeInTheDocument()
-      expect(screen.getByText(/\(Diamante\)/i)).toBeInTheDocument()
+      expect(screen.getByText('Diamante')).toBeInTheDocument()
 
-      expect(screen.getByText('24/06/2026')).toBeInTheDocument()
+      expect(screen.getByText(/24\/06\/2026 às 10:00/i)).toBeInTheDocument()
       expect(screen.getByText(/Barra/i)).toBeInTheDocument()
       expect(screen.getByText('4')).toBeInTheDocument()
       expect(screen.getByText('8')).toBeInTheDocument()
@@ -549,8 +549,8 @@ describe('CalisBot App & Components', () => {
       expect(screen.getByText(/Dip/i)).toBeInTheDocument()
       expect(screen.getByText('3')).toBeInTheDocument()
       expect(screen.getByText('12')).toBeInTheDocument()
-      expect(screen.getByText(/\(Paralelas\)/i)).toBeInTheDocument()
-      expect(screen.getByText(formattedToday)).toBeInTheDocument()
+      expect(screen.getByText('Paralelas')).toBeInTheDocument()
+      expect(screen.getByText(new RegExp(`${formattedToday} às 08:30`, 'i'))).toBeInTheDocument()
     })
   })
 

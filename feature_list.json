@@ -122,11 +122,11 @@
     },
     {
       "id": "feat-016",
-      "name": "Estruturação do Histórico de Exercícios em Tabela",
-      "description": "Reestruturar a visualização do histórico de treinos no HistoryPanel em uma tabela corrida com colunas de Data, Exercício, Séries e Repetições, utilizando o estilo premium de tabelas neon do aplicativo.",
+      "name": "Estruturação do Histórico de Exercícios em Tabela Limpa",
+      "description": "Restruturar a visualização do histórico de treinos no HistoryPanel em uma tabela limpa com colunas dedicadas para: Data/Hora (data e horário), Exercício (somente nome limpo), Séries (número puro), Repetições (número puro) e Observações (somente a observação do exercício).",
       "dependencies": ["feat-010"],
       "status": "completed",
-      "evidence": "./init.sh passou: 34/34 testes no Vitest validando a exibição estruturada e correta das colunas (Data, Exercício, Séries, Repetições) na tabela de histórico."
+      "evidence": "./init.sh passou: 34/34 testes no Vitest validando o mapeamento limpo de colunas (Data/Hora, Exercício, Séries, Repetições, Observações) na tabela de histórico."
     }
   ]
 }
